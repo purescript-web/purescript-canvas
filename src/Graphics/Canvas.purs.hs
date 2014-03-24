@@ -1,4 +1,4 @@
-module Canvas where
+module Graphics.Canvas where
 
 import Control.Monad.Eff
 
