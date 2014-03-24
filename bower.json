@@ -1,0 +1,19 @@
+{
+  "name": "purescript-canvas",
+  "version": "0.0.0",
+  "authors": [
+    "Phil Freeman <paf31@cantab.net>"
+  ],
+  "description": "Canvas bindings",
+  "keywords": [
+    "purescript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
