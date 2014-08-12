@@ -4,23 +4,17 @@ module.exports = function(grunt) {
 
     grunt.initConfig({ 
     
-        "purescript-make": {
+        pscMake: {
             options: {
-                tco: true,
-                magicDo: true
             },
             main: {
                 files: {
-                    src:
-                        [ "src/**/*.purs.hs"
-                        , "bower_components/purescript-*/src/**/*.purs"
-                        , "bower_components/purescript-*/src/**/*.purs.hs"
-                        ]
+                    src: ["src/**/*.purs"]
                 }
             },
         }
     });
 
     grunt.loadNpmTasks("grunt-purescript");
-    grunt.registerTask("default", ["purescript-make:main"]);
+    grunt.registerTask("default", ["pscMake:main"]);
 };
