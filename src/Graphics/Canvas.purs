@@ -175,9 +175,9 @@ fillPath ctx path = do
 --
 
 type Arc =
-  { cx :: Number
-  , cy :: Number
-  , r  :: Number
+  { x :: Number
+  , y :: Number
+  , r :: Number
   , start :: Number
   , end   :: Number
   }
@@ -186,7 +186,7 @@ foreign import arc
   "function arc(ctx) {\
   \  return function(a) {\
   \    return function() {\
-  \      ctx.arc(a.cx, a.cy, a.r, a.start, a.end);\
+  \      ctx.arc(a.x, a.y, a.r, a.start, a.end);\
   \      return ctx;\
   \    };\
   \  };\
