@@ -12,9 +12,16 @@ module.exports = function(grunt) {
                     src: ["src/**/*.purs"]
                 }
             },
+        },
+
+        docgen: { 
+          readme: {
+            src: "src/**/*.purs",
+            dest: "README.md"
+          }
         }
     });
 
     grunt.loadNpmTasks("grunt-purescript");
-    grunt.registerTask("default", ["pscMake:main"]);
+    grunt.registerTask("default", ["pscMake:main", "docgen:readme"]);
 };
