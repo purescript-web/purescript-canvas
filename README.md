@@ -4,7 +4,7 @@
 
 ### Types
 
-    type Arc  = { end :: Number, start :: Number, r :: Number, cy :: Number, cx :: Number }
+    type Arc  = { end :: Number, start :: Number, r :: Number, y :: Number, x :: Number }
 
     data Canvas :: !
 
