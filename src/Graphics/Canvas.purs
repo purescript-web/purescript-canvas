@@ -8,6 +8,13 @@ foreign import data CanvasElement :: *
 
 foreign import data Context2D :: *
 
+foreign import getCanvasElementById
+  "function getCanvasElementById(id) {\
+  \  return function() {\
+  \    return document.getElementById(id);\
+  \  };\
+  \}" :: forall eff. String -> Eff (canvas :: Canvas | eff) CanvasElement 
+
 foreign import getContext2D 
   "function getContext2D(c) {\
   \  return function() {\
