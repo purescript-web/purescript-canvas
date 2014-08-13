@@ -31,6 +31,8 @@
 
     clip :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
+    closePath :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
     fill :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
     fillPath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a

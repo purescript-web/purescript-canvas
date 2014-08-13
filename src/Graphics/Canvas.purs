@@ -156,6 +156,14 @@ foreign import moveTo
   \  };\
   \}" :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
+foreign import closePath 
+  "function closePath(ctx) {\
+  \  return function() {\
+  \    ctx.closePath();\
+  \    return ctx;\
+  \  };\
+  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
 strokePath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a 
 strokePath ctx path = do
   beginPath ctx
