@@ -77,7 +77,7 @@ foreign import setShadowBlur
   \}" :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
 foreign import setShadowOffsetX
-  "function setShadowOffsetX(offset) {\
+  "function setShadowOffsetX(offsetX) {\
   \  return function(ctx) {\
   \    return function() {\
   \      ctx.shadowOffsetX = offsetX;\
