@@ -28,11 +28,6 @@
     type TranslateTransform  = { translateY :: Number, translateX :: Number }
 
 
-### Type Class Instances
-
-    instance showLineCap :: Show LineCap
-
-
 ### Values
 
     arc :: forall eff. Context2D -> Arc -> Eff (canvas :: Canvas | eff) Context2D

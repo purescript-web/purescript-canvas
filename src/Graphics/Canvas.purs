@@ -23,24 +23,38 @@ foreign import getContext2D
   \}" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D 
 
 foreign import getCanvasWidth
-  "function getCanvasWidth(canvas){ return function(){ return canvas.width; };};"
-    :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
+  "function getCanvasWidth(canvas){\
+  \  return function(){\
+  \    return canvas.width;\ 
+  \  };\
+  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
 
 foreign import getCanvasHeight
-  "function getCanvasHeight(canvas){ return function(){ return canvas.height; };};"
-    :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
+  "function getCanvasHeight(canvas){\
+  \  return function(){\ 
+  \    return canvas.height;\ 
+  \  };\
+  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
 
 foreign import setCanvasWidth
-  "function setCanvasWidth(width){ return function(canvas){ return function(){\
-  \ canvas.width = width;\ 
-  \ return canvas; \
-  \};};};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
+  "function setCanvasWidth(width){\
+  \   return function(canvas){\ 
+  \      return function(){\
+  \        canvas.width = width;\ 
+  \        return canvas;\
+  \      };\
+  \    };\
+  \};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
 
 foreign import setCanvasHeight
-  "function setCanvasHeight(height){ return function(canvas){ return function(){\
-  \ canvas.height = height;\ 
-  \ return canvas; \
-  \};};};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
+  "function setCanvasHeight(height){\
+  \   return function(canvas){\ 
+  \      return function(){\
+  \         canvas.height = height;\ 
+  \         return canvas; \
+  \      };\
+  \    };\
+  \};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
 
 type Dimensions = {width :: Number, height :: Number}
 
@@ -129,11 +143,6 @@ foreign import setShadowOffsetY
 
 data LineCap = Round | Square | Butt
 
-instance showLineCap :: Show LineCap where
-  show Round  = "round"
-  show Square = "square"
-  show Butt   = "butt"
-
 foreign import setLineCapImpl
   "function setLineCapImpl(cap){\
   \  return function(ctx) {\
@@ -145,7 +154,9 @@ foreign import setLineCapImpl
   \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
 setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
-setLineCap cap ctx = setLineCapImpl (show cap) ctx
+setLineCap Round  = setLineCapImpl "round"
+setLineCap Square = setLineCapImpl "square" 
+setLineCap Butt   = setLineCapImpl "butt"
 
 -- |
 -- Paths
