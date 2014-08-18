@@ -22,6 +22,51 @@ foreign import getContext2D
   \  };\
   \}" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D 
 
+foreign import getCanvasWidth
+  "function getCanvasWidth(canvas){\
+  \  return function(){\
+  \    return canvas.width;\ 
+  \  };\
+  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
+
+foreign import getCanvasHeight
+  "function getCanvasHeight(canvas){\
+  \  return function(){\ 
+  \    return canvas.height;\ 
+  \  };\
+  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
+
+foreign import setCanvasWidth
+  "function setCanvasWidth(width){\
+  \   return function(canvas){\ 
+  \      return function(){\
+  \        canvas.width = width;\ 
+  \        return canvas;\
+  \      };\
+  \    };\
+  \};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
+
+foreign import setCanvasHeight
+  "function setCanvasHeight(height){\
+  \   return function(canvas){\ 
+  \      return function(){\
+  \         canvas.height = height;\ 
+  \         return canvas; \
+  \      };\
+  \    };\
+  \};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
+
+type Dimensions = {width :: Number, height :: Number}
+
+getCanvasDimensions :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Dimensions
+getCanvasDimensions ce = do
+  w <- getCanvasWidth  ce
+  h <- getCanvasHeight ce
+  return {width : w, height : h}
+
+setCanvasDimensions :: forall eff. Dimensions -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
+setCanvasDimensions d ce = setCanvasHeight d.height ce >>= setCanvasWidth d.width
+
 -- |
 -- Context Properties
 --
@@ -95,6 +140,23 @@ foreign import setShadowOffsetY
   \    };\
   \  };\
   \}" :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+data LineCap = Round | Square | Butt
+
+foreign import setLineCapImpl
+  "function setLineCapImpl(cap){\
+  \  return function(ctx) {\
+  \    return function() {\
+  \      ctx.lineCap = cap;\
+  \      return ctx;\
+  \    };\
+  \  };\
+  \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+setLineCap Round  = setLineCapImpl "round"
+setLineCap Square = setLineCapImpl "square" 
+setLineCap Butt   = setLineCapImpl "butt"
 
 -- |
 -- Paths
