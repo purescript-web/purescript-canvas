@@ -377,6 +377,66 @@ foreign import transform
   \}" :: forall eff. Transform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
 -- |
+-- Text
+--
+
+type TextMetrics = { width :: Number }
+
+foreign import font
+  "function font(ctx) {\
+  \  return function() {\
+  \    return ctx.font;\
+  \  };\
+  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) String
+
+foreign import setFont
+  "function setFont(fontspec) {\
+  \  return function(ctx) {\
+  \    return function() {\
+  \      ctx.font = fontspec;\
+  \      return ctx;\
+  \    };\
+  \  };\
+  \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+foreign import fillText
+  "function fillText(ctx) {\
+  \  return function(text) {\
+  \    return function(x) {\
+  \      return function(y) {\
+  \        return function() {\
+  \          ctx.fillText(text, x, y);\
+  \          return ctx;\
+  \        };\
+  \      };\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+foreign import strokeText
+  "function strokeText(ctx) {\
+  \  return function(text) {\
+  \    return function(x) {\
+  \      return function(y) {\
+  \        return function() {\
+  \          ctx.fillText(text, x, y);\
+  \          return ctx;\
+  \        };\
+  \      };\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+foreign import measureText
+  "function measureText(ctx) {\
+  \  return function(text) {\
+  \    return function() {\
+  \      return ctx.measureText(text);\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) TextMetrics
+
+-- |
 -- Context
 --
 
