@@ -23,6 +23,8 @@
 
     type ScaleTransform  = { scaleY :: Number, scaleX :: Number }
 
+    type TextMetrics  = { width :: Number }
+
     type Transform  = { m32 :: Number, m31 :: Number, m22 :: Number, m21 :: Number, m12 :: Number, m11 :: Number }
 
     type TranslateTransform  = { translateY :: Number, translateX :: Number }
@@ -46,6 +48,10 @@
 
     fillRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
+    fillText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+    font :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) String
+
     getCanvasDimensions :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Dimensions
 
     getCanvasElementById :: forall eff. String -> Eff (canvas :: Canvas | eff) CanvasElement
@@ -57,6 +63,8 @@
     getContext2D :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D
 
     lineTo :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+    measureText :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) TextMetrics
 
     moveTo :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
@@ -77,6 +85,8 @@
     setCanvasWidth :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
 
     setFillStyle :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+    setFont :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
     setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
@@ -99,6 +109,8 @@
     strokePath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a
 
     strokeRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
+
+    strokeText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
     transform :: forall eff. Transform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
