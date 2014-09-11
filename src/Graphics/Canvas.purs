@@ -67,6 +67,13 @@ getCanvasDimensions ce = do
 setCanvasDimensions :: forall eff. Dimensions -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
 setCanvasDimensions d ce = setCanvasHeight d.height ce >>= setCanvasWidth d.width
 
+foreign import canvasToDataURL
+  "function canvasToDataURL(canvas) {\
+  \   return function(){\
+  \     return canvas.toDataURL();\
+  \   };\
+  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) String
+
 -- |
 -- Context Properties
 --
