@@ -8,6 +8,8 @@ foreign import data CanvasElement :: *
 
 foreign import data Context2D :: *
 
+foreign import data ImageData :: *
+
 foreign import getCanvasElementById
   "function getCanvasElementById(id) {\
   \  return function() {\
@@ -462,4 +464,53 @@ withContext ctx action = do
   a <- action
   restore ctx
   return a
+
+foreign import getImageData
+  "function getImageData(ctx) {\
+  \  return function(x) {\
+  \    return function(y) {\
+  \      return function(w) {\
+  \        return function(h) {\
+  \          return function() { return ctx.getImageData(x, y, w, h); };\
+  \        };\
+  \      };\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
+
+foreign import putImageDataFull
+  "function putImageDataFull(ctx) {\
+  \  return function(image_data) {\
+  \    return function(x) {\
+  \      return function(y) {\
+  \        return function(dx) {\
+  \          return function(dy) {\
+  \            return function(dw) {\
+  \              return function(dh) {\
+  \                return function() {\
+  \                  ctx.putImageData(image_data, x, y, dx, dy, dw, dh);\
+  \                  return ctx;\
+  \                };\
+  \              };\
+  \            };\
+  \          };\
+  \        };\
+  \      };\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+foreign import putImageData
+  "function putImageData(ctx) {\
+  \  return function(image_data) {\
+  \    return function(x) {\
+  \      return function(y) {\
+  \        return function() {\
+  \          ctx.putImageData(image_data, x, y);\
+  \          return ctx;\
+  \        };\
+  \      };\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
