@@ -167,6 +167,55 @@ setLineCap Round  = setLineCapImpl "round"
 setLineCap Square = setLineCapImpl "square" 
 setLineCap Butt   = setLineCapImpl "butt"
 
+data Composite
+   = SourceOver
+   | SourceIn
+   | SourceOut
+   | SourceAtop
+   | DestinationOver
+   | DestinationIn
+   | DestinationOut
+   | DestinationAtop
+   | Lighter
+   | Copy
+   | Xor
+
+instance showComposite :: Show Composite where
+  show SourceOver      = "source-over"
+  show SourceIn        = "source-in"
+  show SourceOut       = "source-out"
+  show SourceAtop      = "source-atop"
+  show DestinationOver = "destination-over"
+  show DestinationIn   = "destination-in"
+  show DestinationOut  = "destination-out"
+  show DestinationAtop = "destination-atop"
+  show Lighter         = "lighter"
+  show Copy            = "copy"
+  show Xor             = "xor"
+
+foreign import setGlobalCompositeOperationImpl
+  "function setGlobalCompositeOperationImpl(ctx) {\
+  \  return function(op) {\
+  \    return function() {\
+  \      ctx.globalCompositeOperation = op;\
+  \      return ctx;\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) Context2D
+
+setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: Canvas | eff) Context2D
+setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx (show composite)
+
+foreign import setGlobalAlpha
+  "function setGlobalAlpha(ctx) {\
+  \  return function(alpha) {\
+  \    return function() {\
+  \      ctx.setGlobalAlpha = alpha;\
+  \      return ctx;\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
 -- |
 -- Paths
 --
