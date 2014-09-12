@@ -10,6 +10,8 @@ foreign import data Context2D :: *
 
 foreign import data ImageData :: *
 
+foreign import data CanvasPixelArray :: *
+
 foreign import getCanvasElementById
   "function getCanvasElementById(id) {\
   \  return function() {\
@@ -520,4 +522,45 @@ foreign import putImageData
   \    };\
   \  };\
   \}" :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+foreign import createImageData
+  "function createImageData(ctx) {\
+  \  return function(sw) {\
+  \    return function(sh) {\
+  \      return function() {\
+  \        return ctx.createImageData(sw, sh);\
+  \      };\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
+
+foreign import createImageDataCopy
+  "function createImageDataCopy(ctx) {\
+  \  return function(image_data) {\
+  \    return function() {\
+  \      return ctx.createImageData(image_data);\
+  \    };\
+  \  };\
+  \}" :: forall eff. Context2D -> ImageData-> Eff (canvas :: Canvas | eff) ImageData
+
+foreign import getImageDataWidth
+  "function getImageDataWidth(image_data) {\
+  \  return function() {\
+  \    return image_data.width;\
+  \  };\
+  \}" :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
+
+foreign import getImageDataHeight
+  "function getImageDataHeight(image_data) {\
+  \  return function() {\
+  \    return image_data.height;\
+  \  };\
+  \}" :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
+
+foreign import getImageDataPixelArray
+  "function getImageDataPixelArray(image_data) {\
+  \  return function() {\
+  \    return image_data.data;\
+  \  };\
+  \}" :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
 
