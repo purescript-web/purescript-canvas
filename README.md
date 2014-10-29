@@ -10,9 +10,26 @@
 
     data CanvasElement :: *
 
+    data CanvasPixelArray :: *
+
+    data Composite where
+      SourceOver :: Composite
+      SourceIn :: Composite
+      SourceOut :: Composite
+      SourceAtop :: Composite
+      DestinationOver :: Composite
+      DestinationIn :: Composite
+      DestinationOut :: Composite
+      DestinationAtop :: Composite
+      Lighter :: Composite
+      Copy :: Composite
+      Xor :: Composite
+
     data Context2D :: *
 
     type Dimensions  = { height :: Number, width :: Number }
+
+    data ImageData :: *
 
     data LineCap where
       Round :: LineCap
@@ -30,17 +47,28 @@
     type TranslateTransform  = { translateY :: Number, translateX :: Number }
 
 
+### Type Class Instances
+
+    instance showComposite :: Show Composite
+
+
 ### Values
 
     arc :: forall eff. Context2D -> Arc -> Eff (canvas :: Canvas | eff) Context2D
 
     beginPath :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
+    canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) String
+
     clearRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
     clip :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
     closePath :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+    createImageData :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
+
+    createImageDataCopy :: forall eff. Context2D -> ImageData -> Eff (canvas :: Canvas | eff) ImageData
 
     fill :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
@@ -62,11 +90,23 @@
 
     getContext2D :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D
 
+    getImageData :: forall eff. Context2D -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
+
+    getImageDataHeight :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
+
+    getImageDataPixelArray :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
+
+    getImageDataWidth :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
+
     lineTo :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
     measureText :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) TextMetrics
 
     moveTo :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+    putImageData :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+    putImageDataFull :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
     rect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
@@ -87,6 +127,12 @@
     setFillStyle :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
     setFont :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+    setGlobalAlpha :: forall eff. Context2D -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+    setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: Canvas | eff) Context2D
+
+    setGlobalCompositeOperationImpl :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) Context2D
 
     setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
