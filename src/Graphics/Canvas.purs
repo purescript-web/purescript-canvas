@@ -477,12 +477,12 @@ foreign import unsafeParseTextAlignImpl
         }
       }
     }
-  }" :: TextAlign -> TextAlign -> TextAlign -> TextAlign -> TextAlign -> String -> TextAlign
+  }""" :: TextAlign -> TextAlign -> TextAlign -> TextAlign -> TextAlign -> String -> TextAlign
 
 unsafeParseTextAlign = unsafeParseTextAlignImpl AlignLeft AlignRight AlignCenter AlignStart AlignEnd
 
 foreign import textAlignImpl
-  """function textAlign(ctx) {
+  """function textAlignImpl(ctx) {
     return function(parse) {
       return function() {
         return parse(ctx.textAlign);
@@ -490,7 +490,7 @@ foreign import textAlignImpl
     }
   }""" :: forall eff. Context2D -> (String -> TextAlign) -> (Eff (canvas :: Canvas | eff) TextAlign)
 
-textAlign :: Context2D -> Eff (canvas :: Canvas | e) TextAlign
+textAlign :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) TextAlign
 textAlign ctx = textAlignImpl ctx unsafeParseTextAlign
 
 foreign import setTextAlignImpl
@@ -501,9 +501,9 @@ foreign import setTextAlignImpl
         return ctx;
       }
     }
-  }""" :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D
+  }""" :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
 
-setTextAlign :: Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
+setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
 setTextAlign ctx textAlign =
   setTextAlignImpl ctx (show textAlign)
 
