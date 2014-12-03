@@ -457,6 +457,44 @@ foreign import transform
 -- Text
 --
 
+data TextAlign
+  = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
+
+instance showTextAlign :: Show TextAlign where
+  show AlignLeft = "left"
+  show AlignRight = "right"
+  show AlignCenter = "center"
+  show AlignStart = "start"
+  show AlignEnd = "end"
+
+unsafeParseTextAlign :: String -> TextAlign
+unsafeParseTextAlign "left" = AlignLeft
+unsafeParseTextAlign "right" = AlignRight
+unsafeParseTextAlign "center" = AlignCenter
+unsafeParseTextAlign "start" = AlignStart
+unsafeParseTextAlign "end" = AlignEnd
+
+foreign import textAlign
+  """function textAlign(ctx) {
+      return function() {
+        return unsafeParseTextAlign(ctx.textAlign);
+      }
+  }""" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) TextAlign
+
+foreign import setTextAlignImpl
+  """function setTextAlignImpl(ctx) {
+    return function(textAlign) {
+      return function() {
+        ctx.textAlign = textAlign;
+        return ctx;
+      }
+    }
+  }""" :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
+
+setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
+setTextAlign ctx textAlign =
+  setTextAlignImpl ctx (show textAlign)
+
 type TextMetrics = { width :: Number }
 
 foreign import font
