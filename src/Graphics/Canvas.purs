@@ -1,5 +1,7 @@
 module Graphics.Canvas where
 
+import Data.Function
+import Data.Maybe
 import Control.Monad.Eff
 
 foreign import data Canvas :: !
@@ -12,12 +14,27 @@ foreign import data ImageData :: *
 
 foreign import data CanvasPixelArray :: *
 
-foreign import getCanvasElementById
-  "function getCanvasElementById(id) {\
-  \  return function() {\
-  \    return document.getElementById(id);\
-  \  };\
-  \}" :: forall eff. String -> Eff (canvas :: Canvas | eff) CanvasElement 
+foreign import getCanvasElementByIdImpl
+  """function getCanvasElementByIdImpl(id, Just, Nothing) {
+    return function() {
+      var el = document.getElementById(id);
+      if (el && el instanceof HTMLCanvasElement) {
+        return Just(el);
+      } else {
+        return Nothing;
+      }
+    };
+  }""" :: forall a eff.
+  Fn3
+    String
+    (a -> Maybe a)
+    (Maybe a)
+    (Eff (canvas :: Canvas | eff) (Maybe CanvasElement))
+
+getCanvasElementById :: forall eff.
+  String -> Eff (canvas :: Canvas | eff) (Maybe CanvasElement)
+getCanvasElementById elId =
+  runFn3 getCanvasElementByIdImpl elId Just Nothing
 
 foreign import getContext2D 
   "function getContext2D(c) {\
