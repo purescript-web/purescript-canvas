@@ -105,12 +105,12 @@ foreign import getCanvasElementByIdImpl
         return Nothing;
       }
     };
-  }""" :: forall a eff.
+  }""" :: forall r eff.
   Fn3
     String
-    (a -> Maybe a)
-    (Maybe a)
-    (Eff (canvas :: Canvas | eff) (Maybe CanvasElement))
+    (CanvasElement -> r)
+    r
+    (Eff (canvas :: Canvas | eff) r)
 
 getCanvasElementById :: forall eff.
   String -> Eff (canvas :: Canvas | eff) (Maybe CanvasElement)
