@@ -9,7 +9,7 @@ module.exports = function(grunt) {
             },
             main: {
                 files: {
-                    src: ["src/**/*.purs"]
+                    src: ["src/**/*.purs", "bower_components/**/src/**/*.purs"]
                 }
             },
         },

@@ -4,7 +4,7 @@
 
 ### Types
 
-    type Arc  = { end :: Number, start :: Number, r :: Number, y :: Number, x :: Number }
+    type Arc = { end :: Number, start :: Number, r :: Number, y :: Number, x :: Number }
 
     data Canvas :: !
 
@@ -27,7 +27,7 @@
 
     data Context2D :: *
 
-    type Dimensions  = { height :: Number, width :: Number }
+    type Dimensions = { height :: Number, width :: Number }
 
     data ImageData :: *
 
@@ -36,15 +36,15 @@
       Square :: LineCap
       Butt :: LineCap
 
-    type Rectangle  = { h :: Number, w :: Number, y :: Number, x :: Number }
+    type Rectangle = { h :: Number, w :: Number, y :: Number, x :: Number }
 
-    type ScaleTransform  = { scaleY :: Number, scaleX :: Number }
+    type ScaleTransform = { scaleY :: Number, scaleX :: Number }
 
-    type TextMetrics  = { width :: Number }
+    type TextMetrics = { width :: Number }
 
-    type Transform  = { m32 :: Number, m31 :: Number, m22 :: Number, m21 :: Number, m12 :: Number, m11 :: Number }
+    type Transform = { m32 :: Number, m31 :: Number, m22 :: Number, m21 :: Number, m12 :: Number, m11 :: Number }
 
-    type TranslateTransform  = { translateY :: Number, translateX :: Number }
+    type TranslateTransform = { translateY :: Number, translateX :: Number }
 
 
 ### Type Class Instances
@@ -82,7 +82,9 @@
 
     getCanvasDimensions :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Dimensions
 
-    getCanvasElementById :: forall eff. String -> Eff (canvas :: Canvas | eff) CanvasElement
+    getCanvasElementById :: forall eff. String -> Eff (canvas :: Canvas | eff) (Maybe CanvasElement)
+
+    getCanvasElementByIdImpl :: forall a eff. Fn3 String (a -> Maybe a) (Maybe a) (Eff (canvas :: Canvas | eff) (Maybe CanvasElement))
 
     getCanvasHeight :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
 
