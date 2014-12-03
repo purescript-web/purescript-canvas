@@ -1,4 +1,85 @@
-module Graphics.Canvas where
+module Graphics.Canvas
+  ( Canvas()
+  , CanvasElement()
+  , Context2D()
+  , ImageData()
+  , CanvasPixelArray()
+  , Arc()
+  , Composite(..)
+  , Dimensions()
+  , LineCap(..)
+  , Rectangle()
+  , ScaleTransform()
+  , TextMetrics()
+  , Transform()
+  , TranslateTransform()
+  , TextAlign(..)
+
+  , getCanvasElementById
+  , getContext2D
+  , getCanvasWidth
+  , setCanvasWidth
+  , getCanvasHeight
+  , setCanvasHeight
+  , getCanvasDimensions
+  , setCanvasDimensions
+  , canvasToDataURL
+
+  , setLineWidth
+  , setFillStyle
+  , setStrokeStyle
+  , setShadowBlur
+  , setShadowOffsetX
+  , setShadowOffsetY
+  , setShadowColor
+
+  , setLineCap
+  , setGlobalCompositeOperation
+  , setGlobalAlpha
+
+  , beginPath
+  , stroke
+  , fill
+  , clip
+  , lineTo
+  , moveTo
+  , closePath
+  , strokePath
+  , fillPath
+
+  , arc
+
+  , rect
+  , fillRect
+  , strokeRect
+  , clearRect
+
+  , scale
+  , rotate
+  , translate
+  , transform
+
+  , textAlign
+  , setTextAlign
+  , font
+  , setFont
+  , fillText
+  , strokeText
+  , measureText
+
+  , save
+  , restore
+  , withContext
+
+  , getImageData
+  , getImageDataWidth
+  , getImageDataHeight
+  , getImageDataPixelArray
+  , putImageData
+  , putImageDataFull
+  , createImageData
+  , createImageDataCopy
+  ) where
 
 import Data.Function
 import Data.Maybe
