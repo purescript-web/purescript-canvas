@@ -496,7 +496,7 @@ foreign import strokeText
   \    return function(x) {\
   \      return function(y) {\
   \        return function() {\
-  \          ctx.fillText(text, x, y);\
+  \          ctx.strokeText(text, x, y);\
   \          return ctx;\
   \        };\
   \      };\
