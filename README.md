@@ -40,6 +40,13 @@
 
     type ScaleTransform = { scaleY :: Number, scaleX :: Number }
 
+    data TextAlign where
+      AlignLeft :: TextAlign
+      AlignRight :: TextAlign
+      AlignCenter :: TextAlign
+      AlignStart :: TextAlign
+      AlignEnd :: TextAlign
+
     type TextMetrics = { width :: Number }
 
     type Transform = { m32 :: Number, m31 :: Number, m22 :: Number, m21 :: Number, m12 :: Number, m11 :: Number }
@@ -50,6 +57,8 @@
 ### Type Class Instances
 
     instance showComposite :: Show Composite
+
+    instance showTextAlign :: Show TextAlign
 
 
 ### Values
@@ -83,8 +92,6 @@
     getCanvasDimensions :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Dimensions
 
     getCanvasElementById :: forall eff. String -> Eff (canvas :: Canvas | eff) (Maybe CanvasElement)
-
-    getCanvasElementByIdImpl :: forall a eff. Fn3 String (a -> Maybe a) (Maybe a) (Eff (canvas :: Canvas | eff) (Maybe CanvasElement))
 
     getCanvasHeight :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
 
@@ -134,11 +141,7 @@
 
     setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: Canvas | eff) Context2D
 
-    setGlobalCompositeOperationImpl :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) Context2D
-
     setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
-    setLineCapImpl :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
     setLineWidth :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
@@ -152,6 +155,8 @@
 
     setStrokeStyle :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
+    setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
+
     stroke :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
     strokePath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a
@@ -159,6 +164,8 @@
     strokeRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
     strokeText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+    textAlign :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) TextAlign
 
     transform :: forall eff. Transform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 

@@ -1,4 +1,85 @@
-module Graphics.Canvas where
+module Graphics.Canvas
+  ( Canvas()
+  , CanvasElement()
+  , Context2D()
+  , ImageData()
+  , CanvasPixelArray()
+  , Arc()
+  , Composite(..)
+  , Dimensions()
+  , LineCap(..)
+  , Rectangle()
+  , ScaleTransform()
+  , TextMetrics()
+  , Transform()
+  , TranslateTransform()
+  , TextAlign(..)
+
+  , getCanvasElementById
+  , getContext2D
+  , getCanvasWidth
+  , setCanvasWidth
+  , getCanvasHeight
+  , setCanvasHeight
+  , getCanvasDimensions
+  , setCanvasDimensions
+  , canvasToDataURL
+
+  , setLineWidth
+  , setFillStyle
+  , setStrokeStyle
+  , setShadowBlur
+  , setShadowOffsetX
+  , setShadowOffsetY
+  , setShadowColor
+
+  , setLineCap
+  , setGlobalCompositeOperation
+  , setGlobalAlpha
+
+  , beginPath
+  , stroke
+  , fill
+  , clip
+  , lineTo
+  , moveTo
+  , closePath
+  , strokePath
+  , fillPath
+
+  , arc
+
+  , rect
+  , fillRect
+  , strokeRect
+  , clearRect
+
+  , scale
+  , rotate
+  , translate
+  , transform
+
+  , textAlign
+  , setTextAlign
+  , font
+  , setFont
+  , fillText
+  , strokeText
+  , measureText
+
+  , save
+  , restore
+  , withContext
+
+  , getImageData
+  , getImageDataWidth
+  , getImageDataHeight
+  , getImageDataPixelArray
+  , putImageData
+  , putImageDataFull
+  , createImageData
+  , createImageDataCopy
+  ) where
 
 import Data.Function
 import Data.Maybe
@@ -456,6 +537,44 @@ foreign import transform
 -- |
 -- Text
 --
+
+data TextAlign
+  = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
+
+instance showTextAlign :: Show TextAlign where
+  show AlignLeft = "left"
+  show AlignRight = "right"
+  show AlignCenter = "center"
+  show AlignStart = "start"
+  show AlignEnd = "end"
+
+unsafeParseTextAlign :: String -> TextAlign
+unsafeParseTextAlign "left" = AlignLeft
+unsafeParseTextAlign "right" = AlignRight
+unsafeParseTextAlign "center" = AlignCenter
+unsafeParseTextAlign "start" = AlignStart
+unsafeParseTextAlign "end" = AlignEnd
+
+foreign import textAlign
+  """function textAlign(ctx) {
+      return function() {
+        return unsafeParseTextAlign(ctx.textAlign);
+      }
+  }""" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) TextAlign
+
+foreign import setTextAlignImpl
+  """function setTextAlignImpl(ctx) {
+    return function(textAlign) {
+      return function() {
+        ctx.textAlign = textAlign;
+        return ctx;
+      }
+    }
+  }""" :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
+
+setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
+setTextAlign ctx textAlign =
+  setTextAlignImpl ctx (show textAlign)
 
 type TextMetrics = { width :: Number }
 
