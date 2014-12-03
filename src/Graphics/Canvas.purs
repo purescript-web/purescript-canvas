@@ -442,6 +442,71 @@ foreign import transform
 
 type TextMetrics = { width :: Number }
 
+data TextAlign
+  = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
+
+instance showTextAlign :: Show TextAlign where
+  show AlignLeft = "left"
+  show AlignRight = "right"
+  show AlignCenter = "center"
+  show AlignStart = "start"
+  show AlignEnd = "end"
+
+foreign import unsafeParseTextAlignImpl
+  """function unsafeParseTextAlignImpl(alignLeft) {
+    return function(alignRight) {
+      return function(alignCenter) {
+        return function(alignStart) {
+          return function(alignEnd) {
+            return function(str) {
+              if (str === 'left')
+                 return alignLeft;
+              else if (str === 'right')
+                  return alignRight;
+              else if (str === 'center')
+                  return alignCenter;
+              else if (str === 'start')
+                  return alignStart;
+              else if (str === 'end')
+                  return alignEnd;
+              else
+                  throw new Error(
+                    'unsafeParseTextAlignImpl: unexpected textAlign value: ' + str);
+            }
+          }
+        }
+      }
+    }
+  }""" :: TextAlign -> TextAlign -> TextAlign -> TextAlign -> TextAlign -> String -> TextAlign
+
+unsafeParseTextAlign = unsafeParseTextAlignImpl AlignLeft AlignRight AlignCenter AlignStart AlignEnd
+
+foreign import textAlignImpl
+  """function textAlignImpl(ctx) {
+    return function(parse) {
+      return function() {
+        return parse(ctx.textAlign);
+      }
+    }
+  }""" :: forall eff. Context2D -> (String -> TextAlign) -> (Eff (canvas :: Canvas | eff) TextAlign)
+
+textAlign :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) TextAlign
+textAlign ctx = textAlignImpl ctx unsafeParseTextAlign
+
+foreign import setTextAlignImpl
+  """function setTextAlignImpl(ctx) {
+    return function(textAlign) {
+      return function() {
+        ctx.textAlign = textAlign;
+        return ctx;
+      }
+    }
+  }""" :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
+
+setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
+setTextAlign ctx textAlign =
+  setTextAlignImpl ctx (show textAlign)
+
 foreign import font
   "function font(ctx) {\
   \  return function() {\
