@@ -83,6 +83,7 @@ module Graphics.Canvas
 
 import Data.Function
 import Data.Maybe
+import Data.ArrayBuffer.Types
 import Control.Monad.Eff
 
 foreign import data Canvas :: !
@@ -93,7 +94,7 @@ foreign import data Context2D :: *
 
 foreign import data ImageData :: *
 
-foreign import data CanvasPixelArray :: *
+type CanvasPixelArray = Uint8ClampedArray
 
 foreign import getCanvasElementByIdImpl
   """function getCanvasElementByIdImpl(id, Just, Nothing) {
@@ -745,7 +746,7 @@ foreign import getImageDataHeight
 foreign import getImageDataPixelArray
   "function getImageDataPixelArray(image_data) {\
   \  return function() {\
-  \    return image_data.data;\
+  \    return new DataView(image_data.data.buffer);\
   \  };\
   \}" :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
 
