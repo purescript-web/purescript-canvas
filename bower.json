@@ -15,7 +15,13 @@
     "test",
     "tests"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/paf31/purescript-canvas.git"
+  },
   "dependencies": {
-    "purescript-maybe": "~0.2.1"
+    "purescript-eff": "^0.1.0",
+    "purescript-functions": "^0.1.0",
+    "purescript-maybe": "^0.3.0"
   }
 }

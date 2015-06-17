@@ -1,3 +1,6 @@
+-- | This module defines foreign types and functions for working with the 2D
+-- | Canvas API.
+
 module Graphics.Canvas
   ( Canvas()
   , CanvasElement()
@@ -81,192 +84,102 @@ module Graphics.Canvas
   , createImageDataCopy
   ) where
 
+import Prelude
+
 import Data.Function
 import Data.Maybe
 import Control.Monad.Eff
 
+-- | The `Canvas` effect denotes computations which read/write from/to the canvas.
 foreign import data Canvas :: !
 
+-- | A canvas HTML element.
 foreign import data CanvasElement :: *
 
+-- | A 2D graphics context.
 foreign import data Context2D :: *
 
+-- | An image data object, used to store raster data outside the canvas.
 foreign import data ImageData :: *
 
+-- | An array of pixel data.
 foreign import data CanvasPixelArray :: *
 
-foreign import getCanvasElementByIdImpl
-  """function getCanvasElementByIdImpl(id, Just, Nothing) {
-    return function() {
-      var el = document.getElementById(id);
-      if (el && el instanceof HTMLCanvasElement) {
-        return Just(el);
-      } else {
-        return Nothing;
-      }
-    };
-  }""" :: forall r eff.
-  Fn3
-    String
-    (CanvasElement -> r)
-    r
-    (Eff (canvas :: Canvas | eff) r)
+foreign import getCanvasElementByIdImpl :: 
+  forall r eff. Fn3 String
+                    (CanvasElement -> r)
+                    r
+                    (Eff (canvas :: Canvas | eff) r)
 
-getCanvasElementById :: forall eff.
-  String -> Eff (canvas :: Canvas | eff) (Maybe CanvasElement)
-getCanvasElementById elId =
-  runFn3 getCanvasElementByIdImpl elId Just Nothing
+-- | Get a canvas element by ID, or `Nothing` if the element does not exist.
+getCanvasElementById :: forall eff. String -> Eff (canvas :: Canvas | eff) (Maybe CanvasElement)
+getCanvasElementById elId = runFn3 getCanvasElementByIdImpl elId Just Nothing
 
-foreign import getContext2D 
-  "function getContext2D(c) {\
-  \  return function() {\
-  \    return c.getContext('2d');\
-  \  };\
-  \}" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D 
+-- | Get the 2D graphics context for a canvas element.
+foreign import getContext2D :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D 
 
-foreign import getCanvasWidth
-  "function getCanvasWidth(canvas){\
-  \  return function(){\
-  \    return canvas.width;\ 
-  \  };\
-  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
+-- | Get the canvas width in pixels.
+foreign import getCanvasWidth :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
 
-foreign import getCanvasHeight
-  "function getCanvasHeight(canvas){\
-  \  return function(){\ 
-  \    return canvas.height;\ 
-  \  };\
-  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
+-- | Get the canvas height in pixels.
+foreign import getCanvasHeight :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
 
-foreign import setCanvasWidth
-  "function setCanvasWidth(width){\
-  \   return function(canvas){\ 
-  \      return function(){\
-  \        canvas.width = width;\ 
-  \        return canvas;\
-  \      };\
-  \    };\
-  \};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
+-- | Set the canvas width in pixels.
+foreign import setCanvasWidth :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
 
-foreign import setCanvasHeight
-  "function setCanvasHeight(height){\
-  \   return function(canvas){\ 
-  \      return function(){\
-  \         canvas.height = height;\ 
-  \         return canvas; \
-  \      };\
-  \    };\
-  \};" :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
+-- | Set the canvas height in pixels.
+foreign import setCanvasHeight :: forall eff. Number -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
 
-type Dimensions = {width :: Number, height :: Number}
+-- | Canvas dimensions (width and height) in pixels.
+type Dimensions = { width :: Number, height :: Number }
 
+-- | Get the canvas dimensions in pixels.
 getCanvasDimensions :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Dimensions
 getCanvasDimensions ce = do
   w <- getCanvasWidth  ce
   h <- getCanvasHeight ce
   return {width : w, height : h}
 
+-- | Set the canvas dimensions in pixels.
 setCanvasDimensions :: forall eff. Dimensions -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
 setCanvasDimensions d ce = setCanvasHeight d.height ce >>= setCanvasWidth d.width
 
-foreign import canvasToDataURL
-  "function canvasToDataURL(canvas) {\
-  \   return function(){\
-  \     return canvas.toDataURL();\
-  \   };\
-  \};" :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) String
+-- | Create a data URL for the current canvas contents
+foreign import canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) String
 
--- |
--- Context Properties
---
+-- | Set the current line width.
+foreign import setLineWidth :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import setLineWidth
-  "function setLineWidth(width) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.lineWidth = width;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current fill style/color.
+foreign import setFillStyle :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import setFillStyle
-  "function setFillStyle(style) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.fillStyle = style;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current stroke style/color.
+foreign import setStrokeStyle :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import setStrokeStyle
-  "function setStrokeStyle(style) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.strokeStyle = style;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current shadow color.
+foreign import setShadowColor :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import setShadowColor
-  "function setShadowColor(color) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.shadowColor = color;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current shadow blur radius.
+foreign import setShadowBlur :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import setShadowBlur
-  "function setShadowBlur(blur) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.shadowBlur = blur;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current shadow x-offset.
+foreign import setShadowOffsetX :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import setShadowOffsetX
-  "function setShadowOffsetX(offsetX) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.shadowOffsetX = offsetX;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current shadow y-offset.
+foreign import setShadowOffsetY :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import setShadowOffsetY
-  "function setShadowOffsetY(offsetY) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.shadowOffsetY = offsetY;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
+-- | Enumerates the different types of line cap.
 data LineCap = Round | Square | Butt
 
-foreign import setLineCapImpl
-  "function setLineCapImpl(cap){\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.lineCap = cap;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+foreign import setLineCapImpl :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
+-- | Set the current line cap type.
 setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 setLineCap Round  = setLineCapImpl "round"
 setLineCap Square = setLineCapImpl "square" 
 setLineCap Butt   = setLineCapImpl "butt"
 
+-- | Enumerates the different types of alpha composite operations.
 data Composite
    = SourceOver
    | SourceIn
@@ -293,97 +206,47 @@ instance showComposite :: Show Composite where
   show Copy            = "copy"
   show Xor             = "xor"
 
-foreign import setGlobalCompositeOperationImpl
-  "function setGlobalCompositeOperationImpl(ctx) {\
-  \  return function(op) {\
-  \    return function() {\
-  \      ctx.globalCompositeOperation = op;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) Context2D
+foreign import setGlobalCompositeOperationImpl :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) Context2D
 
+-- | Set the current composite operation.
 setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: Canvas | eff) Context2D
 setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx (show composite)
 
-foreign import setGlobalAlpha
-  "function setGlobalAlpha(ctx) {\
-  \  return function(alpha) {\
-  \    return function() {\
-  \      ctx.setGlobalAlpha = alpha;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Number -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current global alpha level.
+foreign import setGlobalAlpha :: forall eff. Context2D -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
+-- | Begin a path object.
+foreign import beginPath :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Stroke the current object.
+foreign import stroke :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Fill the current object.
+foreign import fill :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Clip to the current object.
+foreign import clip :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Move the path to the specified coordinates, drawing a line segment.
+foreign import lineTo  :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Move the path to the specified coordinates, without drawing a line segment.
+foreign import moveTo  :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Close the current path.
+foreign import closePath  :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | A convenience function for drawing a stroked path.
+-- | 
+-- | For example:
 -- |
--- Paths
---
-
-foreign import beginPath
-  "function beginPath(ctx) {\
-  \  return function() {\
-  \    ctx.beginPath();\
-  \    return ctx;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
-foreign import stroke
-  "function stroke(ctx) {\
-  \  return function() {\
-  \    ctx.stroke();\
-  \    return ctx;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
-foreign import fill
-  "function fill(ctx) {\
-  \  return function() {\
-  \    ctx.fill();\
-  \    return ctx;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
-foreign import clip 
-  "function clip(ctx) {\
-  \  return function() {\
-  \    ctx.clip();\
-  \    return ctx;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
-foreign import lineTo 
-  "function lineTo(ctx) {\
-  \  return function(x) {\
-  \    return function(y) {\
-  \      return function() {\
-  \        ctx.lineTo(x, y);\
-  \        return ctx;\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
-
-foreign import moveTo 
-  "function moveTo(ctx) {\
-  \  return function(x) {\
-  \    return function(y) {\
-  \      return function() {\
-  \        ctx.moveTo(x, y);\
-  \        return ctx;\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
-
-foreign import closePath 
-  "function closePath(ctx) {\
-  \  return function() {\
-  \    ctx.closePath();\
-  \    return ctx;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
+-- | ```purescript
+-- | strokePath ctx $ do
+-- |   moveTo ctx 10.0 10.0
+-- |   lineTo ctx 20.0 20.0
+-- |   lineTo ctx 10.0 20.0
+-- |   closePath ctx
+-- | ```
 strokePath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a 
 strokePath ctx path = do
   beginPath ctx
@@ -391,6 +254,17 @@ strokePath ctx path = do
   stroke ctx
   return a
 
+-- | A convenience function for drawing a filled path.
+-- | 
+-- | For example:
+-- |
+-- | ```purescript
+-- | fillPath ctx $ do
+-- |   moveTo ctx 10.0 10.0
+-- |   lineTo ctx 20.0 20.0
+-- |   lineTo ctx 10.0 20.0
+-- |   closePath ctx
+-- | ```
 fillPath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a 
 fillPath ctx path = do
   beginPath ctx
@@ -398,10 +272,11 @@ fillPath ctx path = do
   fill ctx
   return a
 
+-- | A type representing an arc object:
 -- |
--- Arcs
---
-
+-- | - The center coordinates `x` and `y`,
+-- | - The radius `r`,
+-- | - The starting and ending angles, `start` and `end`.
 type Arc =
   { x :: Number
   , y :: Number
@@ -410,20 +285,13 @@ type Arc =
   , end   :: Number
   }
 
-foreign import arc
-  "function arc(ctx) {\
-  \  return function(a) {\
-  \    return function() {\
-  \      ctx.arc(a.x, a.y, a.r, a.start, a.end);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Arc -> Eff (canvas :: Canvas | eff) Context2D
+-- | Render an arc object.
+foreign import arc :: forall eff. Context2D -> Arc -> Eff (canvas :: Canvas | eff) Context2D
 
+-- | A type representing a rectangle object:
 -- |
--- Rectangles
---
-
+-- | - The top-left corner coordinates `x` and `y`,
+-- | - The width and height `w` and `h`.
 type Rectangle = 
   { x :: Number
   , y :: Number
@@ -431,90 +299,44 @@ type Rectangle =
   , h :: Number
   }
 
-foreign import rect
-  "function rect(ctx) {\
-  \  return function(r) {\
-  \    return function() {\
-  \      ctx.rect(r.x, r.y, r.w, r.h);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
+-- | Render a rectangle.
+foreign import rect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import fillRect
-  "function fillRect(ctx) {\
-  \  return function(r) {\
-  \    return function() {\
-  \      ctx.fillRect(r.x, r.y, r.w, r.h);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
+-- | Fill a rectangle.
+foreign import fillRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import strokeRect
-  "function strokeRect(ctx) {\
-  \  return function(r) {\
-  \    return function() {\
-  \      ctx.strokeRect(r.x, r.y, r.w, r.h);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
+-- | Stroke a rectangle.
+foreign import strokeRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import clearRect
-  "function clearRect(ctx) {\
-  \  return function(r) {\
-  \    return function() {\
-  \      ctx.clearRect(r.x, r.y, r.w, r.h);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
+-- | Clear a rectangle.
+foreign import clearRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
--- |
--- Transformations
---
-
+-- | An object representing a scaling transform:
+-- | 
+-- | - The scale factors in the `x` and `y` directions, `scaleX` and `scaleY`.
 type ScaleTransform =
   { scaleX :: Number
   , scaleY :: Number
   }
 
-foreign import scale 
-  "function scale(t) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.scale(t.scaleX, t.scaleY);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. ScaleTransform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Apply a scaling transform.
+foreign import scale  :: forall eff. ScaleTransform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import rotate
-  "function rotate(angle) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.rotate(angle);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Apply a rotation.
+foreign import rotate :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
+-- | An object representing a translation:
+-- | 
+-- | - The translation amounts in the `x` and `y` directions, `translateX` and `translateY`.
 type TranslateTransform =
   { translateX :: Number
   , translateY :: Number
   }
 
-foreign import translate 
-  "function translate(t) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.translate(t.translateX, t.translateY);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. TranslateTransform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Apply a translation
+foreign import translate :: forall eff. TranslateTransform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
+-- | An object representing a general transformation as a homogeneous matrix.
 type Transform =
   { m11 :: Number
   , m12 :: Number
@@ -524,20 +346,10 @@ type Transform =
   , m32 :: Number
   }
 
-foreign import transform
-  "function transform(t) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.transform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. Transform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Apply a general transformation.
+foreign import transform :: forall eff. Transform -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
--- |
--- Text
---
-
+-- | Enumerates types of text alignment.
 data TextAlign
   = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
 
@@ -548,110 +360,61 @@ instance showTextAlign :: Show TextAlign where
   show AlignStart = "start"
   show AlignEnd = "end"
 
-unsafeParseTextAlign :: String -> TextAlign
-unsafeParseTextAlign "left" = AlignLeft
-unsafeParseTextAlign "right" = AlignRight
-unsafeParseTextAlign "center" = AlignCenter
-unsafeParseTextAlign "start" = AlignStart
-unsafeParseTextAlign "end" = AlignEnd
+foreign import textAlignImpl :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) String
 
-foreign import textAlign
-  """function textAlign(ctx) {
-      return function() {
-        return unsafeParseTextAlign(ctx.textAlign);
-      }
-  }""" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) TextAlign
+-- | Get the current text alignment.
+textAlign :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) TextAlign
+textAlign ctx = unsafeParseTextAlign <$> textAlignImpl ctx
+  where
+  unsafeParseTextAlign :: String -> TextAlign
+  unsafeParseTextAlign "left" = AlignLeft
+  unsafeParseTextAlign "right" = AlignRight
+  unsafeParseTextAlign "center" = AlignCenter
+  unsafeParseTextAlign "start" = AlignStart
+  unsafeParseTextAlign "end" = AlignEnd
 
-foreign import setTextAlignImpl
-  """function setTextAlignImpl(ctx) {
-    return function(textAlign) {
-      return function() {
-        ctx.textAlign = textAlign;
-        return ctx;
-      }
-    }
-  }""" :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
+foreign import setTextAlignImpl :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
 
+-- | Set the current text alignment.
 setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
 setTextAlign ctx textAlign =
   setTextAlignImpl ctx (show textAlign)
 
+-- | Text metrics:
+-- |
+-- | - The text width in pixels. 
 type TextMetrics = { width :: Number }
 
-foreign import font
-  "function font(ctx) {\
-  \  return function() {\
-  \    return ctx.font;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) String
+-- | Get the current font.
+foreign import font :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) String
 
-foreign import setFont
-  "function setFont(fontspec) {\
-  \  return function(ctx) {\
-  \    return function() {\
-  \      ctx.font = fontspec;\
-  \      return ctx;\
-  \    };\
-  \  };\
-  \}" :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set the current font.
+foreign import setFont :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import fillText
-  "function fillText(ctx) {\
-  \  return function(text) {\
-  \    return function(x) {\
-  \      return function(y) {\
-  \        return function() {\
-  \          ctx.fillText(text, x, y);\
-  \          return ctx;\
-  \        };\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+-- | Fill some text.
+foreign import fillText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import strokeText
-  "function strokeText(ctx) {\
-  \  return function(text) {\
-  \    return function(x) {\
-  \      return function(y) {\
-  \        return function() {\
-  \          ctx.strokeText(text, x, y);\
-  \          return ctx;\
-  \        };\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+-- | Stroke some text.
+foreign import strokeText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import measureText
-  "function measureText(ctx) {\
-  \  return function(text) {\
-  \    return function() {\
-  \      return ctx.measureText(text);\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) TextMetrics
+-- | Measure some text.
+foreign import measureText :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) TextMetrics
 
+-- | Save the current context.
+foreign import save  :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Restore the previous context.
+foreign import restore  :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | A convenience function: run the action, preserving the existing context.
+-- | 
+-- | For example, outside this block, the fill style is preseved:
 -- |
--- Context
---
-
-foreign import save 
-  "function save(ctx) {\
-  \  return function() {\
-  \    ctx.save();\
-  \    return ctx;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
-foreign import restore 
-  "function restore(ctx) {\
-  \  return function() {\
-  \    ctx.restore();\
-  \    return ctx;\
-  \  };\
-  \}" :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
-
+-- | ```purescript
+-- | withContext ctx $ do
+-- |   setFillStyle "red" ctx
+-- |   ...
+-- | ```
 withContext :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a 
 withContext ctx action = do
   save ctx
@@ -659,93 +422,27 @@ withContext ctx action = do
   restore ctx
   return a
 
-foreign import getImageData
-  "function getImageData(ctx) {\
-  \  return function(x) {\
-  \    return function(y) {\
-  \      return function(w) {\
-  \        return function(h) {\
-  \          return function() { return ctx.getImageData(x, y, w, h); };\
-  \        };\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
+-- | Get image data for a portion of the canvas.
+foreign import getImageData :: forall eff. Context2D -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
 
-foreign import putImageDataFull
-  "function putImageDataFull(ctx) {\
-  \  return function(image_data) {\
-  \    return function(x) {\
-  \      return function(y) {\
-  \        return function(dx) {\
-  \          return function(dy) {\
-  \            return function(dw) {\
-  \              return function(dh) {\
-  \                return function() {\
-  \                  ctx.putImageData(image_data, x, y, dx, dy, dw, dh);\
-  \                  return ctx;\
-  \                };\
-  \              };\
-  \            };\
-  \          };\
-  \        };\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+-- | Set image data for a portion of the canvas.
+foreign import putImageDataFull :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import putImageData
-  "function putImageData(ctx) {\
-  \  return function(image_data) {\
-  \    return function(x) {\
-  \      return function(y) {\
-  \        return function() {\
-  \          ctx.putImageData(image_data, x, y);\
-  \          return ctx;\
-  \        };\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+-- | Get image data for a portion of the canvas.
+foreign import putImageData :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
-foreign import createImageData
-  "function createImageData(ctx) {\
-  \  return function(sw) {\
-  \    return function(sh) {\
-  \      return function() {\
-  \        return ctx.createImageData(sw, sh);\
-  \      };\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
+-- | Create an image data object.
+foreign import createImageData :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
 
-foreign import createImageDataCopy
-  "function createImageDataCopy(ctx) {\
-  \  return function(image_data) {\
-  \    return function() {\
-  \      return ctx.createImageData(image_data);\
-  \    };\
-  \  };\
-  \}" :: forall eff. Context2D -> ImageData-> Eff (canvas :: Canvas | eff) ImageData
+-- | Create a copy of an image data object.
+foreign import createImageDataCopy :: forall eff. Context2D -> ImageData -> Eff (canvas :: Canvas | eff) ImageData
 
-foreign import getImageDataWidth
-  "function getImageDataWidth(image_data) {\
-  \  return function() {\
-  \    return image_data.width;\
-  \  };\
-  \}" :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
+-- | Get the width of an image data object in pixels.
+foreign import getImageDataWidth :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
 
-foreign import getImageDataHeight
-  "function getImageDataHeight(image_data) {\
-  \  return function() {\
-  \    return image_data.height;\
-  \  };\
-  \}" :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
+-- | Get the height of an image data object in pixels.
+foreign import getImageDataHeight :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
 
-foreign import getImageDataPixelArray
-  "function getImageDataPixelArray(image_data) {\
-  \  return function() {\
-  \    return image_data.data;\
-  \  };\
-  \}" :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
+-- | Get the pixel data array from an image data object.
+foreign import getImageDataPixelArray :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
 
