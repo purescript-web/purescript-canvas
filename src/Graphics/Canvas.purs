@@ -7,6 +7,7 @@ module Graphics.Canvas
   , Context2D()
   , ImageData()
   , CanvasPixelArray()
+  , CanvasImageSource()
   , Arc()
   , Composite(..)
   , Dimensions()
@@ -82,6 +83,11 @@ module Graphics.Canvas
   , putImageDataFull
   , createImageData
   , createImageDataCopy
+
+  , canvasElementToImageSource
+  , drawImage
+  , drawImageScale
+  , drawImageFull
   ) where
 
 import Prelude
@@ -104,6 +110,11 @@ foreign import data ImageData :: *
 
 -- | An array of pixel data.
 foreign import data CanvasPixelArray :: *
+
+-- | Opaque object for drawing elements and things to the canvas.
+foreign import data CanvasImageSource :: *
+
+foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 
 foreign import getCanvasElementByIdImpl :: 
   forall r eff. Fn3 String
@@ -446,3 +457,8 @@ foreign import getImageDataHeight :: forall eff. ImageData -> Eff (canvas :: Can
 -- | Get the pixel data array from an image data object.
 foreign import getImageDataPixelArray :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
 
+foreign import drawImage :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+foreign import drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+foreign import drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
