@@ -3,6 +3,10 @@
 
 // module Graphics.Canvas
 
+exports.canvasElementToImageSource = function(e) {
+    return e;
+};
+
 exports.getCanvasElementByIdImpl = function(id, Just, Nothing) {
     return function() {
         var el = document.getElementById(id);
@@ -443,5 +447,60 @@ exports.getImageDataHeight = function(image_data) {
 exports.getImageDataPixelArray = function(image_data) {
     return function() {
         return image_data.data;
+    };
+};
+
+exports.drawImage = function(ctx) {
+    return function(image_source) {
+        return function(dx) {
+            return function(dy) {
+                return function() {
+                    ctx.drawImage(image_source, dx, dy);
+                    return ctx;
+                };
+            };
+        };
+    };
+};
+
+exports.drawImageScale = function(ctx) {
+    return function(image_source) {
+        return function(dx) {
+            return function(dy) {
+                return function(dWidth) {
+                    return function(dHeight) {
+                        return function() {
+                            ctx.drawImage(image_source, dx, dy, dWidth, dHeight);
+                            return ctx;
+                        };
+                    };
+                };
+            };
+        };
+    };
+};
+
+exports.drawImageFull = function(ctx) {
+    return function(image_source) {
+        return function(sx) {
+            return function(sy) {
+                return function(sWidth) {
+                    return function(sHeight) {
+                        return function(dx) {
+                            return function(dy) {
+                                return function(dWidth) {
+                                    return function(dHeight) {
+                                        return function() {
+                                            ctx.drawImage(image_source, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+                                            return ctx;
+                                        };
+                                    };
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+        };
     };
 };
