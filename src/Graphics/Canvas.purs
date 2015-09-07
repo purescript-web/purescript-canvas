@@ -18,6 +18,9 @@ module Graphics.Canvas
   , Transform()
   , TranslateTransform()
   , TextAlign(..)
+  , CanvasGradient()
+  , LinearGradient()
+  , RadialGradient()
 
   , getCanvasElementById
   , getContext2D
@@ -88,6 +91,11 @@ module Graphics.Canvas
   , drawImage
   , drawImageScale
   , drawImageFull
+
+  , createLinearGradient
+  , createRadialGradient
+  , addColorStop
+  , setGradientFillStyle
   ) where
 
 import Prelude
@@ -113,6 +121,9 @@ foreign import data CanvasPixelArray :: *
 
 -- | Opaque object for drawing elements and things to the canvas.
 foreign import data CanvasImageSource :: *
+
+-- | Opaque object describing a gradient.
+foreign import data CanvasGradient :: *
 
 foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 
@@ -462,3 +473,41 @@ foreign import drawImage :: forall eff. Context2D -> CanvasImageSource -> Number
 foreign import drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
 foreign import drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | A type representing a linear gradient.
+-- |  -  Starting point coordinates: (`x0`, `y0`)
+-- |  -  Ending point coordinates: (`x1`, `y1`)
+
+type LinearGradient =
+    { x0 :: Number
+    , y0 :: Number
+    , x1 :: Number
+    , y1 :: Number
+    }
+
+-- | Create a linear CanvasGradient.
+foreign import createLinearGradient :: forall eff. LinearGradient -> Context2D -> Eff (canvas :: Canvas | eff) CanvasGradient
+
+-- | A type representing a radial gradient.
+-- |  -  Starting circle center coordinates: (`x0`, `y0`)
+-- |  -  Starting circle radius: `r0`
+-- |  -  Ending circle center coordinates: (`x1`, `y1`)
+-- |  -  Ending circle radius: `r1`
+
+type RadialGradient =
+    { x0 :: Number
+    , y0 :: Number
+    , r0 :: Number
+    , x1 :: Number
+    , y1 :: Number
+    , r1 :: Number
+    }
+
+-- | Create a radial CanvasGradient.
+foreign import createRadialGradient :: forall eff. RadialGradient -> Context2D -> Eff (canvas :: Canvas | eff) CanvasGradient
+
+-- | Add a single color stop to a CanvasGradient.
+foreign import addColorStop :: forall eff. Number -> String -> CanvasGradient -> Eff (canvas :: Canvas | eff) CanvasGradient
+
+-- | Set the Context2D fillstyle to the CanvasGradient.
+foreign import setGradientFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :: Canvas | eff) Context2D

@@ -43,6 +43,28 @@ data CanvasPixelArray :: *
 
 An array of pixel data.
 
+#### `CanvasImageSource`
+
+``` purescript
+data CanvasImageSource :: *
+```
+
+Opaque object for drawing elements and things to the canvas.
+
+#### `CanvasGradient`
+
+``` purescript
+data CanvasGradient :: *
+```
+
+Opaque object describing a gradient.
+
+#### `canvasElementToImageSource`
+
+``` purescript
+canvasElementToImageSource :: CanvasElement -> CanvasImageSource
+```
+
 #### `getCanvasElementById`
 
 ``` purescript
@@ -632,5 +654,77 @@ getImageDataPixelArray :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) 
 ```
 
 Get the pixel data array from an image data object.
+
+#### `drawImage`
+
+``` purescript
+drawImage :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+#### `drawImageScale`
+
+``` purescript
+drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+#### `drawImageFull`
+
+``` purescript
+drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+#### `LinearGradient`
+
+``` purescript
+type LinearGradient = { x0 :: Number, y0 :: Number, x1 :: Number, y1 :: Number }
+```
+
+A type representing a linear gradient.
+ -  Starting point coordinates: (`x0`, `y0`)
+ -  Ending point coordinates: (`x1`, `y1`)
+
+#### `createLinearGradient`
+
+``` purescript
+createLinearGradient :: forall eff. LinearGradient -> Context2D -> Eff (canvas :: Canvas | eff) CanvasGradient
+```
+
+Create a linear CanvasGradient.
+
+#### `RadialGradient`
+
+``` purescript
+type RadialGradient = { x0 :: Number, y0 :: Number, r0 :: Number, x1 :: Number, y1 :: Number, r1 :: Number }
+```
+
+A type representing a radial gradient.
+ -  Starting circle center coordinates: (`x0`, `y0`)
+ -  Starting circle radius: `r0`
+ -  Ending circle center coordinates: (`x1`, `y1`)
+ -  Ending circle radius: `r1`
+
+#### `createRadialGradient`
+
+``` purescript
+createRadialGradient :: forall eff. RadialGradient -> Context2D -> Eff (canvas :: Canvas | eff) CanvasGradient
+```
+
+Create a radial CanvasGradient.
+
+#### `addColorStop`
+
+``` purescript
+addColorStop :: forall eff. Number -> String -> CanvasGradient -> Eff (canvas :: Canvas | eff) CanvasGradient
+```
+
+Add a single color stop to a CanvasGradient.
+
+#### `setGradientFillStyle`
+
+``` purescript
+setGradientFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+Set the Context2D fillstyle to the CanvasGradient.
 
 
