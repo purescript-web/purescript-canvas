@@ -504,3 +504,43 @@ exports.drawImageFull = function(ctx) {
         };
     };
 };
+
+exports.createLinearGradient = function(linearGradient) {
+    return function(ctx) {
+        return function() {
+            return ctx.createLinearGradient(linearGradient.x0, linearGradient.y0, linearGradient.x1, linearGradient.y1);
+        };
+    };
+};
+
+exports.createRadialGradient = function(radialGradient) {
+    return function(ctx) {
+        return function() {
+            return ctx.createRadialGradient(radialGradient.x0, radialGradient.y0, radialGradient.r0, radialGradient.x1, radialGradient.y1, radialGradient.r1);
+        };
+    };
+};
+
+exports.addColorStop = function(stop) {
+    return function(color) {
+        return function(gradient) {
+            return function() {
+                gradient.addColorStop(stop, color);
+                return gradient;
+            };
+        };
+    };
+};
+
+exports.setGradientFillStyle = function(gradient) {
+    return function(ctx) {
+        return function() {
+            ctx.fillStyle = gradient;
+            return ctx;
+        };
+    };
+};
+        
+
+
+
