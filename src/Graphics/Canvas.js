@@ -540,7 +540,22 @@ exports.setGradientFillStyle = function(gradient) {
         };
     };
 };
-        
 
+exports.quadraticCurveTo = function(qCurve) {
+    return function(ctx) {
+        return function() {
+            ctx.quadraticCurveTo(qCurve.cpx, qCurve.cpy, qCurve.x, qCurve.y);
+            return ctx;
+        };
+    };
+};
 
+exports.bezierCurveTo = function(bCurve) {
+    return function(ctx) {
+        return function() {
+            ctx.bezierCurveTo(bCurve.cp1x, bCurve.cp1y, bCurve.cp2x, bCurve.cp2y, bCurve.x, bCurve.y);
+            return ctx;
+        };
+    };
+};
 
