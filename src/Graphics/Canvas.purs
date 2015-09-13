@@ -21,6 +21,8 @@ module Graphics.Canvas
   , CanvasGradient()
   , LinearGradient()
   , RadialGradient()
+  , QuadraticCurve()
+  , BezierCurve()
 
   , getCanvasElementById
   , getContext2D
@@ -96,6 +98,9 @@ module Graphics.Canvas
   , createRadialGradient
   , addColorStop
   , setGradientFillStyle
+  
+  , quadraticCurveTo
+  , bezierCurveTo
   ) where
 
 import Prelude
@@ -511,3 +516,34 @@ foreign import addColorStop :: forall eff. Number -> String -> CanvasGradient ->
 
 -- | Set the Context2D fillstyle to the CanvasGradient.
 foreign import setGradientFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | A type representing a quadratic Bézier curve.
+-- |  - Bézier control point: (`cpx`, `cpy`)
+-- |  - Ending point coordinates: (`x`, `y`)
+
+type QuadraticCurve =
+    { cpx :: Number
+    , cpy :: Number
+    , x   :: Number
+    , y   :: Number
+    }
+
+-- | Draw a quadratic Bézier curve.
+foreign import quadraticCurveTo :: forall eff. QuadraticCurve -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | A type representing a cubic Bézier curve.
+-- |  - First Bézier control point: (`cp1x`, `cp1y`)
+-- |  - Second Bézier control point: (`cp2x`, `cp2y`)
+-- |  - Ending point: (`x`, `y`)
+
+type BezierCurve =
+    { cp1x :: Number
+    , cp1y :: Number
+    , cp2x :: Number
+    , cp2y :: Number
+    , x    :: Number
+    , y    :: Number
+    }
+
+-- | Draw a cubic Bézier curve.
+foreign import bezierCurveTo :: forall eff. BezierCurve -> Context2D -> Eff (canvas :: Canvas | eff) Context2D

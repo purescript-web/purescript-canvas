@@ -727,4 +727,41 @@ setGradientFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :
 
 Set the Context2D fillstyle to the CanvasGradient.
 
+#### `QuadraticCurve`
+
+``` purescript
+type QuadraticCurve = { cpx :: Number, cpy :: Number, x :: Number, y :: Number }
+```
+
+A type representing a quadratic Bézier curve.
+ - Bézier control point: (`cpx`, `cpy`)
+ - Ending point coordinates: (`x`, `y`)
+
+#### `quadraticCurveTo`
+
+``` purescript
+quadraticCurveTo :: forall eff. QuadraticCurve -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+Draw a quadratic Bézier curve.
+
+#### `BezierCurve`
+
+``` purescript
+type BezierCurve = { cp1x :: Number, cp1y :: Number, cp2x :: Number, cp2y :: Number, x :: Number, y :: Number }
+```
+
+A type representing a cubic Bézier curve.
+ - First Bézier control point: (`cp1x`, `cp1y`)
+ - Second Bézier control point: (`cp2x`, `cp2y`)
+ - Ending point: (`x`, `y`)
+
+#### `bezierCurveTo`
+
+``` purescript
+bezierCurveTo :: forall eff. BezierCurve -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+Draw a cubic Bézier curve.
+
 
