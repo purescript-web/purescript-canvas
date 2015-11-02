@@ -80,6 +80,7 @@ module Graphics.Canvas
   , restore
   , withContext
 
+  , withImage
   , getImageData
   , getImageDataWidth
   , getImageDataHeight
@@ -131,6 +132,9 @@ foreign import data CanvasImageSource :: *
 foreign import data CanvasGradient :: *
 
 foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
+
+-- | Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
+foreign import withImage :: forall eff a. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
 
 foreign import getCanvasElementByIdImpl :: 
   forall r eff. Fn3 String

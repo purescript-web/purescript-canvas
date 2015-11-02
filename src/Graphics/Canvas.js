@@ -7,6 +7,20 @@ exports.canvasElementToImageSource = function(e) {
     return e;
 };
 
+exports.withImage = function (src) {
+  return function(f) {
+        return function () {
+            var img = new Image();
+            img.src = src;
+            img.addEventListener("load", function() {
+                f(img)();
+            }, false);
+
+            return {};
+        }
+    };
+};
+
 exports.getCanvasElementByIdImpl = function(id, Just, Nothing) {
     return function() {
         var el = document.getElementById(id);
