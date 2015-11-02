@@ -65,6 +65,12 @@ Opaque object describing a gradient.
 canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 ```
 
+#### `withImage`
+
+``` purescript
+withImage :: forall eff a. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
+```
+
 #### `getCanvasElementById`
 
 ``` purescript
