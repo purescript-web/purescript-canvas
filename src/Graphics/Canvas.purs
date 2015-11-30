@@ -109,6 +109,7 @@ import Prelude
 import Data.Function
 import Data.Maybe
 import Control.Monad.Eff
+import Control.Monad.Eff.Exception.Unsafe (unsafeThrow)
 
 -- | The `Canvas` effect denotes computations which read/write from/to the canvas.
 foreign import data Canvas :: !
@@ -134,7 +135,7 @@ foreign import data CanvasGradient :: *
 foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 
 -- | Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
-foreign import withImage :: forall eff a. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
+foreign import withImage :: forall eff. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
 
 foreign import getCanvasElementByIdImpl :: 
   forall r eff. Fn3 String
@@ -403,13 +404,15 @@ textAlign ctx = unsafeParseTextAlign <$> textAlignImpl ctx
   unsafeParseTextAlign "center" = AlignCenter
   unsafeParseTextAlign "start" = AlignStart
   unsafeParseTextAlign "end" = AlignEnd
+  unsafeParseTextAlign align = unsafeThrow $ "invalid TextAlign: " ++ align
+  -- ^ dummy to silence compiler warnings
 
 foreign import setTextAlignImpl :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
 
 -- | Set the current text alignment.
 setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
-setTextAlign ctx textAlign =
-  setTextAlignImpl ctx (show textAlign)
+setTextAlign ctx textalign =
+  setTextAlignImpl ctx (show textalign)
 
 -- | Text metrics:
 -- |
