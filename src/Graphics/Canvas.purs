@@ -118,7 +118,7 @@ foreign import data CanvasElement :: *
 foreign import data Context2D :: *
 
 -- | An image data object, used to store raster data outside the canvas.
-type ImageData = { width :: Number, height :: Number, data :: Uint8ClampedArray }
+type ImageData = { width :: Int, height :: Int, data :: Uint8ClampedArray }
 
 -- | Opaque object for drawing elements and things to the canvas.
 foreign import data CanvasImageSource :: *
