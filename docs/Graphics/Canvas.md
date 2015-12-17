@@ -30,18 +30,10 @@ A 2D graphics context.
 #### `ImageData`
 
 ``` purescript
-data ImageData :: *
+type ImageData = { width :: Int, height :: Int, data :: Uint8ClampedArray }
 ```
 
 An image data object, used to store raster data outside the canvas.
-
-#### `CanvasPixelArray`
-
-``` purescript
-data CanvasPixelArray :: *
-```
-
-An array of pixel data.
 
 #### `CanvasImageSource`
 
@@ -68,8 +60,10 @@ canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 #### `withImage`
 
 ``` purescript
-withImage :: forall eff a. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
+withImage :: forall eff. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
 ```
+
+Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
 
 #### `getCanvasElementById`
 
@@ -247,7 +241,7 @@ Enumerates the different types of alpha composite operations.
 
 ##### Instances
 ``` purescript
-instance showComposite :: Show Composite
+Show Composite
 ```
 
 #### `setGlobalCompositeOperation`
@@ -496,7 +490,7 @@ Enumerates types of text alignment.
 
 ##### Instances
 ``` purescript
-instance showTextAlign :: Show TextAlign
+Show TextAlign
 ```
 
 #### `textAlign`
@@ -619,7 +613,7 @@ Set image data for a portion of the canvas.
 putImageData :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 ```
 
-Get image data for a portion of the canvas.
+Set image data for a portion of the canvas.
 
 #### `createImageData`
 
@@ -636,30 +630,6 @@ createImageDataCopy :: forall eff. Context2D -> ImageData -> Eff (canvas :: Canv
 ```
 
 Create a copy of an image data object.
-
-#### `getImageDataWidth`
-
-``` purescript
-getImageDataWidth :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
-```
-
-Get the width of an image data object in pixels.
-
-#### `getImageDataHeight`
-
-``` purescript
-getImageDataHeight :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
-```
-
-Get the height of an image data object in pixels.
-
-#### `getImageDataPixelArray`
-
-``` purescript
-getImageDataPixelArray :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
-```
-
-Get the pixel data array from an image data object.
 
 #### `drawImage`
 
