@@ -446,24 +446,6 @@ exports.createImageDataCopy = function(ctx) {
     };
 };
 
-exports.getImageDataWidth = function(image_data) {
-    return function() {
-        return image_data.width;
-    };
-};
-
-exports.getImageDataHeight = function(image_data) {
-    return function() {
-        return image_data.height;
-    };
-};
-
-exports.getImageDataPixelArray = function(image_data) {
-    return function() {
-        return image_data.data;
-    };
-};
-
 exports.drawImage = function(ctx) {
     return function(image_source) {
         return function(dx) {

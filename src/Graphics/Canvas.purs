@@ -6,7 +6,6 @@ module Graphics.Canvas
   , CanvasElement()
   , Context2D()
   , ImageData()
-  , CanvasPixelArray()
   , CanvasImageSource()
   , Arc()
   , Composite(..)
@@ -82,9 +81,6 @@ module Graphics.Canvas
 
   , withImage
   , getImageData
-  , getImageDataWidth
-  , getImageDataHeight
-  , getImageDataPixelArray
   , putImageData
   , putImageDataFull
   , createImageData
@@ -106,6 +102,7 @@ module Graphics.Canvas
 
 import Prelude
 
+import Data.ArrayBuffer.Types
 import Data.Function
 import Data.Maybe
 import Control.Monad.Eff
@@ -121,10 +118,7 @@ foreign import data CanvasElement :: *
 foreign import data Context2D :: *
 
 -- | An image data object, used to store raster data outside the canvas.
-foreign import data ImageData :: *
-
--- | An array of pixel data.
-foreign import data CanvasPixelArray :: *
+type ImageData = { width :: Number, height :: Number, data :: Uint8ClampedArray }
 
 -- | Opaque object for drawing elements and things to the canvas.
 foreign import data CanvasImageSource :: *
@@ -462,7 +456,7 @@ foreign import getImageData :: forall eff. Context2D -> Number -> Number -> Numb
 -- | Set image data for a portion of the canvas.
 foreign import putImageDataFull :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
--- | Get image data for a portion of the canvas.
+-- | Set image data for a portion of the canvas.
 foreign import putImageData :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | Create an image data object.
@@ -470,15 +464,6 @@ foreign import createImageData :: forall eff. Context2D -> Number -> Number -> E
 
 -- | Create a copy of an image data object.
 foreign import createImageDataCopy :: forall eff. Context2D -> ImageData -> Eff (canvas :: Canvas | eff) ImageData
-
--- | Get the width of an image data object in pixels.
-foreign import getImageDataWidth :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
-
--- | Get the height of an image data object in pixels.
-foreign import getImageDataHeight :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) Number
-
--- | Get the pixel data array from an image data object.
-foreign import getImageDataPixelArray :: forall eff. ImageData -> Eff (canvas :: Canvas | eff) CanvasPixelArray
 
 foreign import drawImage :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
