@@ -7,16 +7,21 @@ exports.canvasElementToImageSource = function(e) {
     return e;
 };
 
-exports.withImage = function (src) {
-  return function(f) {
-        return function () {
-            var img = new Image();
-            img.src = src;
-            img.addEventListener("load", function() {
-                f(img)();
-            }, false);
+exports.tryLoadImageImpl = function (src) {
+  return function(e) {
+        return function(f) {
+            return function () {
+                var img = new Image();
+                img.src = src;
+                img.addEventListener("load", function() {
+                    f(img)();
+                }, false);
+                img.addEventListener("error", function(error) {
+                    e();
+                }, false);
 
-            return {};
+                return {};
+            }
         }
     };
 };
