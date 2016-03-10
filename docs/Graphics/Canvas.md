@@ -43,6 +43,14 @@ data CanvasImageSource :: *
 
 Opaque object for drawing elements and things to the canvas.
 
+#### `CanvasPattern`
+
+``` purescript
+data CanvasPattern :: *
+```
+
+Opaque object describing a pattern.
+
 #### `CanvasGradient`
 
 ``` purescript
@@ -648,6 +656,34 @@ drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number
 ``` purescript
 drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 ```
+
+#### `PatternRepeat`
+
+``` purescript
+data PatternRepeat
+  = Repeat
+  | RepeatX
+  | RepeatY
+  | NoRepeat
+```
+
+Enumerates the different types of pattern repetitions.
+
+#### `createPattern`
+
+``` purescript
+createPattern :: forall eff. CanvasImageSource -> PatternRepeat -> Context2D -> Eff (canvas :: Canvas | eff) CanvasPattern
+```
+
+Create a new canvas pattern (repeatable image).
+
+#### `setPatternFillStyle`
+
+``` purescript
+setPatternFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+Set the Context2D fillstyle to the CanvasPattern.
 
 #### `LinearGradient`
 
