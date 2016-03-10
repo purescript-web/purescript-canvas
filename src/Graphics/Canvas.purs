@@ -228,23 +228,35 @@ data Composite
    | Xor
 
 instance showComposite :: Show Composite where
-  show SourceOver      = "source-over"
-  show SourceIn        = "source-in"
-  show SourceOut       = "source-out"
-  show SourceAtop      = "source-atop"
-  show DestinationOver = "destination-over"
-  show DestinationIn   = "destination-in"
-  show DestinationOut  = "destination-out"
-  show DestinationAtop = "destination-atop"
-  show Lighter         = "lighter"
-  show Copy            = "copy"
-  show Xor             = "xor"
+  show SourceOver      = "SourceOver"
+  show SourceIn        = "SourceIn"
+  show SourceOut       = "SourceOut"
+  show SourceAtop      = "SourceAtop"
+  show DestinationOver = "DestinationOver"
+  show DestinationIn   = "DestinationIn"
+  show DestinationOut  = "DestinationOut"
+  show DestinationAtop = "DestinationAtop"
+  show Lighter         = "Lighter"
+  show Copy            = "Copy"
+  show Xor             = "Xor"
 
 foreign import setGlobalCompositeOperationImpl :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | Set the current composite operation.
 setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: Canvas | eff) Context2D
-setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx (show composite)
+setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx (toString composite)
+  where
+    toString SourceOver      = "source-over"
+    toString SourceIn        = "source-in"
+    toString SourceOut       = "source-out"
+    toString SourceAtop      = "source-atop"
+    toString DestinationOver = "destination-over"
+    toString DestinationIn   = "destination-in"
+    toString DestinationOut  = "destination-out"
+    toString DestinationAtop = "destination-atop"
+    toString Lighter         = "lighter"
+    toString Copy            = "copy"
+    toString Xor             = "xor"
 
 -- | Set the current global alpha level.
 foreign import setGlobalAlpha :: forall eff. Context2D -> Number -> Eff (canvas :: Canvas | eff) Context2D
@@ -388,11 +400,11 @@ data TextAlign
   = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
 
 instance showTextAlign :: Show TextAlign where
-  show AlignLeft = "left"
-  show AlignRight = "right"
-  show AlignCenter = "center"
-  show AlignStart = "start"
-  show AlignEnd = "end"
+  show AlignLeft = "AlignLeft"
+  show AlignRight = "AlignRight"
+  show AlignCenter = "AlignCenter"
+  show AlignStart = "AlignStart"
+  show AlignEnd = "AlignEnd"
 
 foreign import textAlignImpl :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) String
 
@@ -414,7 +426,13 @@ foreign import setTextAlignImpl :: forall eff. Context2D -> String -> (Eff (canv
 -- | Set the current text alignment.
 setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: Canvas | eff) Context2D
 setTextAlign ctx textalign =
-  setTextAlignImpl ctx (show textalign)
+  setTextAlignImpl ctx (toString textalign)
+  where
+    toString AlignLeft = "left"
+    toString AlignRight = "right"
+    toString AlignCenter = "center"
+    toString AlignStart = "start"
+    toString AlignEnd = "end"
 
 -- | Text metrics:
 -- |
@@ -482,14 +500,22 @@ foreign import drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Nu
 -- | Enumerates the different types of pattern repetitions.
 data PatternRepeat = Repeat | RepeatX | RepeatY | NoRepeat
 
+instance showPatternRepeat :: Show PatternRepeat where
+  show Repeat = "Repeat"
+  show RepeatX = "RepeatX"
+  show RepeatY = "RepeatY"
+  show NoRepeat = "NoRepeat"
+
 foreign import createPatternImpl :: forall eff. CanvasImageSource -> String -> Context2D -> Eff (canvas :: Canvas | eff) CanvasPattern
 
 -- | Create a new canvas pattern (repeatable image).
 createPattern :: forall eff. CanvasImageSource -> PatternRepeat -> Context2D -> Eff (canvas :: Canvas | eff) CanvasPattern
-createPattern img Repeat   = createPatternImpl img "repeat"
-createPattern img RepeatX  = createPatternImpl img "repeat-x"
-createPattern img RepeatY  = createPatternImpl img "repeat-y"
-createPattern img NoRepeat = createPatternImpl img "no-repeat"
+createPattern img repeat = createPatternImpl img (toString repeat)
+  where
+    toString Repeat = "repeat"
+    toString RepeatX = "repeat-x"
+    toString RepeatY = "repeat-y"
+    toString NoRepeat = "no-repeat"
 
 -- | Set the Context2D fillstyle to the CanvasPattern.
 foreign import setPatternFillStyle :: forall eff. CanvasPattern -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
