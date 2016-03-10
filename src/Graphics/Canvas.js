@@ -501,6 +501,25 @@ exports.drawImageFull = function(ctx) {
     };
 };
 
+exports.createPatternImpl = function(img) {
+    return function(repeat) {
+        return function(ctx) {
+            return function() {
+                return ctx.createPattern(img, repeat);
+            };
+        };
+    };
+};
+
+exports.setPatternFillStyle = function(pattern) {
+    return function(ctx) {
+        return function() {
+            ctx.fillStyle = pattern;
+            return ctx;
+        };
+    };
+};
+
 exports.createLinearGradient = function(linearGradient) {
     return function(ctx) {
         return function() {

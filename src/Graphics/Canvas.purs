@@ -17,6 +17,8 @@ module Graphics.Canvas
   , Transform()
   , TranslateTransform()
   , TextAlign(..)
+  , CanvasPattern()
+  , PatternRepeat(..)
   , CanvasGradient()
   , LinearGradient()
   , RadialGradient()
@@ -91,6 +93,9 @@ module Graphics.Canvas
   , drawImageScale
   , drawImageFull
 
+  , createPattern
+  , setPatternFillStyle
+
   , createLinearGradient
   , createRadialGradient
   , addColorStop
@@ -122,6 +127,9 @@ type ImageData = { width :: Int, height :: Int, data :: Uint8ClampedArray }
 
 -- | Opaque object for drawing elements and things to the canvas.
 foreign import data CanvasImageSource :: *
+
+-- | Opaque object describing a pattern.
+foreign import data CanvasPattern :: *
 
 -- | Opaque object describing a gradient.
 foreign import data CanvasGradient :: *
@@ -470,6 +478,21 @@ foreign import drawImage :: forall eff. Context2D -> CanvasImageSource -> Number
 foreign import drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
 
 foreign import drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Enumerates the different types of pattern repetitions.
+data PatternRepeat = Repeat | RepeatX | RepeatY | NoRepeat
+
+foreign import createPatternImpl :: forall eff. CanvasImageSource -> String -> Context2D -> Eff (canvas :: Canvas | eff) CanvasPattern
+
+-- | Create a new canvas pattern (repeatable image).
+createPattern :: forall eff. CanvasImageSource -> PatternRepeat -> Context2D -> Eff (canvas :: Canvas | eff) CanvasPattern
+createPattern img Repeat   = createPatternImpl img "repeat"
+createPattern img RepeatX  = createPatternImpl img "repeat-x"
+createPattern img RepeatY  = createPatternImpl img "repeat-y"
+createPattern img NoRepeat = createPatternImpl img "no-repeat"
+
+-- | Set the Context2D fillstyle to the CanvasPattern.
+foreign import setPatternFillStyle :: forall eff. CanvasPattern -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | A type representing a linear gradient.
 -- |  -  Starting point coordinates: (`x0`, `y0`)
