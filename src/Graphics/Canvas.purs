@@ -213,8 +213,9 @@ setLineCap Round  = setLineCapImpl "round"
 setLineCap Square = setLineCapImpl "square" 
 setLineCap Butt   = setLineCapImpl "butt"
 
--- | Enumerates the different types of alpha composite operations.
+-- | Enumerates the different types of composite operations and blend modes.
 data Composite
+  -- Composite Operations
    = SourceOver
    | SourceIn
    | SourceOut
@@ -226,6 +227,23 @@ data Composite
    | Lighter
    | Copy
    | Xor
+
+   -- Blend Modes
+   | Multiply
+   | Screen
+   | Overlay
+   | Darken
+   | Lighten
+   | ColorDodge
+   | ColorBurn
+   | HardLight
+   | SoftLight
+   | Difference
+   | Exclusion
+   | Hue
+   | Saturation
+   | Color
+   | Luminosity
 
 instance showComposite :: Show Composite where
   show SourceOver      = "SourceOver"
@@ -239,6 +257,21 @@ instance showComposite :: Show Composite where
   show Lighter         = "Lighter"
   show Copy            = "Copy"
   show Xor             = "Xor"
+  show Multiply        = "Multiply"
+  show Screen          = "Screen"
+  show Overlay         = "Overlay"
+  show Darken          = "Darken"
+  show Lighten         = "Lighten"
+  show ColorDodge      = "ColorDodge"
+  show ColorBurn       = "ColorBurn"
+  show HardLight       = "HardLight"
+  show SoftLight       = "SoftLight"
+  show Difference      = "Difference"
+  show Exclusion       = "Exclusion"
+  show Hue             = "Hue"
+  show Saturation      = "Saturation"
+  show Color           = "Color"
+  show Luminosity      = "Luminosity"
 
 foreign import setGlobalCompositeOperationImpl :: forall eff. Context2D -> String -> Eff (canvas :: Canvas | eff) Context2D
 
@@ -257,6 +290,21 @@ setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx 
     toString Lighter         = "lighter"
     toString Copy            = "copy"
     toString Xor             = "xor"
+    toString Multiply        = "multiply"
+    toString Screen          = "screen"
+    toString Overlay         = "overlay"
+    toString Darken          = "darken"
+    toString Lighten         = "lighten"
+    toString ColorDodge      = "color-dodge"
+    toString ColorBurn       = "color-burn"
+    toString HardLight       = "hard-light"
+    toString SoftLight       = "soft-light"
+    toString Difference      = "difference"
+    toString Exclusion       = "exclusion"
+    toString Hue             = "hue"
+    toString Saturation      = "saturation"
+    toString Color           = "color"
+    toString Luminosity      = "luminosity"
 
 -- | Set the current global alpha level.
 foreign import setGlobalAlpha :: forall eff. Context2D -> Number -> Eff (canvas :: Canvas | eff) Context2D

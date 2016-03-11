@@ -243,9 +243,24 @@ data Composite
   | Lighter
   | Copy
   | Xor
+  | Multiply
+  | Screen
+  | Overlay
+  | Darken
+  | Lighten
+  | ColorDodge
+  | ColorBurn
+  | HardLight
+  | SoftLight
+  | Difference
+  | Exclusion
+  | Hue
+  | Saturation
+  | Color
+  | Luminosity
 ```
 
-Enumerates the different types of alpha composite operations.
+Enumerates the different types of composite operations and blend modes.
 
 ##### Instances
 ``` purescript
