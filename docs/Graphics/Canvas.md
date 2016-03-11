@@ -243,9 +243,24 @@ data Composite
   | Lighter
   | Copy
   | Xor
+  | Multiply
+  | Screen
+  | Overlay
+  | Darken
+  | Lighten
+  | ColorDodge
+  | ColorBurn
+  | HardLight
+  | SoftLight
+  | Difference
+  | Exclusion
+  | Hue
+  | Saturation
+  | Color
+  | Luminosity
 ```
 
-Enumerates the different types of alpha composite operations.
+Enumerates the different types of composite operations and blend modes.
 
 ##### Instances
 ``` purescript
@@ -669,6 +684,11 @@ data PatternRepeat
 
 Enumerates the different types of pattern repetitions.
 
+##### Instances
+``` purescript
+Show PatternRepeat
+```
+
 #### `createPattern`
 
 ``` purescript
@@ -680,7 +700,7 @@ Create a new canvas pattern (repeatable image).
 #### `setPatternFillStyle`
 
 ``` purescript
-setPatternFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+setPatternFillStyle :: forall eff. CanvasPattern -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 ```
 
 Set the Context2D fillstyle to the CanvasPattern.
