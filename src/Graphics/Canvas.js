@@ -158,7 +158,7 @@ exports.setGlobalCompositeOperationImpl = function(ctx) {
 exports.setGlobalAlpha = function(ctx) {
     return function(alpha) {
         return function() {
-            ctx.setGlobalAlpha = alpha;
+            ctx.globalAlpha = alpha;
             return ctx;
         };
     };
@@ -573,4 +573,3 @@ exports.bezierCurveTo = function(bCurve) {
         };
     };
 };
-
