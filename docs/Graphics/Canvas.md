@@ -228,6 +228,25 @@ setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) C
 
 Set the current line cap type.
 
+#### `LineJoin`
+
+``` purescript
+data LineJoin
+  = BevelJoin
+  | RoundJoin
+  | MiterJoin
+```
+
+Enumerates the different types of line join
+
+#### `setLineJoin`
+
+``` purescript
+setLineJoin :: forall eff. LineJoin -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+Set the current line join type.
+
 #### `Composite`
 
 ``` purescript
