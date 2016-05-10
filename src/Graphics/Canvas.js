@@ -137,6 +137,15 @@ exports.setShadowOffsetY = function(offsetY) {
     };
 };
 
+exports.setMiterLimit = function(limit) {
+    return function(ctx) {
+        return function() {
+            ctx.miterLimit = limit;
+            return ctx;
+        };
+    };
+};
+
 exports.setLineCapImpl = function(cap) {
     return function(ctx) {
         return function() {
