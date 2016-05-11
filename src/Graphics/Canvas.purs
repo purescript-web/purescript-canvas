@@ -11,6 +11,7 @@ module Graphics.Canvas
   , Composite(..)
   , Dimensions()
   , LineCap(..)
+  , LineJoin(..)
   , Rectangle()
   , ScaleTransform()
   , TextMetrics()
@@ -45,6 +46,7 @@ module Graphics.Canvas
   , setMiterLimit
 
   , setLineCap
+  , setLineJoin
   , setGlobalCompositeOperation
   , setGlobalAlpha
 
@@ -216,6 +218,19 @@ setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) C
 setLineCap Round  = setLineCapImpl "round"
 setLineCap Square = setLineCapImpl "square" 
 setLineCap Butt   = setLineCapImpl "butt"
+
+-- Note that we can't re-use `Round` from LineCap, so I've added `Join` to all of these
+
+-- | Enumerates the different types of line join
+data LineJoin = BevelJoin | RoundJoin | MiterJoin
+
+foreign import setLineJoinImpl :: forall eff. String -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+
+-- | Set the current line join type.
+setLineJoin :: forall eff. LineJoin -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+setLineJoin BevelJoin = setLineJoinImpl "bevel"
+setLineJoin RoundJoin = setLineJoinImpl "round"
+setLineJoin MiterJoin = setLineJoinImpl "miter"
 
 -- | Enumerates the different types of composite operations and blend modes.
 data Composite

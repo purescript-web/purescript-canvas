@@ -155,6 +155,15 @@ exports.setLineCapImpl = function(cap) {
     };
 };
 
+exports.setLineJoinImpl = function(join) {
+    return function(ctx) {
+        return function() {
+            ctx.lineJoin = join;
+            return ctx;
+        };
+    };
+};
+
 exports.setGlobalCompositeOperationImpl = function(ctx) {
     return function(op) {
         return function() {
