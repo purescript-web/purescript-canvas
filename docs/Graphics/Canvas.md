@@ -209,6 +209,14 @@ setShadowOffsetY :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | e
 
 Set the current shadow y-offset.
 
+#### `setMiterLimit`
+
+``` purescript
+setMiterLimit :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
+```
+
+Set the current miter limit.
+
 #### `LineCap`
 
 ``` purescript
