@@ -1,8 +1,6 @@
 /* global exports */
 "use strict";
 
-// module Graphics.Canvas
-
 exports.canvasElementToImageSource = function(e) {
     return e;
 };
