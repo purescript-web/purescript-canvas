@@ -103,17 +103,17 @@ module Graphics.Canvas
   , createRadialGradient
   , addColorStop
   , setGradientFillStyle
-  
+
   , quadraticCurveTo
   , bezierCurveTo
   ) where
 
-import Prelude
+import Prelude (class Show, Unit, pure, bind, (<$>), (<>), ($), (>>=))
 
-import Data.ArrayBuffer.Types
-import Data.Function
-import Data.Maybe
-import Control.Monad.Eff
+import Data.ArrayBuffer.Types (Uint8ClampedArray)
+import Data.Function.Uncurried (Fn3, runFn3)
+import Data.Maybe (Maybe(..))
+import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception.Unsafe (unsafeThrow)
 
 -- | The `Canvas` effect denotes computations which read/write from/to the canvas.
@@ -142,7 +142,7 @@ foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 -- | Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
 foreign import withImage :: forall eff. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
 
-foreign import getCanvasElementByIdImpl :: 
+foreign import getCanvasElementByIdImpl ::
   forall r eff. Fn3 String
                     (CanvasElement -> r)
                     r
@@ -153,7 +153,7 @@ getCanvasElementById :: forall eff. String -> Eff (canvas :: Canvas | eff) (Mayb
 getCanvasElementById elId = runFn3 getCanvasElementByIdImpl elId Just Nothing
 
 -- | Get the 2D graphics context for a canvas element.
-foreign import getContext2D :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D 
+foreign import getContext2D :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | Get the canvas width in pixels.
 foreign import getCanvasWidth :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff) Number
@@ -175,7 +175,7 @@ getCanvasDimensions :: forall eff. CanvasElement -> Eff (canvas :: Canvas | eff)
 getCanvasDimensions ce = do
   w <- getCanvasWidth  ce
   h <- getCanvasHeight ce
-  return {width : w, height : h}
+  pure {width : w, height : h}
 
 -- | Set the canvas dimensions in pixels.
 setCanvasDimensions :: forall eff. Dimensions -> CanvasElement -> Eff (canvas :: Canvas | eff) CanvasElement
@@ -216,7 +216,7 @@ foreign import setLineCapImpl :: forall eff. String -> Context2D -> Eff (canvas 
 -- | Set the current line cap type.
 setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 setLineCap Round  = setLineCapImpl "round"
-setLineCap Square = setLineCapImpl "square" 
+setLineCap Square = setLineCapImpl "square"
 setLineCap Butt   = setLineCapImpl "butt"
 
 -- Note that we can't re-use `Round` from LineCap, so I've added `Join` to all of these
@@ -350,7 +350,7 @@ foreign import moveTo  :: forall eff. Context2D -> Number -> Number -> Eff (canv
 foreign import closePath  :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | A convenience function for drawing a stroked path.
--- | 
+-- |
 -- | For example:
 -- |
 -- | ```purescript
@@ -360,15 +360,15 @@ foreign import closePath  :: forall eff. Context2D -> Eff (canvas :: Canvas | ef
 -- |   lineTo ctx 10.0 20.0
 -- |   closePath ctx
 -- | ```
-strokePath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a 
+strokePath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a
 strokePath ctx path = do
   beginPath ctx
   a <- path
   stroke ctx
-  return a
+  pure a
 
 -- | A convenience function for drawing a filled path.
--- | 
+-- |
 -- | For example:
 -- |
 -- | ```purescript
@@ -378,12 +378,12 @@ strokePath ctx path = do
 -- |   lineTo ctx 10.0 20.0
 -- |   closePath ctx
 -- | ```
-fillPath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a 
+fillPath :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a
 fillPath ctx path = do
   beginPath ctx
   a <- path
   fill ctx
-  return a
+  pure a
 
 -- | A type representing an arc object:
 -- |
@@ -405,7 +405,7 @@ foreign import arc :: forall eff. Context2D -> Arc -> Eff (canvas :: Canvas | ef
 -- |
 -- | - The top-left corner coordinates `x` and `y`,
 -- | - The width and height `w` and `h`.
-type Rectangle = 
+type Rectangle =
   { x :: Number
   , y :: Number
   , w :: Number
@@ -425,7 +425,7 @@ foreign import strokeRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :
 foreign import clearRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | An object representing a scaling transform:
--- | 
+-- |
 -- | - The scale factors in the `x` and `y` directions, `scaleX` and `scaleY`.
 type ScaleTransform =
   { scaleX :: Number
@@ -439,7 +439,7 @@ foreign import scale  :: forall eff. ScaleTransform -> Context2D -> Eff (canvas 
 foreign import rotate :: forall eff. Number -> Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | An object representing a translation:
--- | 
+-- |
 -- | - The translation amounts in the `x` and `y` directions, `translateX` and `translateY`.
 type TranslateTransform =
   { translateX :: Number
@@ -485,7 +485,7 @@ textAlign ctx = unsafeParseTextAlign <$> textAlignImpl ctx
   unsafeParseTextAlign "center" = AlignCenter
   unsafeParseTextAlign "start" = AlignStart
   unsafeParseTextAlign "end" = AlignEnd
-  unsafeParseTextAlign align = unsafeThrow $ "invalid TextAlign: " ++ align
+  unsafeParseTextAlign align = unsafeThrow $ "invalid TextAlign: " <> align
   -- ^ dummy to silence compiler warnings
 
 foreign import setTextAlignImpl :: forall eff. Context2D -> String -> (Eff (canvas :: Canvas | eff) Context2D)
@@ -503,7 +503,7 @@ setTextAlign ctx textalign =
 
 -- | Text metrics:
 -- |
--- | - The text width in pixels. 
+-- | - The text width in pixels.
 type TextMetrics = { width :: Number }
 
 -- | Get the current font.
@@ -528,7 +528,7 @@ foreign import save  :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Co
 foreign import restore  :: forall eff. Context2D -> Eff (canvas :: Canvas | eff) Context2D
 
 -- | A convenience function: run the action, preserving the existing context.
--- | 
+-- |
 -- | For example, outside this block, the fill style is preseved:
 -- |
 -- | ```purescript
@@ -536,12 +536,12 @@ foreign import restore  :: forall eff. Context2D -> Eff (canvas :: Canvas | eff)
 -- |   setFillStyle "red" ctx
 -- |   ...
 -- | ```
-withContext :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a 
+withContext :: forall eff a. Context2D -> Eff (canvas :: Canvas | eff) a -> Eff (canvas :: Canvas | eff) a
 withContext ctx action = do
   save ctx
   a <- action
   restore ctx
-  return a
+  pure a
 
 -- | Get image data for a portion of the canvas.
 foreign import getImageData :: forall eff. Context2D -> Number -> Number -> Number -> Number -> Eff (canvas :: Canvas | eff) ImageData
