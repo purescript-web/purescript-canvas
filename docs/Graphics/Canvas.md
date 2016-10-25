@@ -30,7 +30,7 @@ A 2D graphics context.
 #### `ImageData`
 
 ``` purescript
-type ImageData = { width :: Int, height :: Int, data :: Uint8ClampedArray }
+data ImageData :: *
 ```
 
 An image data object, used to store raster data outside the canvas.
@@ -68,10 +68,10 @@ canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 #### `tryLoadImage`
 
 ``` purescript
-tryLoadImage :: forall eff. String -> (Maybe CanvasImageSource -> Eff (canvas :: Canvas | eff) Unit) -> Eff (canvas :: Canvas | eff) Unit
+tryLoadImage :: forall eff. String -> (Maybe CanvasImageSource -> Eff (canvas :: CANVAS | eff) Unit) -> Eff (canvas :: CANVAS | eff) Unit
 ```
 
-Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
+Asynchronously load an image file by specifying its path.
 
 #### `getCanvasElementById`
 
@@ -680,6 +680,30 @@ createImageDataCopy :: forall eff. Context2D -> ImageData -> Eff (canvas :: CANV
 ```
 
 Create a copy of an image data object.
+
+#### `imageDataWidth`
+
+``` purescript
+imageDataWidth :: ImageData -> Int
+```
+
+Get the width of an `ImageData` object.
+
+#### `imageDataHeight`
+
+``` purescript
+imageDataHeight :: ImageData -> Int
+```
+
+Get the height of an `ImageData` object.
+
+#### `imageDataBuffer`
+
+``` purescript
+imageDataBuffer :: ImageData -> Uint8ClampedArray
+```
+
+Get the underlying buffer from an `ImageData` object.
 
 #### `drawImage`
 

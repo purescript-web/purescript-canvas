@@ -401,6 +401,18 @@ exports.restore = function(ctx) {
     };
 };
 
+exports.imageDataWidth = function(image) {
+    return image.width;
+};
+
+exports.imageDataHeight = function(image) {
+    return image.height;
+};
+
+exports.imageDataBuffer = function(image) {
+    return image.data;
+};
+
 exports.getImageData = function(ctx) {
     return function(x) {
         return function(y) {

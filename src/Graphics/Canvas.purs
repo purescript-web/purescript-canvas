@@ -2,29 +2,29 @@
 -- | Canvas API.
 
 module Graphics.Canvas
-  ( CANVAS()
-  , CanvasElement()
-  , Context2D()
-  , ImageData()
-  , CanvasImageSource()
-  , Arc()
+  ( CANVAS
+  , CanvasElement
+  , Context2D
+  , ImageData
+  , CanvasImageSource
+  , Arc
   , Composite(..)
-  , Dimensions()
+  , Dimensions
   , LineCap(..)
   , LineJoin(..)
-  , Rectangle()
-  , ScaleTransform()
-  , TextMetrics()
-  , Transform()
-  , TranslateTransform()
+  , Rectangle
+  , ScaleTransform
+  , TextMetrics
+  , Transform
+  , TranslateTransform
   , TextAlign(..)
-  , CanvasPattern()
+  , CanvasPattern
   , PatternRepeat(..)
-  , CanvasGradient()
-  , LinearGradient()
-  , RadialGradient()
-  , QuadraticCurve()
-  , BezierCurve()
+  , CanvasGradient
+  , LinearGradient
+  , RadialGradient
+  , QuadraticCurve
+  , BezierCurve
 
   , getCanvasElementById
   , getContext2D
@@ -90,6 +90,9 @@ module Graphics.Canvas
   , putImageDataFull
   , createImageData
   , createImageDataCopy
+  , imageDataWidth
+  , imageDataHeight
+  , imageDataBuffer
 
   , canvasElementToImageSource
   , drawImage
@@ -108,13 +111,13 @@ module Graphics.Canvas
   , bezierCurveTo
   ) where
 
-import Prelude (class Show, Unit, pure, bind, (<$>), (<>), ($), (>>=))
+import Prelude
 
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Exception.Unsafe (unsafeThrow)
 import Data.ArrayBuffer.Types (Uint8ClampedArray)
 import Data.Function.Uncurried (Fn3, runFn3)
 import Data.Maybe (Maybe(..))
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Exception.Unsafe (unsafeThrow)
 
 -- | The `Canvas` effect denotes computations which read/write from/to the canvas.
 foreign import data CANVAS :: !
@@ -126,7 +129,7 @@ foreign import data CanvasElement :: *
 foreign import data Context2D :: *
 
 -- | An image data object, used to store raster data outside the canvas.
-type ImageData = { width :: Int, height :: Int, data :: Uint8ClampedArray }
+foreign import data ImageData :: *
 
 -- | Opaque object for drawing elements and things to the canvas.
 foreign import data CanvasImageSource :: *
@@ -139,12 +142,20 @@ foreign import data CanvasGradient :: *
 
 foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 
-foreign import tryLoadImageImpl :: forall eff. String -> Eff (canvas :: Canvas | eff) Unit -> (CanvasImageSource -> Eff (canvas :: Canvas | eff) Unit) -> Eff (canvas :: Canvas | eff) Unit
+foreign import tryLoadImageImpl
+  :: forall eff
+   . String
+  -> Eff (canvas :: CANVAS | eff) Unit
+  -> (CanvasImageSource -> Eff (canvas :: CANVAS | eff) Unit)
+  -> Eff (canvas :: CANVAS | eff) Unit
 
--- | Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
-tryLoadImage :: forall eff. String -> (Maybe CanvasImageSource -> Eff (canvas :: Canvas | eff) Unit) -> Eff (canvas :: Canvas | eff) Unit
+-- | Asynchronously load an image file by specifying its path.
+tryLoadImage
+  :: forall eff
+   . String
+  -> (Maybe CanvasImageSource -> Eff (canvas :: CANVAS | eff) Unit)
+  -> Eff (canvas :: CANVAS | eff) Unit
 tryLoadImage path k = tryLoadImageImpl path (k Nothing) (k <<< Just)
-
 
 foreign import getCanvasElementByIdImpl ::
   forall r eff. Fn3 String
@@ -561,6 +572,15 @@ foreign import createImageData :: forall eff. Context2D -> Number -> Number -> E
 
 -- | Create a copy of an image data object.
 foreign import createImageDataCopy :: forall eff. Context2D -> ImageData -> Eff (canvas :: CANVAS | eff) ImageData
+
+-- | Get the width of an `ImageData` object.
+foreign import imageDataWidth :: ImageData -> Int
+
+-- | Get the height of an `ImageData` object.
+foreign import imageDataHeight :: ImageData -> Int
+
+-- | Get the underlying buffer from an `ImageData` object.
+foreign import imageDataBuffer :: ImageData -> Uint8ClampedArray
 
 foreign import drawImage :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
 
