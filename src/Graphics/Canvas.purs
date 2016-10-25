@@ -84,7 +84,7 @@ module Graphics.Canvas
   , restore
   , withContext
 
-  , withImage
+  , tryLoadImage
   , getImageData
   , putImageData
   , putImageDataFull
@@ -139,8 +139,12 @@ foreign import data CanvasGradient :: *
 
 foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 
+foreign import tryLoadImageImpl :: forall eff. String -> Eff (canvas :: Canvas | eff) Unit -> (CanvasImageSource -> Eff (canvas :: Canvas | eff) Unit) -> Eff (canvas :: Canvas | eff) Unit
+
 -- | Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
-foreign import withImage :: forall eff. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
+tryLoadImage :: forall eff. String -> (Maybe CanvasImageSource -> Eff (canvas :: Canvas | eff) Unit) -> Eff (canvas :: Canvas | eff) Unit
+tryLoadImage path k = tryLoadImageImpl path (k Nothing) (k <<< Just)
+
 
 foreign import getCanvasElementByIdImpl ::
   forall r eff. Fn3 String

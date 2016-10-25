@@ -65,10 +65,10 @@ Opaque object describing a gradient.
 canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 ```
 
-#### `withImage`
+#### `tryLoadImage`
 
 ``` purescript
-withImage :: forall eff. String -> (CanvasImageSource -> Eff eff Unit) -> Eff eff Unit
+tryLoadImage :: forall eff. String -> (Maybe CanvasImageSource -> Eff (canvas :: Canvas | eff) Unit) -> Eff (canvas :: Canvas | eff) Unit
 ```
 
 Wrapper for asynchronously loading a image file by path and use it in callback, e.g. drawImage
