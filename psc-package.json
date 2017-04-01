@@ -1,0 +1,20 @@
+{
+    "name": "canvas",
+    "source": "https://github.com/purescript/package-sets.git",
+    "set": "psc-0.10.1",
+    "depends": [
+      "arraybuffer-types",
+      "bifunctors",
+      "control",
+      "eff",
+      "either",
+      "exceptions",
+      "foldable-traversable",
+      "functions",
+      "invariant",
+      "maybe",
+      "monoid",
+      "newtype",
+      "prelude"
+    ]
+}

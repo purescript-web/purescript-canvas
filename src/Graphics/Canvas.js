@@ -1,10 +1,27 @@
 /* global exports */
 "use strict";
 
-// module Graphics.Canvas
-
 exports.canvasElementToImageSource = function(e) {
     return e;
+};
+
+exports.tryLoadImageImpl = function (src) {
+  return function(e) {
+        return function(f) {
+            return function () {
+                var img = new Image();
+                img.src = src;
+                img.addEventListener("load", function() {
+                    f(img)();
+                }, false);
+                img.addEventListener("error", function(error) {
+                    e();
+                }, false);
+
+                return {};
+            }
+        }
+    };
 };
 
 exports.getCanvasElementByIdImpl = function(id, Just, Nothing) {
@@ -123,10 +140,28 @@ exports.setShadowOffsetY = function(offsetY) {
     };
 };
 
+exports.setMiterLimit = function(limit) {
+    return function(ctx) {
+        return function() {
+            ctx.miterLimit = limit;
+            return ctx;
+        };
+    };
+};
+
 exports.setLineCapImpl = function(cap) {
     return function(ctx) {
         return function() {
             ctx.lineCap = cap;
+            return ctx;
+        };
+    };
+};
+
+exports.setLineJoinImpl = function(join) {
+    return function(ctx) {
+        return function() {
+            ctx.lineJoin = join;
             return ctx;
         };
     };
@@ -144,7 +179,7 @@ exports.setGlobalCompositeOperationImpl = function(ctx) {
 exports.setGlobalAlpha = function(ctx) {
     return function(alpha) {
         return function() {
-            ctx.setGlobalAlpha = alpha;
+            ctx.globalAlpha = alpha;
             return ctx;
         };
     };
@@ -366,6 +401,18 @@ exports.restore = function(ctx) {
     };
 };
 
+exports.imageDataWidth = function(image) {
+    return image.width;
+};
+
+exports.imageDataHeight = function(image) {
+    return image.height;
+};
+
+exports.imageDataBuffer = function(image) {
+    return image.data;
+};
+
 exports.getImageData = function(ctx) {
     return function(x) {
         return function(y) {
@@ -432,24 +479,6 @@ exports.createImageDataCopy = function(ctx) {
     };
 };
 
-exports.getImageDataWidth = function(image_data) {
-    return function() {
-        return image_data.width;
-    };
-};
-
-exports.getImageDataHeight = function(image_data) {
-    return function() {
-        return image_data.height;
-    };
-};
-
-exports.getImageDataPixelArray = function(image_data) {
-    return function() {
-        return image_data.data;
-    };
-};
-
 exports.drawImage = function(ctx) {
     return function(image_source) {
         return function(dx) {
@@ -505,6 +534,25 @@ exports.drawImageFull = function(ctx) {
     };
 };
 
+exports.createPatternImpl = function(img) {
+    return function(repeat) {
+        return function(ctx) {
+            return function() {
+                return ctx.createPattern(img, repeat);
+            };
+        };
+    };
+};
+
+exports.setPatternFillStyle = function(pattern) {
+    return function(ctx) {
+        return function() {
+            ctx.fillStyle = pattern;
+            return ctx;
+        };
+    };
+};
+
 exports.createLinearGradient = function(linearGradient) {
     return function(ctx) {
         return function() {
@@ -540,7 +588,21 @@ exports.setGradientFillStyle = function(gradient) {
         };
     };
 };
-        
 
+exports.quadraticCurveTo = function(qCurve) {
+    return function(ctx) {
+        return function() {
+            ctx.quadraticCurveTo(qCurve.cpx, qCurve.cpy, qCurve.x, qCurve.y);
+            return ctx;
+        };
+    };
+};
 
-
+exports.bezierCurveTo = function(bCurve) {
+    return function(ctx) {
+        return function() {
+            ctx.bezierCurveTo(bCurve.cp1x, bCurve.cp1y, bCurve.cp2x, bCurve.cp2y, bCurve.x, bCurve.y);
+            return ctx;
+        };
+    };
+};
