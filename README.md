@@ -5,7 +5,7 @@
 
 Canvas bindings for PureScript
 
-- [Module Documentation](docs/)
+- [Module Documentation](generated-docs/)
 
 ## Installing
 
