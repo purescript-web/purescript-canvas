@@ -113,32 +113,32 @@ module Graphics.Canvas
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 import Control.Monad.Eff.Exception.Unsafe (unsafeThrow)
 import Data.ArrayBuffer.Types (Uint8ClampedArray)
 import Data.Function.Uncurried (Fn3, runFn3)
 import Data.Maybe (Maybe(..))
 
 -- | The `Canvas` effect denotes computations which read/write from/to the canvas.
-foreign import data CANVAS :: !
+foreign import data CANVAS :: Effect
 
 -- | A canvas HTML element.
-foreign import data CanvasElement :: *
+foreign import data CanvasElement :: Type
 
 -- | A 2D graphics context.
-foreign import data Context2D :: *
+foreign import data Context2D :: Type
 
 -- | An image data object, used to store raster data outside the canvas.
-foreign import data ImageData :: *
+foreign import data ImageData :: Type
 
 -- | Opaque object for drawing elements and things to the canvas.
-foreign import data CanvasImageSource :: *
+foreign import data CanvasImageSource :: Type
 
 -- | Opaque object describing a pattern.
-foreign import data CanvasPattern :: *
+foreign import data CanvasPattern :: Type
 
 -- | Opaque object describing a gradient.
-foreign import data CanvasGradient :: *
+foreign import data CanvasGradient :: Type
 
 foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 
@@ -377,9 +377,9 @@ foreign import closePath  :: forall eff. Context2D -> Eff (canvas :: CANVAS | ef
 -- | ```
 strokePath :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
 strokePath ctx path = do
-  beginPath ctx
+  _ <- beginPath ctx
   a <- path
-  stroke ctx
+  _ <- stroke ctx
   pure a
 
 -- | A convenience function for drawing a filled path.
@@ -395,9 +395,9 @@ strokePath ctx path = do
 -- | ```
 fillPath :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
 fillPath ctx path = do
-  beginPath ctx
+  _ <- beginPath ctx
   a <- path
-  fill ctx
+  _ <- fill ctx
   pure a
 
 -- | A type representing an arc object:
@@ -553,9 +553,9 @@ foreign import restore  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff)
 -- | ```
 withContext :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
 withContext ctx action = do
-  save ctx
+  _ <- save ctx
   a <- action
-  restore ctx
+  _ <- restore ctx
   pure a
 
 -- | Get image data for a portion of the canvas.
