@@ -24,6 +24,6 @@
     "purescript-functions": "^3.0.0",
     "purescript-maybe": "^3.0.0",
     "purescript-exceptions": "^3.0.0",
-    "purescript-arraybuffer-types": "^1.0.0"
+    "purescript-arraybuffer-types": "^2.0.0"
   }
 }
