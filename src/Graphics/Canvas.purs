@@ -226,6 +226,8 @@ foreign import setMiterLimit :: forall eff. Number -> Context2D -> Eff (canvas :
 -- | Enumerates the different types of line cap.
 data LineCap = Round | Square | Butt
 
+derive instance eqLineCap :: Eq LineCap
+
 foreign import setLineCapImpl :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
 
 -- | Set the current line cap type.
