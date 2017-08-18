@@ -128,6 +128,9 @@ foreign import data CanvasElement :: Type
 -- | A 2D graphics context.
 foreign import data Context2D :: Type
 
+instance discardContext2D :: Discard Context2D where
+  discard = bind
+
 -- | An image data object, used to store raster data outside the canvas.
 foreign import data ImageData :: Type
 
