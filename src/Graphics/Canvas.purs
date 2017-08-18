@@ -382,9 +382,9 @@ foreign import closePath  :: forall eff. Context2D -> Eff (canvas :: CANVAS | ef
 -- | ```
 strokePath :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
 strokePath ctx path = do
-  _ <- beginPath ctx
+  beginPath ctx
   a <- path
-  _ <- stroke ctx
+  stroke ctx
   pure a
 
 -- | A convenience function for drawing a filled path.
@@ -400,9 +400,9 @@ strokePath ctx path = do
 -- | ```
 fillPath :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
 fillPath ctx path = do
-  _ <- beginPath ctx
+  beginPath ctx
   a <- path
-  _ <- fill ctx
+  fill ctx
   pure a
 
 -- | A type representing an arc object:
@@ -558,9 +558,9 @@ foreign import restore  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff)
 -- | ```
 withContext :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
 withContext ctx action = do
-  _ <- save ctx
+  save ctx
   a <- action
-  _ <- restore ctx
+  restore ctx
   pure a
 
 -- | Get image data for a portion of the canvas.
