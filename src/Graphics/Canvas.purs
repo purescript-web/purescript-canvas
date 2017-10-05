@@ -476,8 +476,11 @@ type Transform =
   , m32 :: Number
   }
 
--- | Apply a general transformation.
+-- | Apply a general transformation to the current transformation matrix
 foreign import transform :: forall eff. Transform -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+
+-- | Set the transformation matrix
+foreign import setTransform :: forall eff. Transform -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
 
 -- | Enumerates types of text alignment.
 data TextAlign

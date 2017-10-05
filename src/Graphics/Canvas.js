@@ -314,6 +314,15 @@ exports.transform = function(t) {
     };
 };
 
+exports.setTransform = function(t) {
+    return function(ctx) {
+        return function() {
+            ctx.setTransform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
+            return ctx;
+        };
+    };
+};
+
 exports.clearRect = function(ctx) {
     return function(r) {
         return function() {
