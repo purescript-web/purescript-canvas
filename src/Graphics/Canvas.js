@@ -57,7 +57,7 @@ exports.setCanvasWidth = function(width) {
     return function(canvas) {
         return function() {
             canvas.width = width;
-            return canvas;
+            return {};
         };
     };
 };
@@ -66,7 +66,7 @@ exports.setCanvasHeight = function(height) {
     return function(canvas) {
         return function() {
             canvas.height = height;
-            return canvas;
+            return {};
         };
     };
 };
@@ -81,7 +81,7 @@ exports.setLineWidth = function(width) {
     return function(ctx) {
         return function() {
             ctx.lineWidth = width;
-            return ctx;
+            return {};
         };
     };
 };
@@ -90,7 +90,7 @@ exports.setFillStyle = function(style) {
     return function(ctx) {
         return function() {
             ctx.fillStyle = style;
-            return ctx;
+            return {};
         };
     };
 };
@@ -99,7 +99,7 @@ exports.setStrokeStyle = function(style) {
     return function(ctx) {
         return function() {
             ctx.strokeStyle = style;
-            return ctx;
+            return {};
         };
     };
 };
@@ -108,7 +108,7 @@ exports.setShadowColor = function(color) {
     return function(ctx) {
         return function() {
             ctx.shadowColor = color;
-            return ctx;
+            return {};
         };
     };
 };
@@ -117,7 +117,7 @@ exports.setShadowBlur = function(blur) {
     return function(ctx) {
         return function() {
             ctx.shadowBlur = blur;
-            return ctx;
+            return {};
         };
     };
 };
@@ -126,7 +126,7 @@ exports.setShadowOffsetX = function(offsetX) {
     return function(ctx) {
         return function() {
             ctx.shadowOffsetX = offsetX;
-            return ctx;
+            return {};
         };
     };
 };
@@ -135,7 +135,7 @@ exports.setShadowOffsetY = function(offsetY) {
     return function(ctx) {
         return function() {
             ctx.shadowOffsetY = offsetY;
-            return ctx;
+            return {};
         };
     };
 };
@@ -144,7 +144,7 @@ exports.setMiterLimit = function(limit) {
     return function(ctx) {
         return function() {
             ctx.miterLimit = limit;
-            return ctx;
+            return {};
         };
     };
 };
@@ -153,7 +153,7 @@ exports.setLineCapImpl = function(cap) {
     return function(ctx) {
         return function() {
             ctx.lineCap = cap;
-            return ctx;
+            return {};
         };
     };
 };
@@ -162,7 +162,7 @@ exports.setLineJoinImpl = function(join) {
     return function(ctx) {
         return function() {
             ctx.lineJoin = join;
-            return ctx;
+            return {};
         };
     };
 };
@@ -171,7 +171,7 @@ exports.setGlobalCompositeOperationImpl = function(ctx) {
     return function(op) {
         return function() {
             ctx.globalCompositeOperation = op;
-            return ctx;
+            return {};
         };
     };
 };
@@ -180,7 +180,7 @@ exports.setGlobalAlpha = function(ctx) {
     return function(alpha) {
         return function() {
             ctx.globalAlpha = alpha;
-            return ctx;
+            return {};
         };
     };
 };
@@ -188,28 +188,28 @@ exports.setGlobalAlpha = function(ctx) {
 exports.beginPath = function(ctx) {
     return function() {
         ctx.beginPath();
-        return ctx;
+        return {};
     };
 };
 
 exports.stroke = function(ctx) {
     return function() {
         ctx.stroke();
-        return ctx;
+        return {};
     };
 };
 
 exports.fill = function(ctx) {
     return function() {
         ctx.fill();
-        return ctx;
+        return {};
     };
 };
 
 exports.clip = function(ctx) {
     return function() {
         ctx.clip();
-        return ctx;
+        return {};
     };
 };
 
@@ -218,7 +218,7 @@ exports.lineTo = function(ctx) {
         return function(y) {
             return function() {
                 ctx.lineTo(x, y);
-                return ctx;
+                return {};
             };
         };
     };
@@ -229,7 +229,7 @@ exports.moveTo = function(ctx) {
         return function(y) {
             return function() {
                 ctx.moveTo(x, y);
-                return ctx;
+                return {};
             };
         };
     };
@@ -238,7 +238,7 @@ exports.moveTo = function(ctx) {
 exports.closePath = function(ctx) {
     return function() {
         ctx.closePath();
-        return ctx;
+        return {};
     };
 };
 
@@ -246,7 +246,7 @@ exports.arc = function(ctx) {
     return function(a) {
         return function() {
             ctx.arc(a.x, a.y, a.r, a.start, a.end);
-            return ctx;
+            return {};
         };
     };
 };
@@ -255,7 +255,7 @@ exports.rect = function(ctx) {
     return function(r) {
         return function() {
             ctx.rect(r.x, r.y, r.w, r.h);
-            return ctx;
+            return {};
         };
     };
 };
@@ -264,7 +264,7 @@ exports.fillRect = function(ctx) {
     return function(r) {
         return function() {
             ctx.fillRect(r.x, r.y, r.w, r.h);
-            return ctx;
+            return {};
         };
     };
 };
@@ -273,52 +273,7 @@ exports.strokeRect = function(ctx) {
     return function(r) {
         return function() {
             ctx.strokeRect(r.x, r.y, r.w, r.h);
-            return ctx;
-        };
-    };
-};
-
-exports.scale = function(t) {
-    return function(ctx) {
-        return function() {
-            ctx.scale(t.scaleX, t.scaleY);
-            return ctx;
-        };
-    };
-};
-
-exports.rotate = function(angle) {
-    return function(ctx) {
-        return function() {
-            ctx.rotate(angle);
-            return ctx;
-        };
-    };
-};
-
-exports.translate = function(t) {
-    return function(ctx) {
-        return function() {
-            ctx.translate(t.translateX, t.translateY);
-            return ctx;
-        };
-    };
-};
-
-exports.transform = function(t) {
-    return function(ctx) {
-        return function() {
-            ctx.transform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
-            return ctx;
-        };
-    };
-};
-
-exports.setTransform = function(t) {
-    return function(ctx) {
-        return function() {
-            ctx.setTransform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
-            return ctx;
+            return {};
         };
     };
 };
@@ -327,7 +282,61 @@ exports.clearRect = function(ctx) {
     return function(r) {
         return function() {
             ctx.clearRect(r.x, r.y, r.w, r.h);
-            return ctx;
+            return {};
+        };
+    };
+};
+
+exports.scale = function(t) {
+    return function(ctx) {
+        return function() {
+            ctx.scale(t.scaleX, t.scaleY);
+            return {};
+        };
+    };
+};
+
+exports.rotate = function(angle) {
+    return function(ctx) {
+        return function() {
+            ctx.rotate(angle);
+            return {};
+        };
+    };
+};
+
+exports.translate = function(t) {
+    return function(ctx) {
+        return function() {
+            ctx.translate(t.translateX, t.translateY);
+            return {};
+        };
+    };
+};
+
+exports.transform = function(t) {
+    return function(ctx) {
+        return function() {
+            ctx.transform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
+            return {};
+        };
+    };
+};
+
+exports.setTransform = function(t) {
+    return function(ctx) {
+        return function() {
+            ctx.setTransform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
+            return {};
+        };
+    };
+};
+
+exports.clearRect = function(ctx) {
+    return function(r) {
+        return function() {
+            ctx.clearRect(r.x, r.y, r.w, r.h);
+            return {};
         };
     };
 };
@@ -342,7 +351,7 @@ exports.setTextAlignImpl = function(ctx) {
     return function(textAlign) {
         return function() {
             ctx.textAlign = textAlign;
-            return ctx;
+            return {};
         }
     }
 };
@@ -357,7 +366,7 @@ exports.setFont = function(fontspec) {
     return function(ctx) {
         return function() {
             ctx.font = fontspec;
-            return ctx;
+            return {};
         };
     };
 };
@@ -368,7 +377,7 @@ exports.fillText = function(ctx) {
             return function(y) {
                 return function() {
                     ctx.fillText(text, x, y);
-                    return ctx;
+                    return {};
                 };
             };
         };
@@ -381,7 +390,7 @@ exports.strokeText = function(ctx) {
             return function(y) {
                 return function() {
                     ctx.strokeText(text, x, y);
-                    return ctx;
+                    return {};
                 };
             };
         };
@@ -399,14 +408,14 @@ exports.measureText = function(ctx) {
 exports.save = function(ctx) {
     return function() {
         ctx.save();
-        return ctx;
+        return {};
     };
 };
 
 exports.restore = function(ctx) {
     return function() {
         ctx.restore();
-        return ctx;
+        return {};
     };
 };
 
@@ -446,7 +455,7 @@ exports.putImageDataFull = function(ctx) {
                             return function(dh) {
                                 return function() {
                                     ctx.putImageData(image_data, x, y, dx, dy, dw, dh);
-                                    return ctx;
+                                    return {};
                                 };
                             };
                         };
@@ -463,7 +472,7 @@ exports.putImageData = function(ctx) {
             return function(y) {
                 return function() {
                     ctx.putImageData(image_data, x, y);
-                    return ctx;
+                    return {};
                 };
             };
         };
@@ -494,7 +503,7 @@ exports.drawImage = function(ctx) {
             return function(dy) {
                 return function() {
                     ctx.drawImage(image_source, dx, dy);
-                    return ctx;
+                    return {};
                 };
             };
         };
@@ -509,7 +518,7 @@ exports.drawImageScale = function(ctx) {
                     return function(dHeight) {
                         return function() {
                             ctx.drawImage(image_source, dx, dy, dWidth, dHeight);
-                            return ctx;
+                            return {};
                         };
                     };
                 };
@@ -530,7 +539,7 @@ exports.drawImageFull = function(ctx) {
                                     return function(dHeight) {
                                         return function() {
                                             ctx.drawImage(image_source, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-                                            return ctx;
+                                            return {};
                                         };
                                     };
                                 };
@@ -557,7 +566,7 @@ exports.setPatternFillStyle = function(pattern) {
     return function(ctx) {
         return function() {
             ctx.fillStyle = pattern;
-            return ctx;
+            return {};
         };
     };
 };
@@ -593,7 +602,7 @@ exports.setGradientFillStyle = function(gradient) {
     return function(ctx) {
         return function() {
             ctx.fillStyle = gradient;
-            return ctx;
+            return {};
         };
     };
 };
@@ -602,7 +611,7 @@ exports.quadraticCurveTo = function(qCurve) {
     return function(ctx) {
         return function() {
             ctx.quadraticCurveTo(qCurve.cpx, qCurve.cpy, qCurve.x, qCurve.y);
-            return ctx;
+            return {};
         };
     };
 };
@@ -611,7 +620,7 @@ exports.bezierCurveTo = function(bCurve) {
     return function(ctx) {
         return function() {
             ctx.bezierCurveTo(bCurve.cp1x, bCurve.cp1y, bCurve.cp2x, bCurve.cp2y, bCurve.x, bCurve.y);
-            return ctx;
+            return {};
         };
     };
 };
