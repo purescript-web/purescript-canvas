@@ -71,6 +71,7 @@ module Graphics.Canvas
   , rotate
   , translate
   , transform
+  , setTransform  
 
   , textAlign
   , setTextAlign
