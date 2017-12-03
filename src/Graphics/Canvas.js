@@ -323,8 +323,8 @@ exports.transform = function(ctx) {
     };
 };
 
-exports.setTransform = function(t) {
-    return function(ctx) {
+exports.setTransform = function(ctx) {
+    return function(t) {
         return function() {
             ctx.setTransform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
             return {};

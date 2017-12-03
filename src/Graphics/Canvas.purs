@@ -481,7 +481,7 @@ type Transform =
 foreign import transform :: forall eff. Context2D -> Transform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the transformation matrix
-foreign import setTransform :: forall eff. Transform -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setTransform :: forall eff. Context2D -> Transform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Enumerates types of text alignment.
 data TextAlign
