@@ -684,4 +684,4 @@ type BezierCurve =
     }
 
 -- | Draw a cubic Bézier curve.
-foreign import bezierCurveTo :: forall eff. BezierCurve -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import bezierCurveTo :: forall eff. Context2D -> BezierCurve -> Eff (canvas :: CANVAS | eff) Unit

@@ -616,8 +616,8 @@ exports.quadraticCurveTo = function(ctx) {
     };
 };
 
-exports.bezierCurveTo = function(bCurve) {
-    return function(ctx) {
+exports.bezierCurveTo = function(ctx) {
+    return function(bCurve) {
         return function() {
             ctx.bezierCurveTo(bCurve.cp1x, bCurve.cp1y, bCurve.cp2x, bCurve.cp2y, bCurve.x, bCurve.y);
             return {};
