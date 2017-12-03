@@ -53,8 +53,8 @@ exports.getCanvasHeight = function(canvas) {
     };
 };
 
-exports.setCanvasWidth = function(width) {
-    return function(canvas) {
+exports.setCanvasWidth = function(canvas) {
+    return function(width) {
         return function() {
             canvas.width = width;
             return {};
