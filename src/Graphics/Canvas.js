@@ -592,7 +592,7 @@ exports.addColorStop = function(gradient) {
         return function(color) {
             return function() {
                 gradient.addColorStop(stop, color);
-                return gradient;
+                return {};
             };
         };
     };
