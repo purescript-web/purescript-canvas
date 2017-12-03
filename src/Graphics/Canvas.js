@@ -104,8 +104,8 @@ exports.setStrokeStyle = function(ctx) {
     };
 };
 
-exports.setShadowColor = function(color) {
-    return function(ctx) {
+exports.setShadowColor = function(ctx) {
+    return function(color) {
         return function() {
             ctx.shadowColor = color;
             return {};
