@@ -53,8 +53,8 @@ exports.getCanvasHeight = function(canvas) {
     };
 };
 
-exports.setCanvasWidth = function(width) {
-    return function(canvas) {
+exports.setCanvasWidth = function(canvas) {
+    return function(width) {
         return function() {
             canvas.width = width;
             return {};
@@ -62,8 +62,8 @@ exports.setCanvasWidth = function(width) {
     };
 };
 
-exports.setCanvasHeight = function(height) {
-    return function(canvas) {
+exports.setCanvasHeight = function(canvas) {
+    return function(height) {
         return function() {
             canvas.height = height;
             return {};
@@ -77,8 +77,8 @@ exports.canvasToDataURL = function(canvas) {
     };
 };
 
-exports.setLineWidth = function(width) {
-    return function(ctx) {
+exports.setLineWidth = function(ctx) {
+    return function(width) {
         return function() {
             ctx.lineWidth = width;
             return {};
@@ -86,8 +86,8 @@ exports.setLineWidth = function(width) {
     };
 };
 
-exports.setFillStyle = function(style) {
-    return function(ctx) {
+exports.setFillStyle = function(ctx) {
+    return function(style) {
         return function() {
             ctx.fillStyle = style;
             return {};
@@ -95,8 +95,8 @@ exports.setFillStyle = function(style) {
     };
 };
 
-exports.setStrokeStyle = function(style) {
-    return function(ctx) {
+exports.setStrokeStyle = function(ctx) {
+    return function(style) {
         return function() {
             ctx.strokeStyle = style;
             return {};
@@ -104,8 +104,8 @@ exports.setStrokeStyle = function(style) {
     };
 };
 
-exports.setShadowColor = function(color) {
-    return function(ctx) {
+exports.setShadowColor = function(ctx) {
+    return function(color) {
         return function() {
             ctx.shadowColor = color;
             return {};
@@ -113,8 +113,8 @@ exports.setShadowColor = function(color) {
     };
 };
 
-exports.setShadowBlur = function(blur) {
-    return function(ctx) {
+exports.setShadowBlur = function(ctx) {
+    return function(blur) {
         return function() {
             ctx.shadowBlur = blur;
             return {};
@@ -122,8 +122,8 @@ exports.setShadowBlur = function(blur) {
     };
 };
 
-exports.setShadowOffsetX = function(offsetX) {
-    return function(ctx) {
+exports.setShadowOffsetX = function(ctx) {
+    return function(offsetX) {
         return function() {
             ctx.shadowOffsetX = offsetX;
             return {};
@@ -131,8 +131,8 @@ exports.setShadowOffsetX = function(offsetX) {
     };
 };
 
-exports.setShadowOffsetY = function(offsetY) {
-    return function(ctx) {
+exports.setShadowOffsetY = function(ctx) {
+    return function(offsetY) {
         return function() {
             ctx.shadowOffsetY = offsetY;
             return {};
@@ -140,8 +140,8 @@ exports.setShadowOffsetY = function(offsetY) {
     };
 };
 
-exports.setMiterLimit = function(limit) {
-    return function(ctx) {
+exports.setMiterLimit = function(ctx) {
+    return function(limit) {
         return function() {
             ctx.miterLimit = limit;
             return {};
@@ -149,8 +149,8 @@ exports.setMiterLimit = function(limit) {
     };
 };
 
-exports.setLineCapImpl = function(cap) {
-    return function(ctx) {
+exports.setLineCapImpl = function(ctx) {
+    return function(cap) {
         return function() {
             ctx.lineCap = cap;
             return {};
@@ -158,8 +158,8 @@ exports.setLineCapImpl = function(cap) {
     };
 };
 
-exports.setLineJoinImpl = function(join) {
-    return function(ctx) {
+exports.setLineJoinImpl = function(ctx) {
+    return function(join) {
         return function() {
             ctx.lineJoin = join;
             return {};
@@ -287,8 +287,8 @@ exports.clearRect = function(ctx) {
     };
 };
 
-exports.scale = function(t) {
-    return function(ctx) {
+exports.scale = function(ctx) {
+    return function(t) {
         return function() {
             ctx.scale(t.scaleX, t.scaleY);
             return {};
@@ -296,8 +296,8 @@ exports.scale = function(t) {
     };
 };
 
-exports.rotate = function(angle) {
-    return function(ctx) {
+exports.rotate = function(ctx) {
+    return function(angle) {
         return function() {
             ctx.rotate(angle);
             return {};
@@ -305,8 +305,8 @@ exports.rotate = function(angle) {
     };
 };
 
-exports.translate = function(t) {
-    return function(ctx) {
+exports.translate = function(ctx) {
+    return function(t) {
         return function() {
             ctx.translate(t.translateX, t.translateY);
             return {};
@@ -314,8 +314,8 @@ exports.translate = function(t) {
     };
 };
 
-exports.transform = function(t) {
-    return function(ctx) {
+exports.transform = function(ctx) {
+    return function(t) {
         return function() {
             ctx.transform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
             return {};
@@ -323,8 +323,8 @@ exports.transform = function(t) {
     };
 };
 
-exports.setTransform = function(t) {
-    return function(ctx) {
+exports.setTransform = function(ctx) {
+    return function(t) {
         return function() {
             ctx.setTransform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
             return {};
@@ -362,8 +362,8 @@ exports.font = function(ctx) {
     };
 };
 
-exports.setFont = function(fontspec) {
-    return function(ctx) {
+exports.setFont = function(ctx) {
+    return function(fontspec) {
         return function() {
             ctx.font = fontspec;
             return {};
@@ -552,9 +552,9 @@ exports.drawImageFull = function(ctx) {
     };
 };
 
-exports.createPatternImpl = function(img) {
-    return function(repeat) {
-        return function(ctx) {
+exports.createPatternImpl = function(ctx) {
+    return function(img) {
+        return function(repeat) {
             return function() {
                 return ctx.createPattern(img, repeat);
             };
@@ -562,8 +562,8 @@ exports.createPatternImpl = function(img) {
     };
 };
 
-exports.setPatternFillStyle = function(pattern) {
-    return function(ctx) {
+exports.setPatternFillStyle = function(ctx) {
+    return function(pattern) {
         return function() {
             ctx.fillStyle = pattern;
             return {};
@@ -571,35 +571,35 @@ exports.setPatternFillStyle = function(pattern) {
     };
 };
 
-exports.createLinearGradient = function(linearGradient) {
-    return function(ctx) {
+exports.createLinearGradient = function(ctx) {
+    return function(linearGradient) {
         return function() {
             return ctx.createLinearGradient(linearGradient.x0, linearGradient.y0, linearGradient.x1, linearGradient.y1);
         };
     };
 };
 
-exports.createRadialGradient = function(radialGradient) {
-    return function(ctx) {
+exports.createRadialGradient = function(ctx) {
+    return function(radialGradient) {
         return function() {
             return ctx.createRadialGradient(radialGradient.x0, radialGradient.y0, radialGradient.r0, radialGradient.x1, radialGradient.y1, radialGradient.r1);
         };
     };
 };
 
-exports.addColorStop = function(stop) {
-    return function(color) {
-        return function(gradient) {
+exports.addColorStop = function(gradient) {
+    return function(stop) {
+        return function(color) {
             return function() {
                 gradient.addColorStop(stop, color);
-                return gradient;
+                return {};
             };
         };
     };
 };
 
-exports.setGradientFillStyle = function(gradient) {
-    return function(ctx) {
+exports.setGradientFillStyle = function(ctx) {
+    return function(gradient) {
         return function() {
             ctx.fillStyle = gradient;
             return {};
@@ -607,8 +607,8 @@ exports.setGradientFillStyle = function(gradient) {
     };
 };
 
-exports.quadraticCurveTo = function(qCurve) {
-    return function(ctx) {
+exports.quadraticCurveTo = function(ctx) {
+    return function(qCurve) {
         return function() {
             ctx.quadraticCurveTo(qCurve.cpx, qCurve.cpy, qCurve.x, qCurve.y);
             return {};
@@ -616,8 +616,8 @@ exports.quadraticCurveTo = function(qCurve) {
     };
 };
 
-exports.bezierCurveTo = function(bCurve) {
-    return function(ctx) {
+exports.bezierCurveTo = function(ctx) {
+    return function(bCurve) {
         return function() {
             ctx.bezierCurveTo(bCurve.cp1x, bCurve.cp1y, bCurve.cp2x, bCurve.cp2y, bCurve.x, bCurve.y);
             return {};
