@@ -579,8 +579,8 @@ exports.createLinearGradient = function(ctx) {
     };
 };
 
-exports.createRadialGradient = function(radialGradient) {
-    return function(ctx) {
+exports.createRadialGradient = function(ctx) {
+    return function(radialGradient) {
         return function() {
             return ctx.createRadialGradient(radialGradient.x0, radialGradient.y0, radialGradient.r0, radialGradient.x1, radialGradient.y1, radialGradient.r1);
         };

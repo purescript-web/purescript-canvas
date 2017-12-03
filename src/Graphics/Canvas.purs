@@ -647,7 +647,7 @@ type RadialGradient =
     }
 
 -- | Create a radial CanvasGradient.
-foreign import createRadialGradient :: forall eff. RadialGradient -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasGradient
+foreign import createRadialGradient :: forall eff. Context2D -> RadialGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
 
 -- | Add a single color stop to a CanvasGradient.
 foreign import addColorStop :: forall eff. Number -> String -> CanvasGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
