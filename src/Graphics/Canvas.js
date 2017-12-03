@@ -158,8 +158,8 @@ exports.setLineCapImpl = function(ctx) {
     };
 };
 
-exports.setLineJoinImpl = function(join) {
-    return function(ctx) {
+exports.setLineJoinImpl = function(ctx) {
+    return function(join) {
         return function() {
             ctx.lineJoin = join;
             return {};

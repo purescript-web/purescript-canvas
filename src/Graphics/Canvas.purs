@@ -242,13 +242,13 @@ setLineCap context Butt   = setLineCapImpl context "butt"
 -- | Enumerates the different types of line join
 data LineJoin = BevelJoin | RoundJoin | MiterJoin
 
-foreign import setLineJoinImpl :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setLineJoinImpl :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current line join type.
-setLineJoin :: forall eff. LineJoin -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
-setLineJoin BevelJoin = setLineJoinImpl "bevel"
-setLineJoin RoundJoin = setLineJoinImpl "round"
-setLineJoin MiterJoin = setLineJoinImpl "miter"
+setLineJoin :: forall eff. Context2D -> LineJoin -> Eff (canvas :: CANVAS | eff) Unit
+setLineJoin context BevelJoin = setLineJoinImpl context "bevel"
+setLineJoin context RoundJoin = setLineJoinImpl context "round"
+setLineJoin context MiterJoin = setLineJoinImpl context "miter"
 
 -- | Enumerates the different types of composite operations and blend modes.
 data Composite
