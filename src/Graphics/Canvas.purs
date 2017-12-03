@@ -451,7 +451,7 @@ type ScaleTransform =
   }
 
 -- | Apply a scaling transform.
-foreign import scale  :: forall eff. ScaleTransform -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import scale  :: forall eff. Context2D -> ScaleTransform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Apply a rotation.
 foreign import rotate :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit

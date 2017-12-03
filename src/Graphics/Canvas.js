@@ -287,8 +287,8 @@ exports.clearRect = function(ctx) {
     };
 };
 
-exports.scale = function(t) {
-    return function(ctx) {
+exports.scale = function(ctx) {
+    return function(t) {
         return function() {
             ctx.scale(t.scaleX, t.scaleY);
             return {};
