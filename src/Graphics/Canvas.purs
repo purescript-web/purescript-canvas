@@ -478,7 +478,7 @@ type Transform =
   }
 
 -- | Apply a general transformation to the current transformation matrix
-foreign import transform :: forall eff. Transform -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import transform :: forall eff. Context2D -> Transform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the transformation matrix
 foreign import setTransform :: forall eff. Transform -> Context2D -> Eff (canvas :: CANVAS | eff) Unit

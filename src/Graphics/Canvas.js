@@ -314,8 +314,8 @@ exports.translate = function(ctx) {
     };
 };
 
-exports.transform = function(t) {
-    return function(ctx) {
+exports.transform = function(ctx) {
+    return function(t) {
         return function() {
             ctx.transform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
             return {};
