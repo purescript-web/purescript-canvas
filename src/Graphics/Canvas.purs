@@ -181,7 +181,7 @@ foreign import getCanvasHeight :: forall eff. CanvasElement -> Eff (canvas :: CA
 foreign import setCanvasWidth :: forall eff. CanvasElement -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the canvas height in pixels.
-foreign import setCanvasHeight :: forall eff. Number -> CanvasElement -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setCanvasHeight :: forall eff. CanvasElement -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Canvas dimensions (width and height) in pixels.
 type Dimensions = { width :: Number, height :: Number }
@@ -195,7 +195,7 @@ getCanvasDimensions ce = do
 
 -- | Set the canvas dimensions in pixels.
 setCanvasDimensions :: forall eff. Dimensions -> CanvasElement -> Eff (canvas :: CANVAS | eff) Unit
-setCanvasDimensions d ce = setCanvasHeight d.height ce *> setCanvasWidth ce d.width
+setCanvasDimensions d ce = setCanvasHeight ce d.height *> setCanvasWidth ce d.width
 
 -- | Create a data URL for the current canvas contents
 foreign import canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) String
