@@ -149,8 +149,8 @@ exports.setMiterLimit = function(ctx) {
     };
 };
 
-exports.setLineCapImpl = function(cap) {
-    return function(ctx) {
+exports.setLineCapImpl = function(ctx) {
+    return function(cap) {
         return function() {
             ctx.lineCap = cap;
             return {};

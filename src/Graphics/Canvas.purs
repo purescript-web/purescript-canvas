@@ -229,13 +229,13 @@ data LineCap = Round | Square | Butt
 
 derive instance eqLineCap :: Eq LineCap
 
-foreign import setLineCapImpl :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setLineCapImpl :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current line cap type.
-setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
-setLineCap Round  = setLineCapImpl "round"
-setLineCap Square = setLineCapImpl "square"
-setLineCap Butt   = setLineCapImpl "butt"
+setLineCap :: forall eff. Context2D -> LineCap -> Eff (canvas :: CANVAS | eff) Unit
+setLineCap context Round  = setLineCapImpl context "round"
+setLineCap context Square = setLineCapImpl context "square"
+setLineCap context Butt   = setLineCapImpl context "butt"
 
 -- Note that we can't re-use `Round` from LineCap, so I've added `Join` to all of these
 
