@@ -213,7 +213,7 @@ foreign import setStrokeStyle :: forall eff. Context2D -> String -> Eff (canvas 
 foreign import setShadowColor :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow blur radius.
-foreign import setShadowBlur :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setShadowBlur :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow x-offset.
 foreign import setShadowOffsetX :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit

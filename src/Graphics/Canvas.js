@@ -113,8 +113,8 @@ exports.setShadowColor = function(ctx) {
     };
 };
 
-exports.setShadowBlur = function(blur) {
-    return function(ctx) {
+exports.setShadowBlur = function(ctx) {
+    return function(blur) {
         return function() {
             ctx.shadowBlur = blur;
             return {};
