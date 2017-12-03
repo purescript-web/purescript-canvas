@@ -204,7 +204,7 @@ foreign import canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: CA
 foreign import setLineWidth :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current fill style/color.
-foreign import setFillStyle :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setFillStyle :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current stroke style/color.
 foreign import setStrokeStyle :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Unit

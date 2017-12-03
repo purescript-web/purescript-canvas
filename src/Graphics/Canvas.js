@@ -86,8 +86,8 @@ exports.setLineWidth = function(ctx) {
     };
 };
 
-exports.setFillStyle = function(style) {
-    return function(ctx) {
+exports.setFillStyle = function(ctx) {
+    return function(style) {
         return function() {
             ctx.fillStyle = style;
             return {};
