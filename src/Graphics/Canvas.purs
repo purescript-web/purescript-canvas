@@ -603,11 +603,11 @@ instance showPatternRepeat :: Show PatternRepeat where
   show RepeatY = "RepeatY"
   show NoRepeat = "NoRepeat"
 
-foreign import createPatternImpl :: forall eff. CanvasImageSource -> String -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasPattern
+foreign import createPatternImpl :: forall eff. Context2D -> CanvasImageSource -> String ->  Eff (canvas :: CANVAS | eff) CanvasPattern
 
 -- | Create a new canvas pattern (repeatable image).
-createPattern :: forall eff. CanvasImageSource -> PatternRepeat -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasPattern
-createPattern img repeat = createPatternImpl img (toString repeat)
+createPattern :: forall eff. Context2D -> CanvasImageSource -> PatternRepeat -> Eff (canvas :: CANVAS | eff) CanvasPattern
+createPattern context img repeat = createPatternImpl context img (toString repeat)
   where
     toString Repeat = "repeat"
     toString RepeatX = "repeat-x"

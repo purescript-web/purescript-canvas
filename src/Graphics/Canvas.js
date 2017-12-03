@@ -552,9 +552,9 @@ exports.drawImageFull = function(ctx) {
     };
 };
 
-exports.createPatternImpl = function(img) {
-    return function(repeat) {
-        return function(ctx) {
+exports.createPatternImpl = function(ctx) {
+    return function(img) {
+        return function(repeat) {
             return function() {
                 return ctx.createPattern(img, repeat);
             };
