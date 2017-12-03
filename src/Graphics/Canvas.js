@@ -131,8 +131,8 @@ exports.setShadowOffsetX = function(ctx) {
     };
 };
 
-exports.setShadowOffsetY = function(offsetY) {
-    return function(ctx) {
+exports.setShadowOffsetY = function(ctx) {
+    return function(offsetY) {
         return function() {
             ctx.shadowOffsetY = offsetY;
             return {};

@@ -219,7 +219,7 @@ foreign import setShadowBlur :: forall eff. Context2D -> Number -> Eff (canvas :
 foreign import setShadowOffsetX :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow y-offset.
-foreign import setShadowOffsetY :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setShadowOffsetY :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current miter limit.
 foreign import setMiterLimit :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
