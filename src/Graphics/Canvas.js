@@ -140,8 +140,8 @@ exports.setShadowOffsetY = function(ctx) {
     };
 };
 
-exports.setMiterLimit = function(limit) {
-    return function(ctx) {
+exports.setMiterLimit = function(ctx) {
+    return function(limit) {
         return function() {
             ctx.miterLimit = limit;
             return {};

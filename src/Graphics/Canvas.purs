@@ -222,7 +222,7 @@ foreign import setShadowOffsetX :: forall eff. Context2D -> Number -> Eff (canva
 foreign import setShadowOffsetY :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current miter limit.
-foreign import setMiterLimit :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setMiterLimit :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Enumerates the different types of line cap.
 data LineCap = Round | Square | Butt
