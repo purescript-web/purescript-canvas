@@ -194,8 +194,8 @@ getCanvasDimensions ce = do
   pure {width : w, height : h}
 
 -- | Set the canvas dimensions in pixels.
-setCanvasDimensions :: forall eff. Dimensions -> CanvasElement -> Eff (canvas :: CANVAS | eff) Unit
-setCanvasDimensions d ce = setCanvasHeight ce d.height *> setCanvasWidth ce d.width
+setCanvasDimensions :: forall eff. CanvasElement -> Dimensions -> Eff (canvas :: CANVAS | eff) Unit
+setCanvasDimensions ce d = setCanvasHeight ce d.height *> setCanvasWidth ce d.width
 
 -- | Create a data URL for the current canvas contents
 foreign import canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) String
