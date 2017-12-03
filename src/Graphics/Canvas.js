@@ -305,8 +305,8 @@ exports.rotate = function(ctx) {
     };
 };
 
-exports.translate = function(t) {
-    return function(ctx) {
+exports.translate = function(ctx) {
+    return function(t) {
         return function() {
             ctx.translate(t.translateX, t.translateY);
             return {};

@@ -465,7 +465,7 @@ type TranslateTransform =
   }
 
 -- | Apply a translation
-foreign import translate :: forall eff. TranslateTransform -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import translate :: forall eff. Context2D -> TranslateTransform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | An object representing a general transformation as a homogeneous matrix.
 type Transform =
