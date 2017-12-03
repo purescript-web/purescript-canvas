@@ -607,8 +607,8 @@ exports.setGradientFillStyle = function(ctx) {
     };
 };
 
-exports.quadraticCurveTo = function(qCurve) {
-    return function(ctx) {
+exports.quadraticCurveTo = function(ctx) {
+    return function(qCurve) {
         return function() {
             ctx.quadraticCurveTo(qCurve.cpx, qCurve.cpy, qCurve.x, qCurve.y);
             return {};

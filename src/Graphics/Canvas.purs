@@ -667,7 +667,7 @@ type QuadraticCurve =
     }
 
 -- | Draw a quadratic Bézier curve.
-foreign import quadraticCurveTo :: forall eff. QuadraticCurve -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import quadraticCurveTo :: forall eff. Context2D -> QuadraticCurve -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A type representing a cubic Bézier curve.
 -- |  - First Bézier control point: (`cp1x`, `cp1y`)
