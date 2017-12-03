@@ -615,7 +615,7 @@ createPattern context img repeat = createPatternImpl context img (toString repea
     toString NoRepeat = "no-repeat"
 
 -- | Set the Context2D fillstyle to the CanvasPattern.
-foreign import setPatternFillStyle :: forall eff. CanvasPattern -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setPatternFillStyle :: forall eff. Context2D -> CanvasPattern -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A type representing a linear gradient.
 -- |  -  Starting point coordinates: (`x0`, `y0`)
