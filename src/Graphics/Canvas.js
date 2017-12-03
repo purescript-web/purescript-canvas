@@ -77,8 +77,8 @@ exports.canvasToDataURL = function(canvas) {
     };
 };
 
-exports.setLineWidth = function(width) {
-    return function(ctx) {
+exports.setLineWidth = function(ctx) {
+    return function(width) {
         return function() {
             ctx.lineWidth = width;
             return {};

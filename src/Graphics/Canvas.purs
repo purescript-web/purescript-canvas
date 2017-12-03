@@ -71,7 +71,7 @@ module Graphics.Canvas
   , rotate
   , translate
   , transform
-  , setTransform  
+  , setTransform
 
   , textAlign
   , setTextAlign
@@ -201,7 +201,7 @@ setCanvasDimensions d ce = setCanvasHeight d.height ce *> setCanvasWidth d.width
 foreign import canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) String
 
 -- | Set the current line width.
-foreign import setLineWidth :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setLineWidth :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current fill style/color.
 foreign import setFillStyle :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
