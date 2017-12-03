@@ -95,8 +95,8 @@ exports.setFillStyle = function(ctx) {
     };
 };
 
-exports.setStrokeStyle = function(style) {
-    return function(ctx) {
+exports.setStrokeStyle = function(ctx) {
+    return function(style) {
         return function() {
             ctx.strokeStyle = style;
             return {};
