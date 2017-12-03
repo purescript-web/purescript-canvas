@@ -296,8 +296,8 @@ exports.scale = function(ctx) {
     };
 };
 
-exports.rotate = function(angle) {
-    return function(ctx) {
+exports.rotate = function(ctx) {
+    return function(angle) {
         return function() {
             ctx.rotate(angle);
             return {};
