@@ -587,9 +587,9 @@ exports.createRadialGradient = function(ctx) {
     };
 };
 
-exports.addColorStop = function(stop) {
-    return function(color) {
-        return function(gradient) {
+exports.addColorStop = function(gradient) {
+    return function(stop) {
+        return function(color) {
             return function() {
                 gradient.addColorStop(stop, color);
                 return gradient;

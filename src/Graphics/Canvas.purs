@@ -650,7 +650,7 @@ type RadialGradient =
 foreign import createRadialGradient :: forall eff. Context2D -> RadialGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
 
 -- | Add a single color stop to a CanvasGradient.
-foreign import addColorStop :: forall eff. Number -> String -> CanvasGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
+foreign import addColorStop :: forall eff. CanvasGradient -> Number -> String -> Eff (canvas :: CANVAS | eff) CanvasGradient
 
 -- | Set the Context2D fillstyle to the CanvasGradient.
 foreign import setGradientFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
