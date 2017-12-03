@@ -216,7 +216,7 @@ foreign import setShadowColor :: forall eff. Context2D -> String -> Eff (canvas 
 foreign import setShadowBlur :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow x-offset.
-foreign import setShadowOffsetX :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setShadowOffsetX :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow y-offset.
 foreign import setShadowOffsetY :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Unit

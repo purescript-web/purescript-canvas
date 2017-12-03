@@ -122,8 +122,8 @@ exports.setShadowBlur = function(ctx) {
     };
 };
 
-exports.setShadowOffsetX = function(offsetX) {
-    return function(ctx) {
+exports.setShadowOffsetX = function(ctx) {
+    return function(offsetX) {
         return function() {
             ctx.shadowOffsetX = offsetX;
             return {};
