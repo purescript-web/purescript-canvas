@@ -531,7 +531,7 @@ type TextMetrics = { width :: Number }
 foreign import font :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) String
 
 -- | Set the current font.
-foreign import setFont :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Unit
+foreign import setFont :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Fill some text.
 foreign import fillText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit

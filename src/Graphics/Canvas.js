@@ -362,8 +362,8 @@ exports.font = function(ctx) {
     };
 };
 
-exports.setFont = function(fontspec) {
-    return function(ctx) {
+exports.setFont = function(ctx) {
+    return function(fontspec) {
         return function() {
             ctx.font = fontspec;
             return {};
