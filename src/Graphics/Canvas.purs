@@ -629,7 +629,7 @@ type LinearGradient =
     }
 
 -- | Create a linear CanvasGradient.
-foreign import createLinearGradient :: forall eff. LinearGradient -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasGradient
+foreign import createLinearGradient :: forall eff. Context2D -> LinearGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
 
 -- | A type representing a radial gradient.
 -- |  -  Starting circle center coordinates: (`x0`, `y0`)

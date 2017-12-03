@@ -571,8 +571,8 @@ exports.setPatternFillStyle = function(ctx) {
     };
 };
 
-exports.createLinearGradient = function(linearGradient) {
-    return function(ctx) {
+exports.createLinearGradient = function(ctx) {
+    return function(linearGradient) {
         return function() {
             return ctx.createLinearGradient(linearGradient.x0, linearGradient.y0, linearGradient.x1, linearGradient.y1);
         };
