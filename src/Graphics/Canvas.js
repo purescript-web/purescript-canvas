@@ -598,8 +598,8 @@ exports.addColorStop = function(gradient) {
     };
 };
 
-exports.setGradientFillStyle = function(gradient) {
-    return function(ctx) {
+exports.setGradientFillStyle = function(ctx) {
+    return function(gradient) {
         return function() {
             ctx.fillStyle = gradient;
             return {};
