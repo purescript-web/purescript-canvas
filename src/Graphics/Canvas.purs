@@ -71,7 +71,7 @@ module Graphics.Canvas
   , rotate
   , translate
   , transform
-  , setTransform  
+  , setTransform
 
   , textAlign
   , setTextAlign
@@ -178,10 +178,10 @@ foreign import getCanvasWidth :: forall eff. CanvasElement -> Eff (canvas :: CAN
 foreign import getCanvasHeight :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) Number
 
 -- | Set the canvas width in pixels.
-foreign import setCanvasWidth :: forall eff. Number -> CanvasElement -> Eff (canvas :: CANVAS | eff) CanvasElement
+foreign import setCanvasWidth :: forall eff. CanvasElement -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the canvas height in pixels.
-foreign import setCanvasHeight :: forall eff. Number -> CanvasElement -> Eff (canvas :: CANVAS | eff) CanvasElement
+foreign import setCanvasHeight :: forall eff. CanvasElement -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Canvas dimensions (width and height) in pixels.
 type Dimensions = { width :: Number, height :: Number }
@@ -194,61 +194,61 @@ getCanvasDimensions ce = do
   pure {width : w, height : h}
 
 -- | Set the canvas dimensions in pixels.
-setCanvasDimensions :: forall eff. Dimensions -> CanvasElement -> Eff (canvas :: CANVAS | eff) CanvasElement
-setCanvasDimensions d ce = setCanvasHeight d.height ce >>= setCanvasWidth d.width
+setCanvasDimensions :: forall eff. CanvasElement -> Dimensions -> Eff (canvas :: CANVAS | eff) Unit
+setCanvasDimensions ce d = setCanvasHeight ce d.height *> setCanvasWidth ce d.width
 
 -- | Create a data URL for the current canvas contents
 foreign import canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) String
 
 -- | Set the current line width.
-foreign import setLineWidth :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setLineWidth :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current fill style/color.
-foreign import setFillStyle :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setFillStyle :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current stroke style/color.
-foreign import setStrokeStyle :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setStrokeStyle :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow color.
-foreign import setShadowColor :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setShadowColor :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow blur radius.
-foreign import setShadowBlur :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setShadowBlur :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow x-offset.
-foreign import setShadowOffsetX :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setShadowOffsetX :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current shadow y-offset.
-foreign import setShadowOffsetY :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setShadowOffsetY :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current miter limit.
-foreign import setMiterLimit :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setMiterLimit :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Enumerates the different types of line cap.
 data LineCap = Round | Square | Butt
 
 derive instance eqLineCap :: Eq LineCap
 
-foreign import setLineCapImpl :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setLineCapImpl :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current line cap type.
-setLineCap :: forall eff. LineCap -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
-setLineCap Round  = setLineCapImpl "round"
-setLineCap Square = setLineCapImpl "square"
-setLineCap Butt   = setLineCapImpl "butt"
+setLineCap :: forall eff. Context2D -> LineCap -> Eff (canvas :: CANVAS | eff) Unit
+setLineCap context Round  = setLineCapImpl context "round"
+setLineCap context Square = setLineCapImpl context "square"
+setLineCap context Butt   = setLineCapImpl context "butt"
 
 -- Note that we can't re-use `Round` from LineCap, so I've added `Join` to all of these
 
 -- | Enumerates the different types of line join
 data LineJoin = BevelJoin | RoundJoin | MiterJoin
 
-foreign import setLineJoinImpl :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setLineJoinImpl :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current line join type.
-setLineJoin :: forall eff. LineJoin -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
-setLineJoin BevelJoin = setLineJoinImpl "bevel"
-setLineJoin RoundJoin = setLineJoinImpl "round"
-setLineJoin MiterJoin = setLineJoinImpl "miter"
+setLineJoin :: forall eff. Context2D -> LineJoin -> Eff (canvas :: CANVAS | eff) Unit
+setLineJoin context BevelJoin = setLineJoinImpl context "bevel"
+setLineJoin context RoundJoin = setLineJoinImpl context "round"
+setLineJoin context MiterJoin = setLineJoinImpl context "miter"
 
 -- | Enumerates the different types of composite operations and blend modes.
 data Composite
@@ -310,10 +310,10 @@ instance showComposite :: Show Composite where
   show Color           = "Color"
   show Luminosity      = "Luminosity"
 
-foreign import setGlobalCompositeOperationImpl :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setGlobalCompositeOperationImpl :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current composite operation.
-setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: CANVAS | eff) Context2D
+setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: CANVAS | eff) Unit
 setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx (toString composite)
   where
     toString SourceOver      = "source-over"
@@ -344,28 +344,28 @@ setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx 
     toString Luminosity      = "luminosity"
 
 -- | Set the current global alpha level.
-foreign import setGlobalAlpha :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setGlobalAlpha :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Begin a path object.
-foreign import beginPath :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import beginPath :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Stroke the current object.
-foreign import stroke :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import stroke :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Fill the current object.
-foreign import fill :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import fill :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Clip to the current object.
-foreign import clip :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import clip :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Move the path to the specified coordinates, drawing a line segment.
-foreign import lineTo  :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import lineTo  :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Move the path to the specified coordinates, without drawing a line segment.
-foreign import moveTo  :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import moveTo  :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Close the current path.
-foreign import closePath  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import closePath  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A convenience function for drawing a stroked path.
 -- |
@@ -417,7 +417,7 @@ type Arc =
   }
 
 -- | Render an arc object.
-foreign import arc :: forall eff. Context2D -> Arc -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import arc :: forall eff. Context2D -> Arc -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A type representing a rectangle object:
 -- |
@@ -431,16 +431,16 @@ type Rectangle =
   }
 
 -- | Render a rectangle.
-foreign import rect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import rect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Fill a rectangle.
-foreign import fillRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import fillRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Stroke a rectangle.
-foreign import strokeRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import strokeRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Clear a rectangle.
-foreign import clearRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import clearRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | An object representing a scaling transform:
 -- |
@@ -451,10 +451,10 @@ type ScaleTransform =
   }
 
 -- | Apply a scaling transform.
-foreign import scale  :: forall eff. ScaleTransform -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import scale  :: forall eff. Context2D -> ScaleTransform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Apply a rotation.
-foreign import rotate :: forall eff. Number -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import rotate :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | An object representing a translation:
 -- |
@@ -465,7 +465,7 @@ type TranslateTransform =
   }
 
 -- | Apply a translation
-foreign import translate :: forall eff. TranslateTransform -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import translate :: forall eff. Context2D -> TranslateTransform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | An object representing a general transformation as a homogeneous matrix.
 type Transform =
@@ -478,10 +478,10 @@ type Transform =
   }
 
 -- | Apply a general transformation to the current transformation matrix
-foreign import transform :: forall eff. Transform -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import transform :: forall eff. Context2D -> Transform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the transformation matrix
-foreign import setTransform :: forall eff. Transform -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setTransform :: forall eff. Context2D -> Transform -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Enumerates types of text alignment.
 data TextAlign
@@ -509,10 +509,10 @@ textAlign ctx = unsafeParseTextAlign <$> textAlignImpl ctx
   unsafeParseTextAlign align = unsafeThrow $ "invalid TextAlign: " <> align
   -- ^ dummy to silence compiler warnings
 
-foreign import setTextAlignImpl :: forall eff. Context2D -> String -> (Eff (canvas :: CANVAS | eff) Context2D)
+foreign import setTextAlignImpl :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current text alignment.
-setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: CANVAS | eff) Context2D
+setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: CANVAS | eff) Unit
 setTextAlign ctx textalign =
   setTextAlignImpl ctx (toString textalign)
   where
@@ -531,22 +531,22 @@ type TextMetrics = { width :: Number }
 foreign import font :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) String
 
 -- | Set the current font.
-foreign import setFont :: forall eff. String -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setFont :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Fill some text.
-foreign import fillText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import fillText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Stroke some text.
-foreign import strokeText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import strokeText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Measure some text.
 foreign import measureText :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) TextMetrics
 
 -- | Save the current context.
-foreign import save  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import save  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Restore the previous context.
-foreign import restore  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import restore  :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A convenience function: run the action, preserving the existing context.
 -- |
@@ -568,10 +568,10 @@ withContext ctx action = do
 foreign import getImageData :: forall eff. Context2D -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) ImageData
 
 -- | Set image data for a portion of the canvas.
-foreign import putImageDataFull :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import putImageDataFull :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set image data for a portion of the canvas.
-foreign import putImageData :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import putImageData :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Create an image data object.
 foreign import createImageData :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) ImageData
@@ -588,11 +588,11 @@ foreign import imageDataHeight :: ImageData -> Int
 -- | Get the underlying buffer from an `ImageData` object.
 foreign import imageDataBuffer :: ImageData -> Uint8ClampedArray
 
-foreign import drawImage :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import drawImage :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
-foreign import drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
-foreign import drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Enumerates the different types of pattern repetitions.
 data PatternRepeat = Repeat | RepeatX | RepeatY | NoRepeat
@@ -603,11 +603,11 @@ instance showPatternRepeat :: Show PatternRepeat where
   show RepeatY = "RepeatY"
   show NoRepeat = "NoRepeat"
 
-foreign import createPatternImpl :: forall eff. CanvasImageSource -> String -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasPattern
+foreign import createPatternImpl :: forall eff. Context2D -> CanvasImageSource -> String ->  Eff (canvas :: CANVAS | eff) CanvasPattern
 
 -- | Create a new canvas pattern (repeatable image).
-createPattern :: forall eff. CanvasImageSource -> PatternRepeat -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasPattern
-createPattern img repeat = createPatternImpl img (toString repeat)
+createPattern :: forall eff. Context2D -> CanvasImageSource -> PatternRepeat -> Eff (canvas :: CANVAS | eff) CanvasPattern
+createPattern context img repeat = createPatternImpl context img (toString repeat)
   where
     toString Repeat = "repeat"
     toString RepeatX = "repeat-x"
@@ -615,7 +615,7 @@ createPattern img repeat = createPatternImpl img (toString repeat)
     toString NoRepeat = "no-repeat"
 
 -- | Set the Context2D fillstyle to the CanvasPattern.
-foreign import setPatternFillStyle :: forall eff. CanvasPattern -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setPatternFillStyle :: forall eff. Context2D -> CanvasPattern -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A type representing a linear gradient.
 -- |  -  Starting point coordinates: (`x0`, `y0`)
@@ -629,7 +629,7 @@ type LinearGradient =
     }
 
 -- | Create a linear CanvasGradient.
-foreign import createLinearGradient :: forall eff. LinearGradient -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasGradient
+foreign import createLinearGradient :: forall eff. Context2D -> LinearGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
 
 -- | A type representing a radial gradient.
 -- |  -  Starting circle center coordinates: (`x0`, `y0`)
@@ -647,13 +647,13 @@ type RadialGradient =
     }
 
 -- | Create a radial CanvasGradient.
-foreign import createRadialGradient :: forall eff. RadialGradient -> Context2D -> Eff (canvas :: CANVAS | eff) CanvasGradient
+foreign import createRadialGradient :: forall eff. Context2D -> RadialGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
 
 -- | Add a single color stop to a CanvasGradient.
-foreign import addColorStop :: forall eff. Number -> String -> CanvasGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
+foreign import addColorStop :: forall eff. CanvasGradient -> Number -> String -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the Context2D fillstyle to the CanvasGradient.
-foreign import setGradientFillStyle :: forall eff. CanvasGradient -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import setGradientFillStyle :: forall eff. Context2D -> CanvasGradient -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A type representing a quadratic Bézier curve.
 -- |  - Bézier control point: (`cpx`, `cpy`)
@@ -667,7 +667,7 @@ type QuadraticCurve =
     }
 
 -- | Draw a quadratic Bézier curve.
-foreign import quadraticCurveTo :: forall eff. QuadraticCurve -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import quadraticCurveTo :: forall eff. Context2D -> QuadraticCurve -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | A type representing a cubic Bézier curve.
 -- |  - First Bézier control point: (`cp1x`, `cp1y`)
@@ -684,4 +684,4 @@ type BezierCurve =
     }
 
 -- | Draw a cubic Bézier curve.
-foreign import bezierCurveTo :: forall eff. BezierCurve -> Context2D -> Eff (canvas :: CANVAS | eff) Context2D
+foreign import bezierCurveTo :: forall eff. Context2D -> BezierCurve -> Eff (canvas :: CANVAS | eff) Unit
