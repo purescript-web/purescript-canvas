@@ -81,6 +81,14 @@ exports.setLineWidth = function(ctx) {
     };
 };
 
+exports.setLineDash = function(ctx) {
+    return function(dash) {
+        return function() {
+            ctx.setLineDash(dash);
+        };
+    };
+};
+
 exports.setFillStyle = function(ctx) {
     return function(style) {
         return function() {

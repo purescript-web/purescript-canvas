@@ -37,6 +37,7 @@ module Graphics.Canvas
   , canvasToDataURL
 
   , setLineWidth
+  , setLineDash
   , setFillStyle
   , setStrokeStyle
   , setShadowBlur
@@ -202,6 +203,9 @@ foreign import canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: CA
 
 -- | Set the current line width.
 foreign import setLineWidth :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+
+-- | Set the current line dash pattern.
+foreign import setLineDash :: forall eff. Context2D -> Array Number -> Eff (canvas :: CANVAS | eff) Unit
 
 -- | Set the current fill style/color.
 foreign import setFillStyle :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
