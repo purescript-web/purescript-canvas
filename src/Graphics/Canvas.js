@@ -230,7 +230,7 @@ exports.closePath = function(ctx) {
 exports.arc = function(ctx) {
     return function(a) {
         return function() {
-            ctx.arc(a.x, a.y, a.r, a.start, a.end);
+            ctx.arc(a.x, a.y, a.r, a.start, a.end, a.clockwise);
         };
     };
 };

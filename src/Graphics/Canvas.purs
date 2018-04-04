@@ -418,6 +418,7 @@ type Arc =
   , r :: Number
   , start :: Number
   , end   :: Number
+  , anti :: Boolean
   }
 
 -- | Render an arc object.
