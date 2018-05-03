@@ -3,14 +3,6 @@
 This module defines foreign types and functions for working with the 2D
 Canvas API.
 
-#### `CANVAS`
-
-``` purescript
-data CANVAS :: Effect
-```
-
-The `Canvas` effect denotes computations which read/write from/to the canvas.
-
 #### `CanvasElement`
 
 ``` purescript
@@ -275,7 +267,7 @@ A type representing a cubic Bézier curve.
 #### `getCanvasElementById`
 
 ``` purescript
-getCanvasElementById :: forall eff. String -> Eff (canvas :: CANVAS | eff) (Maybe CanvasElement)
+getCanvasElementById :: String -> Effect (Maybe CanvasElement)
 ```
 
 Get a canvas element by ID, or `Nothing` if the element does not exist.
@@ -283,7 +275,7 @@ Get a canvas element by ID, or `Nothing` if the element does not exist.
 #### `getContext2D`
 
 ``` purescript
-getContext2D :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) Context2D
+getContext2D :: CanvasElement -> Effect Context2D
 ```
 
 Get the 2D graphics context for a canvas element.
@@ -291,7 +283,7 @@ Get the 2D graphics context for a canvas element.
 #### `getCanvasWidth`
 
 ``` purescript
-getCanvasWidth :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) Number
+getCanvasWidth :: CanvasElement -> Effect Number
 ```
 
 Get the canvas width in pixels.
@@ -299,7 +291,7 @@ Get the canvas width in pixels.
 #### `setCanvasWidth`
 
 ``` purescript
-setCanvasWidth :: forall eff. CanvasElement -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setCanvasWidth :: CanvasElement -> Number -> Effect Unit
 ```
 
 Set the canvas width in pixels.
@@ -307,7 +299,7 @@ Set the canvas width in pixels.
 #### `getCanvasHeight`
 
 ``` purescript
-getCanvasHeight :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) Number
+getCanvasHeight :: CanvasElement -> Effect Number
 ```
 
 Get the canvas height in pixels.
@@ -315,7 +307,7 @@ Get the canvas height in pixels.
 #### `setCanvasHeight`
 
 ``` purescript
-setCanvasHeight :: forall eff. CanvasElement -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setCanvasHeight :: CanvasElement -> Number -> Effect Unit
 ```
 
 Set the canvas height in pixels.
@@ -323,7 +315,7 @@ Set the canvas height in pixels.
 #### `getCanvasDimensions`
 
 ``` purescript
-getCanvasDimensions :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) Dimensions
+getCanvasDimensions :: CanvasElement -> Effect Dimensions
 ```
 
 Get the canvas dimensions in pixels.
@@ -331,7 +323,7 @@ Get the canvas dimensions in pixels.
 #### `setCanvasDimensions`
 
 ``` purescript
-setCanvasDimensions :: forall eff. CanvasElement -> Dimensions -> Eff (canvas :: CANVAS | eff) Unit
+setCanvasDimensions :: CanvasElement -> Dimensions -> Effect Unit
 ```
 
 Set the canvas dimensions in pixels.
@@ -339,7 +331,7 @@ Set the canvas dimensions in pixels.
 #### `canvasToDataURL`
 
 ``` purescript
-canvasToDataURL :: forall eff. CanvasElement -> Eff (canvas :: CANVAS | eff) String
+canvasToDataURL :: CanvasElement -> Effect String
 ```
 
 Create a data URL for the current canvas contents
@@ -347,15 +339,23 @@ Create a data URL for the current canvas contents
 #### `setLineWidth`
 
 ``` purescript
-setLineWidth :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setLineWidth :: Context2D -> Number -> Effect Unit
 ```
 
 Set the current line width.
 
+#### `setLineDash`
+
+``` purescript
+setLineDash :: Context2D -> Array Number -> Effect Unit
+```
+
+Set the current line dash pattern.
+
 #### `setFillStyle`
 
 ``` purescript
-setFillStyle :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
+setFillStyle :: Context2D -> String -> Effect Unit
 ```
 
 Set the current fill style/color.
@@ -363,7 +363,7 @@ Set the current fill style/color.
 #### `setStrokeStyle`
 
 ``` purescript
-setStrokeStyle :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
+setStrokeStyle :: Context2D -> String -> Effect Unit
 ```
 
 Set the current stroke style/color.
@@ -371,7 +371,7 @@ Set the current stroke style/color.
 #### `setShadowBlur`
 
 ``` purescript
-setShadowBlur :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setShadowBlur :: Context2D -> Number -> Effect Unit
 ```
 
 Set the current shadow blur radius.
@@ -379,7 +379,7 @@ Set the current shadow blur radius.
 #### `setShadowOffsetX`
 
 ``` purescript
-setShadowOffsetX :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setShadowOffsetX :: Context2D -> Number -> Effect Unit
 ```
 
 Set the current shadow x-offset.
@@ -387,7 +387,7 @@ Set the current shadow x-offset.
 #### `setShadowOffsetY`
 
 ``` purescript
-setShadowOffsetY :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setShadowOffsetY :: Context2D -> Number -> Effect Unit
 ```
 
 Set the current shadow y-offset.
@@ -395,7 +395,7 @@ Set the current shadow y-offset.
 #### `setShadowColor`
 
 ``` purescript
-setShadowColor :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
+setShadowColor :: Context2D -> String -> Effect Unit
 ```
 
 Set the current shadow color.
@@ -403,7 +403,7 @@ Set the current shadow color.
 #### `setMiterLimit`
 
 ``` purescript
-setMiterLimit :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setMiterLimit :: Context2D -> Number -> Effect Unit
 ```
 
 Set the current miter limit.
@@ -411,7 +411,7 @@ Set the current miter limit.
 #### `setLineCap`
 
 ``` purescript
-setLineCap :: forall eff. Context2D -> LineCap -> Eff (canvas :: CANVAS | eff) Unit
+setLineCap :: Context2D -> LineCap -> Effect Unit
 ```
 
 Set the current line cap type.
@@ -419,7 +419,7 @@ Set the current line cap type.
 #### `setLineJoin`
 
 ``` purescript
-setLineJoin :: forall eff. Context2D -> LineJoin -> Eff (canvas :: CANVAS | eff) Unit
+setLineJoin :: Context2D -> LineJoin -> Effect Unit
 ```
 
 Set the current line join type.
@@ -427,7 +427,7 @@ Set the current line join type.
 #### `setGlobalCompositeOperation`
 
 ``` purescript
-setGlobalCompositeOperation :: forall eff. Context2D -> Composite -> Eff (canvas :: CANVAS | eff) Unit
+setGlobalCompositeOperation :: Context2D -> Composite -> Effect Unit
 ```
 
 Set the current composite operation.
@@ -435,7 +435,7 @@ Set the current composite operation.
 #### `setGlobalAlpha`
 
 ``` purescript
-setGlobalAlpha :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+setGlobalAlpha :: Context2D -> Number -> Effect Unit
 ```
 
 Set the current global alpha level.
@@ -443,7 +443,7 @@ Set the current global alpha level.
 #### `beginPath`
 
 ``` purescript
-beginPath :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
+beginPath :: Context2D -> Effect Unit
 ```
 
 Begin a path object.
@@ -451,7 +451,7 @@ Begin a path object.
 #### `stroke`
 
 ``` purescript
-stroke :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
+stroke :: Context2D -> Effect Unit
 ```
 
 Stroke the current object.
@@ -459,7 +459,7 @@ Stroke the current object.
 #### `fill`
 
 ``` purescript
-fill :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
+fill :: Context2D -> Effect Unit
 ```
 
 Fill the current object.
@@ -467,7 +467,7 @@ Fill the current object.
 #### `clip`
 
 ``` purescript
-clip :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
+clip :: Context2D -> Effect Unit
 ```
 
 Clip to the current object.
@@ -475,7 +475,7 @@ Clip to the current object.
 #### `lineTo`
 
 ``` purescript
-lineTo :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+lineTo :: Context2D -> Number -> Number -> Effect Unit
 ```
 
 Move the path to the specified coordinates, drawing a line segment.
@@ -483,7 +483,7 @@ Move the path to the specified coordinates, drawing a line segment.
 #### `moveTo`
 
 ``` purescript
-moveTo :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+moveTo :: Context2D -> Number -> Number -> Effect Unit
 ```
 
 Move the path to the specified coordinates, without drawing a line segment.
@@ -491,7 +491,7 @@ Move the path to the specified coordinates, without drawing a line segment.
 #### `closePath`
 
 ``` purescript
-closePath :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
+closePath :: Context2D -> Effect Unit
 ```
 
 Close the current path.
@@ -499,7 +499,7 @@ Close the current path.
 #### `strokePath`
 
 ``` purescript
-strokePath :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
+strokePath :: forall a. Context2D -> Effect a -> Effect a
 ```
 
 A convenience function for drawing a stroked path.
@@ -517,7 +517,7 @@ strokePath ctx $ do
 #### `fillPath`
 
 ``` purescript
-fillPath :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
+fillPath :: forall a. Context2D -> Effect a -> Effect a
 ```
 
 A convenience function for drawing a filled path.
@@ -535,7 +535,7 @@ fillPath ctx $ do
 #### `arc`
 
 ``` purescript
-arc :: forall eff. Context2D -> Arc -> Eff (canvas :: CANVAS | eff) Unit
+arc :: Context2D -> Arc -> Effect Unit
 ```
 
 Render an arc object.
@@ -543,7 +543,7 @@ Render an arc object.
 #### `rect`
 
 ``` purescript
-rect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
+rect :: Context2D -> Rectangle -> Effect Unit
 ```
 
 Render a rectangle.
@@ -551,7 +551,7 @@ Render a rectangle.
 #### `fillRect`
 
 ``` purescript
-fillRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
+fillRect :: Context2D -> Rectangle -> Effect Unit
 ```
 
 Fill a rectangle.
@@ -559,7 +559,7 @@ Fill a rectangle.
 #### `strokeRect`
 
 ``` purescript
-strokeRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
+strokeRect :: Context2D -> Rectangle -> Effect Unit
 ```
 
 Stroke a rectangle.
@@ -567,7 +567,7 @@ Stroke a rectangle.
 #### `clearRect`
 
 ``` purescript
-clearRect :: forall eff. Context2D -> Rectangle -> Eff (canvas :: CANVAS | eff) Unit
+clearRect :: Context2D -> Rectangle -> Effect Unit
 ```
 
 Clear a rectangle.
@@ -575,7 +575,7 @@ Clear a rectangle.
 #### `scale`
 
 ``` purescript
-scale :: forall eff. Context2D -> ScaleTransform -> Eff (canvas :: CANVAS | eff) Unit
+scale :: Context2D -> ScaleTransform -> Effect Unit
 ```
 
 Apply a scaling transform.
@@ -583,7 +583,7 @@ Apply a scaling transform.
 #### `rotate`
 
 ``` purescript
-rotate :: forall eff. Context2D -> Number -> Eff (canvas :: CANVAS | eff) Unit
+rotate :: Context2D -> Number -> Effect Unit
 ```
 
 Apply a rotation.
@@ -591,7 +591,7 @@ Apply a rotation.
 #### `translate`
 
 ``` purescript
-translate :: forall eff. Context2D -> TranslateTransform -> Eff (canvas :: CANVAS | eff) Unit
+translate :: Context2D -> TranslateTransform -> Effect Unit
 ```
 
 Apply a translation
@@ -599,7 +599,7 @@ Apply a translation
 #### `transform`
 
 ``` purescript
-transform :: forall eff. Context2D -> Transform -> Eff (canvas :: CANVAS | eff) Unit
+transform :: Context2D -> Transform -> Effect Unit
 ```
 
 Apply a general transformation to the current transformation matrix
@@ -607,7 +607,7 @@ Apply a general transformation to the current transformation matrix
 #### `setTransform`
 
 ``` purescript
-setTransform :: forall eff. Context2D -> Transform -> Eff (canvas :: CANVAS | eff) Unit
+setTransform :: Context2D -> Transform -> Effect Unit
 ```
 
 Set the transformation matrix
@@ -615,7 +615,7 @@ Set the transformation matrix
 #### `textAlign`
 
 ``` purescript
-textAlign :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) TextAlign
+textAlign :: Context2D -> Effect TextAlign
 ```
 
 Get the current text alignment.
@@ -623,7 +623,7 @@ Get the current text alignment.
 #### `setTextAlign`
 
 ``` purescript
-setTextAlign :: forall eff. Context2D -> TextAlign -> Eff (canvas :: CANVAS | eff) Unit
+setTextAlign :: Context2D -> TextAlign -> Effect Unit
 ```
 
 Set the current text alignment.
@@ -631,7 +631,7 @@ Set the current text alignment.
 #### `font`
 
 ``` purescript
-font :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) String
+font :: Context2D -> Effect String
 ```
 
 Get the current font.
@@ -639,7 +639,7 @@ Get the current font.
 #### `setFont`
 
 ``` purescript
-setFont :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) Unit
+setFont :: Context2D -> String -> Effect Unit
 ```
 
 Set the current font.
@@ -647,7 +647,7 @@ Set the current font.
 #### `fillText`
 
 ``` purescript
-fillText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+fillText :: Context2D -> String -> Number -> Number -> Effect Unit
 ```
 
 Fill some text.
@@ -655,7 +655,7 @@ Fill some text.
 #### `strokeText`
 
 ``` purescript
-strokeText :: forall eff. Context2D -> String -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+strokeText :: Context2D -> String -> Number -> Number -> Effect Unit
 ```
 
 Stroke some text.
@@ -663,7 +663,7 @@ Stroke some text.
 #### `measureText`
 
 ``` purescript
-measureText :: forall eff. Context2D -> String -> Eff (canvas :: CANVAS | eff) TextMetrics
+measureText :: Context2D -> String -> Effect TextMetrics
 ```
 
 Measure some text.
@@ -671,7 +671,7 @@ Measure some text.
 #### `save`
 
 ``` purescript
-save :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
+save :: Context2D -> Effect Unit
 ```
 
 Save the current context.
@@ -679,7 +679,7 @@ Save the current context.
 #### `restore`
 
 ``` purescript
-restore :: forall eff. Context2D -> Eff (canvas :: CANVAS | eff) Unit
+restore :: Context2D -> Effect Unit
 ```
 
 Restore the previous context.
@@ -687,7 +687,7 @@ Restore the previous context.
 #### `withContext`
 
 ``` purescript
-withContext :: forall eff a. Context2D -> Eff (canvas :: CANVAS | eff) a -> Eff (canvas :: CANVAS | eff) a
+withContext :: forall a. Context2D -> Effect a -> Effect a
 ```
 
 A convenience function: run the action, preserving the existing context.
@@ -703,7 +703,7 @@ withContext ctx $ do
 #### `tryLoadImage`
 
 ``` purescript
-tryLoadImage :: forall eff. String -> (Maybe CanvasImageSource -> Eff (canvas :: CANVAS | eff) Unit) -> Eff (canvas :: CANVAS | eff) Unit
+tryLoadImage :: String -> (Maybe CanvasImageSource -> Effect Unit) -> Effect Unit
 ```
 
 Asynchronously load an image file by specifying its path.
@@ -711,7 +711,7 @@ Asynchronously load an image file by specifying its path.
 #### `getImageData`
 
 ``` purescript
-getImageData :: forall eff. Context2D -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) ImageData
+getImageData :: Context2D -> Number -> Number -> Number -> Number -> Effect ImageData
 ```
 
 Get image data for a portion of the canvas.
@@ -719,7 +719,7 @@ Get image data for a portion of the canvas.
 #### `putImageData`
 
 ``` purescript
-putImageData :: forall eff. Context2D -> ImageData -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+putImageData :: Context2D -> ImageData -> Number -> Number -> Effect Unit
 ```
 
 Set image data for a portion of the canvas.
@@ -727,7 +727,7 @@ Set image data for a portion of the canvas.
 #### `putImageDataFull`
 
 ``` purescript
-putImageDataFull :: forall eff. Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+putImageDataFull :: Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Effect Unit
 ```
 
 Set image data for a portion of the canvas.
@@ -735,7 +735,7 @@ Set image data for a portion of the canvas.
 #### `createImageData`
 
 ``` purescript
-createImageData :: forall eff. Context2D -> Number -> Number -> Eff (canvas :: CANVAS | eff) ImageData
+createImageData :: Context2D -> Number -> Number -> Effect ImageData
 ```
 
 Create an image data object.
@@ -743,7 +743,7 @@ Create an image data object.
 #### `createImageDataCopy`
 
 ``` purescript
-createImageDataCopy :: forall eff. Context2D -> ImageData -> Eff (canvas :: CANVAS | eff) ImageData
+createImageDataCopy :: Context2D -> ImageData -> Effect ImageData
 ```
 
 Create a copy of an image data object.
@@ -781,25 +781,25 @@ canvasElementToImageSource :: CanvasElement -> CanvasImageSource
 #### `drawImage`
 
 ``` purescript
-drawImage :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+drawImage :: Context2D -> CanvasImageSource -> Number -> Number -> Effect Unit
 ```
 
 #### `drawImageScale`
 
 ``` purescript
-drawImageScale :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+drawImageScale :: Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Effect Unit
 ```
 
 #### `drawImageFull`
 
 ``` purescript
-drawImageFull :: forall eff. Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Eff (canvas :: CANVAS | eff) Unit
+drawImageFull :: Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Effect Unit
 ```
 
 #### `createPattern`
 
 ``` purescript
-createPattern :: forall eff. Context2D -> CanvasImageSource -> PatternRepeat -> Eff (canvas :: CANVAS | eff) CanvasPattern
+createPattern :: Context2D -> CanvasImageSource -> PatternRepeat -> Effect CanvasPattern
 ```
 
 Create a new canvas pattern (repeatable image).
@@ -807,7 +807,7 @@ Create a new canvas pattern (repeatable image).
 #### `setPatternFillStyle`
 
 ``` purescript
-setPatternFillStyle :: forall eff. Context2D -> CanvasPattern -> Eff (canvas :: CANVAS | eff) Unit
+setPatternFillStyle :: Context2D -> CanvasPattern -> Effect Unit
 ```
 
 Set the Context2D fillstyle to the CanvasPattern.
@@ -815,7 +815,7 @@ Set the Context2D fillstyle to the CanvasPattern.
 #### `createLinearGradient`
 
 ``` purescript
-createLinearGradient :: forall eff. Context2D -> LinearGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
+createLinearGradient :: Context2D -> LinearGradient -> Effect CanvasGradient
 ```
 
 Create a linear CanvasGradient.
@@ -823,7 +823,7 @@ Create a linear CanvasGradient.
 #### `createRadialGradient`
 
 ``` purescript
-createRadialGradient :: forall eff. Context2D -> RadialGradient -> Eff (canvas :: CANVAS | eff) CanvasGradient
+createRadialGradient :: Context2D -> RadialGradient -> Effect CanvasGradient
 ```
 
 Create a radial CanvasGradient.
@@ -831,7 +831,7 @@ Create a radial CanvasGradient.
 #### `addColorStop`
 
 ``` purescript
-addColorStop :: forall eff. CanvasGradient -> Number -> String -> Eff (canvas :: CANVAS | eff) Unit
+addColorStop :: CanvasGradient -> Number -> String -> Effect Unit
 ```
 
 Add a single color stop to a CanvasGradient.
@@ -839,7 +839,7 @@ Add a single color stop to a CanvasGradient.
 #### `setGradientFillStyle`
 
 ``` purescript
-setGradientFillStyle :: forall eff. Context2D -> CanvasGradient -> Eff (canvas :: CANVAS | eff) Unit
+setGradientFillStyle :: Context2D -> CanvasGradient -> Effect Unit
 ```
 
 Set the Context2D fillstyle to the CanvasGradient.
@@ -847,7 +847,7 @@ Set the Context2D fillstyle to the CanvasGradient.
 #### `quadraticCurveTo`
 
 ``` purescript
-quadraticCurveTo :: forall eff. Context2D -> QuadraticCurve -> Eff (canvas :: CANVAS | eff) Unit
+quadraticCurveTo :: Context2D -> QuadraticCurve -> Effect Unit
 ```
 
 Draw a quadratic Bézier curve.
@@ -855,7 +855,7 @@ Draw a quadratic Bézier curve.
 #### `bezierCurveTo`
 
 ``` purescript
-bezierCurveTo :: forall eff. Context2D -> BezierCurve -> Eff (canvas :: CANVAS | eff) Unit
+bezierCurveTo :: Context2D -> BezierCurve -> Effect Unit
 ```
 
 Draw a cubic Bézier curve.
