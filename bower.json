@@ -20,10 +20,10 @@
     "url": "git://github.com/paf31/purescript-canvas.git"
   },
   "dependencies": {
-    "purescript-eff": "^3.0.0",
-    "purescript-functions": "^3.0.0",
-    "purescript-maybe": "^3.0.0",
-    "purescript-exceptions": "^3.0.0",
-    "purescript-arraybuffer-types": "^1.0.0"
+    "purescript-effect": "^2.0.0",
+    "purescript-functions": "^4.0.0",
+    "purescript-maybe": "^4.0.0",
+    "purescript-exceptions": "^4.0.0",
+    "purescript-arraybuffer-types": "^2.0.0"
   }
 }
