@@ -153,11 +153,12 @@ tryLoadImage
   -> Effect Unit
 tryLoadImage path k = tryLoadImageImpl path (k Nothing) (k <<< Just)
 
-foreign import getCanvasElementByIdImpl ::
-  forall r. Fn3 String
-                    (CanvasElement -> r)
-                    r
-                    (Effect r)
+foreign import getCanvasElementByIdImpl
+  :: forall r
+   . Fn3 String
+         (CanvasElement -> r)
+         r
+         (Effect r)
 
 -- | Get a canvas element by ID, or `Nothing` if the element does not exist.
 getCanvasElementById :: String -> Effect (Maybe CanvasElement)
@@ -409,7 +410,7 @@ fillPath ctx path = do
 type Arc =
   { x :: Number
   , y :: Number
-  , r :: Number
+  , radius :: Number
   , start :: Number
   , end   :: Number
   }
@@ -424,8 +425,8 @@ foreign import arc :: Context2D -> Arc -> Effect Unit
 type Rectangle =
   { x :: Number
   , y :: Number
-  , w :: Number
-  , h :: Number
+  , width :: Number
+  , height :: Number
   }
 
 -- | Render a rectangle.

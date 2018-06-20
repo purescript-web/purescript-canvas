@@ -230,7 +230,7 @@ exports.closePath = function(ctx) {
 exports.arc = function(ctx) {
     return function(a) {
         return function() {
-            ctx.arc(a.x, a.y, a.r, a.start, a.end);
+            ctx.arc(a.x, a.y, a.radius, a.start, a.end);
         };
     };
 };
@@ -238,7 +238,7 @@ exports.arc = function(ctx) {
 exports.rect = function(ctx) {
     return function(r) {
         return function() {
-            ctx.rect(r.x, r.y, r.w, r.h);
+            ctx.rect(r.x, r.y, r.width, r.height);
         };
     };
 };
@@ -246,7 +246,7 @@ exports.rect = function(ctx) {
 exports.fillRect = function(ctx) {
     return function(r) {
         return function() {
-            ctx.fillRect(r.x, r.y, r.w, r.h);
+            ctx.fillRect(r.x, r.y, r.width, r.height);
         };
     };
 };
@@ -254,7 +254,7 @@ exports.fillRect = function(ctx) {
 exports.strokeRect = function(ctx) {
     return function(r) {
         return function() {
-            ctx.strokeRect(r.x, r.y, r.w, r.h);
+            ctx.strokeRect(r.x, r.y, r.width, r.height);
         };
     };
 };
@@ -262,7 +262,7 @@ exports.strokeRect = function(ctx) {
 exports.clearRect = function(ctx) {
     return function(r) {
         return function() {
-            ctx.clearRect(r.x, r.y, r.w, r.h);
+            ctx.clearRect(r.x, r.y, r.width, r.height);
         };
     };
 };
@@ -303,14 +303,6 @@ exports.setTransform = function(ctx) {
     return function(t) {
         return function() {
             ctx.setTransform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
-        };
-    };
-};
-
-exports.clearRect = function(ctx) {
-    return function(r) {
-        return function() {
-            ctx.clearRect(r.x, r.y, r.w, r.h);
         };
     };
 };

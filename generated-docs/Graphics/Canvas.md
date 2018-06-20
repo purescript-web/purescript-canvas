@@ -38,7 +38,7 @@ Opaque object for drawing elements and things to the canvas.
 #### `Arc`
 
 ``` purescript
-type Arc = { x :: Number, y :: Number, r :: Number, start :: Number, end :: Number }
+type Arc = { x :: Number, y :: Number, radius :: Number, start :: Number, end :: Number }
 ```
 
 A type representing an arc object:
@@ -124,7 +124,7 @@ Enumerates the different types of line join
 #### `Rectangle`
 
 ``` purescript
-type Rectangle = { x :: Number, y :: Number, w :: Number, h :: Number }
+type Rectangle = { x :: Number, y :: Number, width :: Number, height :: Number }
 ```
 
 A type representing a rectangle object:
