@@ -17,6 +17,7 @@ module Graphics.Canvas
   , Transform
   , TranslateTransform
   , TextAlign(..)
+  , TextBaseline(..)
   , CanvasPattern
   , PatternRepeat(..)
   , CanvasGradient
@@ -75,6 +76,8 @@ module Graphics.Canvas
 
   , textAlign
   , setTextAlign
+  , textBaseline
+  , setTextBaseline
   , font
   , setFont
   , fillText
@@ -520,6 +523,53 @@ setTextAlign ctx textalign =
     toString AlignCenter = "center"
     toString AlignStart = "start"
     toString AlignEnd = "end"
+
+-- | Enumerates types of text baseline.
+data TextBaseline
+  = BaselineTop
+  | BaselineHanging
+  | BaselineMiddle
+  | BaselineAlphabetic
+  | BaselineIdeographic
+  | BaselineBottom
+
+instance showTextBaseline :: Show TextBaseline where
+  show BaselineTop = "BaselineTop"
+  show BaselineHanging = "BaselineHanging"
+  show BaselineMiddle = "BaselineMiddle"
+  show BaselineAlphabetic = "BaselineAlphabetic"
+  show BaselineIdeographic = "BaselineIdeographic"
+  show BaselineBottom = "BaselineBottom"
+
+foreign import textBaselineImpl :: Context2D -> Effect String
+
+-- | Get the current text baseline.
+textBaseline :: Context2D -> Effect TextBaseline
+textBaseline ctx = unsafeParseTextBaseline <$> textBaselineImpl ctx
+  where
+  unsafeParseTextBaseline :: String -> TextBaseline
+  unsafeParseTextBaseline "top" = BaselineTop
+  unsafeParseTextBaseline "hanging" = BaselineHanging
+  unsafeParseTextBaseline "middle" = BaselineMiddle
+  unsafeParseTextBaseline "alphabetic" = BaselineAlphabetic
+  unsafeParseTextBaseline "ideographic" = BaselineIdeographic
+  unsafeParseTextBaseline "bottom" = BaselineBottom
+  unsafeParseTextBaseline align = unsafeThrow $ "invalid TextBaseline: " <> align
+  -- ^ dummy to silence compiler warnings
+
+foreign import setTextBaselineImpl :: Context2D -> String -> Effect Unit
+
+-- | Set the current text baseline.
+setTextBaseline :: Context2D -> TextBaseline -> Effect Unit
+setTextBaseline ctx textbaseline =
+  setTextBaselineImpl ctx (toString textbaseline)
+  where
+    toString BaselineTop = "top"
+    toString BaselineHanging = "hanging"
+    toString BaselineMiddle = "middle"
+    toString BaselineAlphabetic = "alphabetic"
+    toString BaselineIdeographic = "ideographic"
+    toString BaselineBottom = "bottom"
 
 -- | Text metrics:
 -- |
