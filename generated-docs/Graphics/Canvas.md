@@ -696,7 +696,7 @@ For example, outside this block, the fill style is preseved:
 
 ```purescript
 withContext ctx $ do
-  setFillStyle "red" ctx
+  setFillStyle ctx "red"
   ...
 ```
 
