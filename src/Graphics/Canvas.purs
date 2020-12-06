@@ -241,6 +241,8 @@ setLineCap context Butt   = setLineCapImpl context "butt"
 -- | Enumerates the different types of line join
 data LineJoin = BevelJoin | RoundJoin | MiterJoin
 
+derive instance eqLineJoin :: Eq LineJoin
+
 foreign import setLineJoinImpl :: Context2D -> String -> Effect Unit
 
 -- | Set the current line join type.
@@ -280,6 +282,8 @@ data Composite
    | Saturation
    | Color
    | Luminosity
+
+derive instance eqComposite :: Eq Composite
 
 instance showComposite :: Show Composite where
   show SourceOver      = "SourceOver"
@@ -486,6 +490,8 @@ foreign import setTransform :: Context2D -> Transform -> Effect Unit
 data TextAlign
   = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
 
+derive instance eqTextAlign :: Eq TextAlign
+
 instance showTextAlign :: Show TextAlign where
   show AlignLeft = "AlignLeft"
   show AlignRight = "AlignRight"
@@ -595,6 +601,8 @@ foreign import drawImageFull :: Context2D -> CanvasImageSource -> Number -> Numb
 
 -- | Enumerates the different types of pattern repetitions.
 data PatternRepeat = Repeat | RepeatX | RepeatY | NoRepeat
+
+derive instance eqPatternRepeat :: Eq PatternRepeat
 
 instance showPatternRepeat :: Show PatternRepeat where
   show Repeat = "Repeat"
