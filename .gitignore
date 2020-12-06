@@ -4,10 +4,7 @@ bower_components/
 package-lock.json
 
 /.*
+!/.github
 !/.gitignore
-!/.travis.yml
 
-# OS generated files #
-######################
-ehthumbs.db
-Thumbs.db
+*.db
