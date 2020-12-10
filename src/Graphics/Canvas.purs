@@ -559,7 +559,7 @@ foreign import restore  :: Context2D -> Effect Unit
 -- |
 -- | ```purescript
 -- | withContext ctx $ do
--- |   setFillStyle "red" ctx
+-- |   setFillStyle ctx "red"
 -- |   ...
 -- | ```
 withContext :: forall a. Context2D -> Effect a -> Effect a
