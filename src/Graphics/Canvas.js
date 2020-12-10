@@ -321,6 +321,20 @@ exports.setTextAlignImpl = function(ctx) {
     }
 };
 
+exports.textBaselineImpl = function (ctx) {
+    return function () {
+        return ctx.textBaseline;
+    }
+};
+
+exports.setTextBaselineImpl = function (ctx) {
+    return function (textBaseline) {
+        return function () {
+            ctx.textBaseline = textBaseline;
+        }
+    }
+};
+
 exports.font = function(ctx) {
     return function() {
         return ctx.font;
