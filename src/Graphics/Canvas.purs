@@ -122,9 +122,10 @@ import Effect.Exception.Unsafe (unsafeThrow)
 import Data.ArrayBuffer.Types (Uint8ClampedArray)
 import Data.Function.Uncurried (Fn3, runFn3)
 import Data.Maybe (Maybe(..))
+import Web.HTML.HTMLCanvasElement (HTMLCanvasElement)
 
--- | A canvas HTML element.
-foreign import data CanvasElement :: Type
+-- | A canvas HTML element.  DEPRECATED: Please use HTMLCanvasElement
+type CanvasElement = HTMLCanvasElement
 
 -- | A 2D graphics context.
 foreign import data Context2D :: Type
@@ -141,7 +142,7 @@ foreign import data CanvasPattern :: Type
 -- | Opaque object describing a gradient.
 foreign import data CanvasGradient :: Type
 
-foreign import canvasElementToImageSource :: CanvasElement -> CanvasImageSource
+foreign import canvasElementToImageSource :: HTMLCanvasElement -> CanvasImageSource
 
 foreign import tryLoadImageImpl
   :: String
@@ -159,45 +160,45 @@ tryLoadImage path k = tryLoadImageImpl path (k Nothing) (k <<< Just)
 foreign import getCanvasElementByIdImpl
   :: forall r
    . Fn3 String
-         (CanvasElement -> r)
+         (HTMLCanvasElement -> r)
          r
          (Effect r)
 
 -- | Get a canvas element by ID, or `Nothing` if the element does not exist.
-getCanvasElementById :: String -> Effect (Maybe CanvasElement)
+getCanvasElementById :: String -> Effect (Maybe HTMLCanvasElement)
 getCanvasElementById elId = runFn3 getCanvasElementByIdImpl elId Just Nothing
 
 -- | Get the 2D graphics context for a canvas element.
-foreign import getContext2D :: CanvasElement -> Effect Context2D
+foreign import getContext2D :: HTMLCanvasElement -> Effect Context2D
 
 -- | Get the canvas width in pixels.
-foreign import getCanvasWidth :: CanvasElement -> Effect Number
+foreign import getCanvasWidth :: HTMLCanvasElement -> Effect Number
 
 -- | Get the canvas height in pixels.
-foreign import getCanvasHeight :: CanvasElement -> Effect Number
+foreign import getCanvasHeight :: HTMLCanvasElement -> Effect Number
 
 -- | Set the canvas width in pixels.
-foreign import setCanvasWidth :: CanvasElement -> Number -> Effect Unit
+foreign import setCanvasWidth :: HTMLCanvasElement -> Number -> Effect Unit
 
 -- | Set the canvas height in pixels.
-foreign import setCanvasHeight :: CanvasElement -> Number -> Effect Unit
+foreign import setCanvasHeight :: HTMLCanvasElement -> Number -> Effect Unit
 
 -- | Canvas dimensions (width and height) in pixels.
 type Dimensions = { width :: Number, height :: Number }
 
 -- | Get the canvas dimensions in pixels.
-getCanvasDimensions :: CanvasElement -> Effect Dimensions
+getCanvasDimensions :: HTMLCanvasElement -> Effect Dimensions
 getCanvasDimensions ce = do
   w <- getCanvasWidth  ce
   h <- getCanvasHeight ce
   pure {width : w, height : h}
 
 -- | Set the canvas dimensions in pixels.
-setCanvasDimensions :: CanvasElement -> Dimensions -> Effect Unit
+setCanvasDimensions :: HTMLCanvasElement -> Dimensions -> Effect Unit
 setCanvasDimensions ce d = setCanvasHeight ce d.height *> setCanvasWidth ce d.width
 
 -- | Create a data URL for the current canvas contents
-foreign import canvasToDataURL :: CanvasElement -> Effect String
+foreign import canvasToDataURL :: HTMLCanvasElement -> Effect String
 
 -- | Set the current line width.
 foreign import setLineWidth :: Context2D -> Number -> Effect Unit
