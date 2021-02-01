@@ -24,6 +24,7 @@
     "purescript-functions": "master",
     "purescript-maybe": "master",
     "purescript-exceptions": "master",
-    "purescript-arraybuffer-types": "main"
+    "purescript-arraybuffer-types": "main",
+    "purescript-web-html": "master"
   }
 }

@@ -6,6 +6,7 @@ Notable changes to this project are documented in this file. The format is based
 
 Breaking changes:
 - Added support for PureScript 0.14 and dropped support for all previous versions (#71)
+- Functions now operate over Web.HTML.HTMLCanvasElement instead of CanvasElement.  Kept CanvasElement around for reverse compatibility, but people will still need to switch to HTMLCanvasElement when defining Typeclass instances (#76)
 
 New features:
 - Added `Eq` instances for `LineJoin`, `Composite`, `TextAlign`, and `PatternRepeat` (#67)
