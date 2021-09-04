@@ -94,6 +94,7 @@ module Graphics.Canvas
   , putImageDataFull
   , createImageData
   , createImageDataCopy
+  , createImageDataWith
   , imageDataWidth
   , imageDataHeight
   , imageDataBuffer
@@ -633,6 +634,10 @@ foreign import createImageData :: Context2D -> Number -> Number -> Effect ImageD
 
 -- | Create a copy of an image data object.
 foreign import createImageDataCopy :: Context2D -> ImageData -> Effect ImageData
+
+-- | Create an image data object given a `Uint8ClampedArray` containing the underlying pixel representation of the image.
+-- | The height is inferred from the array's size and the given width.
+foreign import createImageDataWith :: Uint8ClampedArray -> Int -> Effect ImageData
 
 -- | Get the width of an `ImageData` object.
 foreign import imageDataWidth :: ImageData -> Int

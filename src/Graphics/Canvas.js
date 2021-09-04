@@ -469,6 +469,14 @@ exports.createImageDataCopy = function(ctx) {
     };
 };
 
+exports.createImageDataWith = function(arr) {
+    return function(sw) {
+        return function() {
+            return new ImageData(arr, sw);
+        };
+    };
+};
+
 exports.drawImage = function(ctx) {
     return function(image_source) {
         return function(dx) {
