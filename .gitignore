@@ -4,6 +4,7 @@ bower_components/
 package-lock.json
 
 /.*
+!/.eslintrc.json
 !/.github
 !/.gitignore
 
