@@ -12,6 +12,7 @@ New features:
 Bugfixes:
 
 Other improvements:
+- Added ESLint config and fixed the resulting linter issues (#82)
 
 ## [v5.0.0](https://github.com/purescript-web/purescript-canvas/releases/tag/v5.0.0) - 2021-02-26
 
