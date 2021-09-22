@@ -415,12 +415,15 @@ fillPath ctx path = do
 -- | - The center coordinates `x` and `y`,
 -- | - The radius `r`,
 -- | - The starting and ending angles, `start` and `end`.
+-- | - Whether to draw the arc counter-clockwise (true) or clockwise (false) direction.
+-- |   Normally, this value is `false`.
 type Arc =
   { x :: Number
   , y :: Number
   , radius :: Number
   , start :: Number
   , end   :: Number
+  , useCounterClockwise :: Boolean
   }
 
 -- | Render an arc object.
