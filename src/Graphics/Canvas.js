@@ -1,10 +1,8 @@
-"use strict";
-
-exports.canvasElementToImageSource = function(e) {
+export function canvasElementToImageSource(e) {
   return e;
-};
+}
 
-exports.tryLoadImageImpl = function (src) {
+export function tryLoadImageImpl(src) {
   return function(e) {
     return function(f) {
       return function () {
@@ -19,9 +17,9 @@ exports.tryLoadImageImpl = function (src) {
       };
     };
   };
-};
+}
 
-exports.getCanvasElementByIdImpl = function(id, Just, Nothing) {
+export function getCanvasElementByIdImpl(id, Just, Nothing) {
   return function() {
     var el = document.getElementById(id);
     if (el && el instanceof HTMLCanvasElement) {
@@ -30,177 +28,177 @@ exports.getCanvasElementByIdImpl = function(id, Just, Nothing) {
       return Nothing;
     }
   };
-};
+}
 
-exports.getContext2D = function(c) {
+export function getContext2D(c) {
   return function() {
     return c.getContext("2d");
   };
-};
+}
 
-exports.getCanvasWidth = function(canvas) {
+export function getCanvasWidth(canvas) {
   return function() {
     return canvas.width;
   };
-};
+}
 
-exports.getCanvasHeight = function(canvas) {
+export function getCanvasHeight(canvas) {
   return function() {
     return canvas.height;
   };
-};
+}
 
-exports.setCanvasWidth = function(canvas) {
+export function setCanvasWidth(canvas) {
   return function(width) {
     return function() {
       canvas.width = width;
     };
   };
-};
+}
 
-exports.setCanvasHeight = function(canvas) {
+export function setCanvasHeight(canvas) {
   return function(height) {
     return function() {
       canvas.height = height;
     };
   };
-};
+}
 
-exports.canvasToDataURL = function(canvas) {
+export function canvasToDataURL(canvas) {
   return function() {
     return canvas.toDataURL();
   };
-};
+}
 
-exports.setLineWidth = function(ctx) {
+export function setLineWidth(ctx) {
   return function(width) {
     return function() {
       ctx.lineWidth = width;
     };
   };
-};
+}
 
-exports.setLineDash = function(ctx) {
+export function setLineDash(ctx) {
   return function(dash) {
     return function() {
       ctx.setLineDash(dash);
     };
   };
-};
+}
 
-exports.setFillStyle = function(ctx) {
+export function setFillStyle(ctx) {
   return function(style) {
     return function() {
       ctx.fillStyle = style;
     };
   };
-};
+}
 
-exports.setStrokeStyle = function(ctx) {
+export function setStrokeStyle(ctx) {
   return function(style) {
     return function() {
       ctx.strokeStyle = style;
     };
   };
-};
+}
 
-exports.setShadowColor = function(ctx) {
+export function setShadowColor(ctx) {
   return function(color) {
     return function() {
       ctx.shadowColor = color;
     };
   };
-};
+}
 
-exports.setShadowBlur = function(ctx) {
+export function setShadowBlur(ctx) {
   return function(blur) {
     return function() {
       ctx.shadowBlur = blur;
     };
   };
-};
+}
 
-exports.setShadowOffsetX = function(ctx) {
+export function setShadowOffsetX(ctx) {
   return function(offsetX) {
     return function() {
       ctx.shadowOffsetX = offsetX;
     };
   };
-};
+}
 
-exports.setShadowOffsetY = function(ctx) {
+export function setShadowOffsetY(ctx) {
   return function(offsetY) {
     return function() {
       ctx.shadowOffsetY = offsetY;
     };
   };
-};
+}
 
-exports.setMiterLimit = function(ctx) {
+export function setMiterLimit(ctx) {
   return function(limit) {
     return function() {
       ctx.miterLimit = limit;
     };
   };
-};
+}
 
-exports.setLineCapImpl = function(ctx) {
+export function setLineCapImpl(ctx) {
   return function(cap) {
     return function() {
       ctx.lineCap = cap;
     };
   };
-};
+}
 
-exports.setLineJoinImpl = function(ctx) {
+export function setLineJoinImpl(ctx) {
   return function(join) {
     return function() {
       ctx.lineJoin = join;
     };
   };
-};
+}
 
-exports.setGlobalCompositeOperationImpl = function(ctx) {
+export function setGlobalCompositeOperationImpl(ctx) {
   return function(op) {
     return function() {
       ctx.globalCompositeOperation = op;
     };
   };
-};
+}
 
-exports.setGlobalAlpha = function(ctx) {
+export function setGlobalAlpha(ctx) {
   return function(alpha) {
     return function() {
       ctx.globalAlpha = alpha;
     };
   };
-};
+}
 
-exports.beginPath = function(ctx) {
+export function beginPath(ctx) {
   return function() {
     ctx.beginPath();
   };
-};
+}
 
-exports.stroke = function(ctx) {
+export function stroke(ctx) {
   return function() {
     ctx.stroke();
   };
-};
+}
 
-exports.fill = function(ctx) {
+export function fill(ctx) {
   return function() {
     ctx.fill();
   };
-};
+}
 
-exports.clip = function(ctx) {
+export function clip(ctx) {
   return function() {
     ctx.clip();
   };
-};
+}
 
-exports.lineTo = function(ctx) {
+export function lineTo(ctx) {
   return function(x) {
     return function(y) {
       return function() {
@@ -208,9 +206,9 @@ exports.lineTo = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.moveTo = function(ctx) {
+export function moveTo(ctx) {
   return function(x) {
     return function(y) {
       return function() {
@@ -218,137 +216,137 @@ exports.moveTo = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.closePath = function(ctx) {
+export function closePath(ctx) {
   return function() {
     ctx.closePath();
   };
-};
+}
 
-exports.arc = function(ctx) {
+export function arc(ctx) {
   return function(a) {
     return function() {
       ctx.arc(a.x, a.y, a.radius, a.start, a.end, a.useCounterClockwise);
     };
   };
-};
+}
 
-exports.rect = function(ctx) {
+export function rect(ctx) {
   return function(r) {
     return function() {
       ctx.rect(r.x, r.y, r.width, r.height);
     };
   };
-};
+}
 
-exports.fillRect = function(ctx) {
+export function fillRect(ctx) {
   return function(r) {
     return function() {
       ctx.fillRect(r.x, r.y, r.width, r.height);
     };
   };
-};
+}
 
-exports.strokeRect = function(ctx) {
+export function strokeRect(ctx) {
   return function(r) {
     return function() {
       ctx.strokeRect(r.x, r.y, r.width, r.height);
     };
   };
-};
+}
 
-exports.clearRect = function(ctx) {
+export function clearRect(ctx) {
   return function(r) {
     return function() {
       ctx.clearRect(r.x, r.y, r.width, r.height);
     };
   };
-};
+}
 
-exports.scale = function(ctx) {
+export function scale(ctx) {
   return function(t) {
     return function() {
       ctx.scale(t.scaleX, t.scaleY);
     };
   };
-};
+}
 
-exports.rotate = function(ctx) {
+export function rotate(ctx) {
   return function(angle) {
     return function() {
       ctx.rotate(angle);
     };
   };
-};
+}
 
-exports.translate = function(ctx) {
+export function translate(ctx) {
   return function(t) {
     return function() {
       ctx.translate(t.translateX, t.translateY);
     };
   };
-};
+}
 
-exports.transform = function(ctx) {
+export function transform(ctx) {
   return function(t) {
     return function() {
       ctx.transform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
     };
   };
-};
+}
 
-exports.setTransform = function(ctx) {
+export function setTransform(ctx) {
   return function(t) {
     return function() {
       ctx.setTransform(t.m11, t.m12, t.m21, t.m22, t.m31, t.m32);
     };
   };
-};
+}
 
-exports.textAlignImpl = function(ctx) {
+export function textAlignImpl(ctx) {
   return function() {
     return ctx.textAlign;
   };
-};
+}
 
-exports.setTextAlignImpl = function(ctx) {
+export function setTextAlignImpl(ctx) {
   return function(textAlign) {
     return function() {
       ctx.textAlign = textAlign;
     };
   };
-};
+}
 
-exports.textBaselineImpl = function (ctx) {
+export function textBaselineImpl(ctx) {
   return function () {
     return ctx.textBaseline;
   };
-};
+}
 
-exports.setTextBaselineImpl = function (ctx) {
+export function setTextBaselineImpl(ctx) {
   return function (textBaseline) {
     return function () {
       ctx.textBaseline = textBaseline;
     };
   };
-};
+}
 
-exports.font = function(ctx) {
+export function font(ctx) {
   return function() {
     return ctx.font;
   };
-};
+}
 
-exports.setFont = function(ctx) {
+export function setFont(ctx) {
   return function(fontspec) {
     return function() {
       ctx.font = fontspec;
     };
   };
-};
+}
 
-exports.fillText = function(ctx) {
+export function fillText(ctx) {
   return function(text) {
     return function(x) {
       return function(y) {
@@ -358,9 +356,9 @@ exports.fillText = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.strokeText = function(ctx) {
+export function strokeText(ctx) {
   return function(text) {
     return function(x) {
       return function(y) {
@@ -370,41 +368,41 @@ exports.strokeText = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.measureText = function(ctx) {
+export function measureText(ctx) {
   return function(text) {
     return function() {
       return ctx.measureText(text);
     };
   };
-};
+}
 
-exports.save = function(ctx) {
+export function save(ctx) {
   return function() {
     ctx.save();
   };
-};
+}
 
-exports.restore = function(ctx) {
+export function restore(ctx) {
   return function() {
     ctx.restore();
   };
-};
+}
 
-exports.imageDataWidth = function(image) {
+export function imageDataWidth(image) {
   return image.width;
-};
+}
 
-exports.imageDataHeight = function(image) {
+export function imageDataHeight(image) {
   return image.height;
-};
+}
 
-exports.imageDataBuffer = function(image) {
+export function imageDataBuffer(image) {
   return image.data;
-};
+}
 
-exports.getImageData = function(ctx) {
+export function getImageData(ctx) {
   return function(x) {
     return function(y) {
       return function(w) {
@@ -416,9 +414,9 @@ exports.getImageData = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.putImageDataFull = function(ctx) {
+export function putImageDataFull(ctx) {
   return function(image_data) {
     return function(x) {
       return function(y) {
@@ -436,9 +434,9 @@ exports.putImageDataFull = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.putImageData = function(ctx) {
+export function putImageData(ctx) {
   return function(image_data) {
     return function(x) {
       return function(y) {
@@ -448,9 +446,9 @@ exports.putImageData = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.createImageData = function(ctx) {
+export function createImageData(ctx) {
   return function(sw) {
     return function(sh) {
       return function() {
@@ -458,25 +456,25 @@ exports.createImageData = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.createImageDataCopy = function(ctx) {
+export function createImageDataCopy(ctx) {
   return function(image_data) {
     return function() {
       return ctx.createImageData(image_data);
     };
   };
-};
+}
 
-exports.createImageDataWith = function(arr) {
+export function createImageDataWith(arr) {
   return function(sw) {
     return function() {
       return new ImageData(arr, sw);
     };
   };
-};
+}
 
-exports.drawImage = function(ctx) {
+export function drawImage(ctx) {
   return function(image_source) {
     return function(dx) {
       return function(dy) {
@@ -486,9 +484,9 @@ exports.drawImage = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.drawImageScale = function(ctx) {
+export function drawImageScale(ctx) {
   return function(image_source) {
     return function(dx) {
       return function(dy) {
@@ -502,9 +500,9 @@ exports.drawImageScale = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.drawImageFull = function(ctx) {
+export function drawImageFull(ctx) {
   return function(image_source) {
     return function(sx) {
       return function(sy) {
@@ -526,9 +524,9 @@ exports.drawImageFull = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.createPatternImpl = function(ctx) {
+export function createPatternImpl(ctx) {
   return function(img) {
     return function(repeat) {
       return function() {
@@ -536,33 +534,33 @@ exports.createPatternImpl = function(ctx) {
       };
     };
   };
-};
+}
 
-exports.setPatternFillStyle = function(ctx) {
+export function setPatternFillStyle(ctx) {
   return function(pattern) {
     return function() {
       ctx.fillStyle = pattern;
     };
   };
-};
+}
 
-exports.createLinearGradient = function(ctx) {
+export function createLinearGradient(ctx) {
   return function(linearGradient) {
     return function() {
       return ctx.createLinearGradient(linearGradient.x0, linearGradient.y0, linearGradient.x1, linearGradient.y1);
     };
   };
-};
+}
 
-exports.createRadialGradient = function(ctx) {
+export function createRadialGradient(ctx) {
   return function(radialGradient) {
     return function() {
       return ctx.createRadialGradient(radialGradient.x0, radialGradient.y0, radialGradient.r0, radialGradient.x1, radialGradient.y1, radialGradient.r1);
     };
   };
-};
+}
 
-exports.addColorStop = function(gradient) {
+export function addColorStop(gradient) {
   return function(stop) {
     return function(color) {
       return function() {
@@ -570,28 +568,28 @@ exports.addColorStop = function(gradient) {
       };
     };
   };
-};
+}
 
-exports.setGradientFillStyle = function(ctx) {
+export function setGradientFillStyle(ctx) {
   return function(gradient) {
     return function() {
       ctx.fillStyle = gradient;
     };
   };
-};
+}
 
-exports.quadraticCurveTo = function(ctx) {
+export function quadraticCurveTo(ctx) {
   return function(qCurve) {
     return function() {
       ctx.quadraticCurveTo(qCurve.cpx, qCurve.cpy, qCurve.x, qCurve.y);
     };
   };
-};
+}
 
-exports.bezierCurveTo = function(ctx) {
+export function bezierCurveTo(ctx) {
   return function(bCurve) {
     return function() {
       ctx.bezierCurveTo(bCurve.cp1x, bCurve.cp1y, bCurve.cp2x, bCurve.cp2y, bCurve.x, bCurve.y);
     };
   };
-};
+}
