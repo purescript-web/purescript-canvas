@@ -227,7 +227,7 @@ export function closePath(ctx) {
 export function arc(ctx) {
   return function(a) {
     return function() {
-      ctx.arc(a.x, a.y, a.radius, a.start, a.end);
+      ctx.arc(a.x, a.y, a.radius, a.start, a.end, a.useCounterClockwise);
     };
   };
 }

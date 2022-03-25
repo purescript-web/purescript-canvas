@@ -6,6 +6,7 @@ Notable changes to this project are documented in this file. The format is based
 
 Breaking changes:
 - Migrate FFI to ES modules (#85 by @JordanMartinez)
+- Support arcs that are drawn counter-clockwise (#58, #83 by @karljs and @JordanMartinez)
 
 New features:
 - Added `createImageDataWith` (#81)
