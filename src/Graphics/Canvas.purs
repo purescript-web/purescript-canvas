@@ -479,12 +479,12 @@ foreign import translate :: Context2D -> TranslateTransform -> Effect Unit
 
 -- | An object representing a general transformation as a homogeneous matrix.
 type Transform =
-  { m11 :: Number
-  , m12 :: Number
-  , m21 :: Number
-  , m22 :: Number
-  , m31 :: Number
-  , m32 :: Number
+  { a :: Number
+  , b :: Number
+  , c :: Number
+  , d :: Number
+  , e :: Number
+  , f :: Number
   }
 
 -- | Apply a general transformation to the current transformation matrix
