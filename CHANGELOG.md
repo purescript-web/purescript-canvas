@@ -5,6 +5,16 @@ Notable changes to this project are documented in this file. The format is based
 ## [Unreleased]
 
 Breaking changes:
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
+## [v6.0.0](https://github.com/purescript-web/purescript-canvas/releases/tag/v6.0.0) - 2022-04-27
+
+Breaking changes:
 - Migrate FFI to ES modules (#85 by @JordanMartinez)
 - Support arcs that are drawn counter-clockwise (#58, #83 by @karljs and @JordanMartinez)
 - The `Transform` type now uses the field names `a`, `b`, `c`, `d`, `e` and `f`, instead of `m11`, `m12`, `m21`, `m22`, `m31` and `m32` (#86 by @artemisSystem)
