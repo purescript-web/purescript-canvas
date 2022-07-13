@@ -657,6 +657,12 @@ foreign import drawImageScale :: Context2D -> CanvasImageSource -> Number -> Num
 
 foreign import drawImageFull :: Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Effect Unit
 
+-- | Get the width of an `CanvasImageSource` object.
+foreign import getCanvasImageSourceWidth :: CanvasImageSource -> Number
+
+-- | Get the height of an `CanvasImageSource` object.
+foreign import getCanvasImageSourceHeight :: CanvasImageSource -> Number
+
 -- | Enumerates the different types of pattern repetitions.
 data PatternRepeat = Repeat | RepeatX | RepeatY | NoRepeat
 

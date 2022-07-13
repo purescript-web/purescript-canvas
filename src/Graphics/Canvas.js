@@ -526,6 +526,18 @@ export function drawImageFull(ctx) {
   };
 }
 
+export function getCanvasImageSourceWidth(image_source) {
+  return function() {
+    return image_source.width;
+  };
+}
+
+export function getCanvasImageSourceHeight(image_source) {
+  return function() {
+    return image_source.height;
+  };
+}
+
 export function createPatternImpl(ctx) {
   return function(img) {
     return function(repeat) {
