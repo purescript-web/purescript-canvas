@@ -119,8 +119,24 @@ module Graphics.Canvas
 import Prelude
 
 import Effect (Effect)
-import Effect.Uncurried ( EffectFn1, EffectFn2, EffectFn3, EffectFn4, EffectFn5, EffectFn6, EffectFn8, EffectFn10
-                        , runEffectFn1, runEffectFn2, runEffectFn3, runEffectFn4, runEffectFn5, runEffectFn6, runEffectFn8, runEffectFn10)
+import Effect.Uncurried
+  ( EffectFn1
+  , EffectFn2
+  , EffectFn3
+  , EffectFn4
+  , EffectFn5
+  , EffectFn6
+  , EffectFn8
+  , EffectFn10
+  , runEffectFn1
+  , runEffectFn2
+  , runEffectFn3
+  , runEffectFn4
+  , runEffectFn5
+  , runEffectFn6
+  , runEffectFn8
+  , runEffectFn10
+  )
 import Effect.Exception.Unsafe (unsafeThrow)
 import Data.ArrayBuffer.Types (Uint8ClampedArray)
 import Data.Maybe (Maybe(..))
@@ -165,7 +181,6 @@ foreign import getCanvasElementByIdImpl
 getCanvasElementById :: String -> Effect (Maybe CanvasElement)
 getCanvasElementById elId = runEffectFn3 getCanvasElementByIdImpl elId Just Nothing
 
-
 foreign import getContext2DImpl :: EffectFn1 CanvasElement Context2D
 
 -- | Get the 2D graphics context for a canvas element.
@@ -202,9 +217,9 @@ type Dimensions = { width :: Number, height :: Number }
 -- | Get the canvas dimensions in pixels.
 getCanvasDimensions :: CanvasElement -> Effect Dimensions
 getCanvasDimensions ce = do
-  w <- getCanvasWidth  ce
+  w <- getCanvasWidth ce
   h <- getCanvasHeight ce
-  pure {width : w, height : h}
+  pure { width: w, height: h }
 
 -- | Set the canvas dimensions in pixels.
 setCanvasDimensions :: CanvasElement -> Dimensions -> Effect Unit
@@ -244,13 +259,13 @@ foreign import setShadowColorImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current shadow color.
 setShadowColor :: Context2D -> String -> Effect Unit
-setShadowColor ctx color = runEffectFn2 setShadowColorImpl ctx color 
+setShadowColor ctx color = runEffectFn2 setShadowColorImpl ctx color
 
 foreign import setShadowBlurImpl :: EffectFn2 Context2D Number Unit
 
 -- | Set the current shadow blur radius.
 setShadowBlur :: Context2D -> Number -> Effect Unit
-setShadowBlur ctx radius = runEffectFn2 setShadowBlurImpl ctx radius 
+setShadowBlur ctx radius = runEffectFn2 setShadowBlurImpl ctx radius
 
 foreign import setShadowOffsetXImpl :: EffectFn2 Context2D Number Unit
 
@@ -279,9 +294,9 @@ foreign import setLineCapImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current line cap type.
 setLineCap :: Context2D -> LineCap -> Effect Unit
-setLineCap context Round  = runEffectFn2 setLineCapImpl context "round"
+setLineCap context Round = runEffectFn2 setLineCapImpl context "round"
 setLineCap context Square = runEffectFn2 setLineCapImpl context "square"
-setLineCap context Butt   = runEffectFn2 setLineCapImpl context "butt"
+setLineCap context Butt = runEffectFn2 setLineCapImpl context "butt"
 
 -- Note that we can't re-use `Round` from LineCap, so I've added `Join` to all of these
 
@@ -301,64 +316,64 @@ setLineJoin context MiterJoin = runEffectFn2 setLineJoinImpl context "miter"
 -- | Enumerates the different types of composite operations and blend modes.
 data Composite
   -- Composite Operations
-   = SourceOver
-   | SourceIn
-   | SourceOut
-   | SourceAtop
-   | DestinationOver
-   | DestinationIn
-   | DestinationOut
-   | DestinationAtop
-   | Lighter
-   | Copy
-   | Xor
+  = SourceOver
+  | SourceIn
+  | SourceOut
+  | SourceAtop
+  | DestinationOver
+  | DestinationIn
+  | DestinationOut
+  | DestinationAtop
+  | Lighter
+  | Copy
+  | Xor
 
-   -- Blend Modes
-   | Multiply
-   | Screen
-   | Overlay
-   | Darken
-   | Lighten
-   | ColorDodge
-   | ColorBurn
-   | HardLight
-   | SoftLight
-   | Difference
-   | Exclusion
-   | Hue
-   | Saturation
-   | Color
-   | Luminosity
+  -- Blend Modes
+  | Multiply
+  | Screen
+  | Overlay
+  | Darken
+  | Lighten
+  | ColorDodge
+  | ColorBurn
+  | HardLight
+  | SoftLight
+  | Difference
+  | Exclusion
+  | Hue
+  | Saturation
+  | Color
+  | Luminosity
 
 derive instance eqComposite :: Eq Composite
 
 instance showComposite :: Show Composite where
-  show SourceOver      = "SourceOver"
-  show SourceIn        = "SourceIn"
-  show SourceOut       = "SourceOut"
-  show SourceAtop      = "SourceAtop"
+  show SourceOver = "SourceOver"
+  show SourceIn = "SourceIn"
+  show SourceOut = "SourceOut"
+  show SourceAtop = "SourceAtop"
   show DestinationOver = "DestinationOver"
-  show DestinationIn   = "DestinationIn"
-  show DestinationOut  = "DestinationOut"
+  show DestinationIn = "DestinationIn"
+  show DestinationOut = "DestinationOut"
   show DestinationAtop = "DestinationAtop"
-  show Lighter         = "Lighter"
-  show Copy            = "Copy"
-  show Xor             = "Xor"
-  show Multiply        = "Multiply"
-  show Screen          = "Screen"
-  show Overlay         = "Overlay"
-  show Darken          = "Darken"
-  show Lighten         = "Lighten"
-  show ColorDodge      = "ColorDodge"
-  show ColorBurn       = "ColorBurn"
-  show HardLight       = "HardLight"
-  show SoftLight       = "SoftLight"
-  show Difference      = "Difference"
-  show Exclusion       = "Exclusion"
-  show Hue             = "Hue"
-  show Saturation      = "Saturation"
-  show Color           = "Color"
-  show Luminosity      = "Luminosity"
+  show Lighter = "Lighter"
+  show Copy = "Copy"
+  show Xor = "Xor"
+  show Multiply = "Multiply"
+  show Screen = "Screen"
+  show Overlay = "Overlay"
+  show Darken = "Darken"
+  show Lighten = "Lighten"
+  show ColorDodge = "ColorDodge"
+  show ColorBurn = "ColorBurn"
+  show HardLight = "HardLight"
+  show SoftLight = "SoftLight"
+  show Difference = "Difference"
+  show Exclusion = "Exclusion"
+  show Hue = "Hue"
+  show Saturation = "Saturation"
+  show Color = "Color"
+  show Luminosity = "Luminosity"
 
 foreign import setGlobalCompositeOperationImpl :: EffectFn2 Context2D String Unit
 
@@ -366,32 +381,32 @@ foreign import setGlobalCompositeOperationImpl :: EffectFn2 Context2D String Uni
 setGlobalCompositeOperation :: Context2D -> Composite -> Effect Unit
 setGlobalCompositeOperation ctx composite = runEffectFn2 setGlobalCompositeOperationImpl ctx (toString composite)
   where
-    toString SourceOver      = "source-over"
-    toString SourceIn        = "source-in"
-    toString SourceOut       = "source-out"
-    toString SourceAtop      = "source-atop"
-    toString DestinationOver = "destination-over"
-    toString DestinationIn   = "destination-in"
-    toString DestinationOut  = "destination-out"
-    toString DestinationAtop = "destination-atop"
-    toString Lighter         = "lighter"
-    toString Copy            = "copy"
-    toString Xor             = "xor"
-    toString Multiply        = "multiply"
-    toString Screen          = "screen"
-    toString Overlay         = "overlay"
-    toString Darken          = "darken"
-    toString Lighten         = "lighten"
-    toString ColorDodge      = "color-dodge"
-    toString ColorBurn       = "color-burn"
-    toString HardLight       = "hard-light"
-    toString SoftLight       = "soft-light"
-    toString Difference      = "difference"
-    toString Exclusion       = "exclusion"
-    toString Hue             = "hue"
-    toString Saturation      = "saturation"
-    toString Color           = "color"
-    toString Luminosity      = "luminosity"
+  toString SourceOver = "source-over"
+  toString SourceIn = "source-in"
+  toString SourceOut = "source-out"
+  toString SourceAtop = "source-atop"
+  toString DestinationOver = "destination-over"
+  toString DestinationIn = "destination-in"
+  toString DestinationOut = "destination-out"
+  toString DestinationAtop = "destination-atop"
+  toString Lighter = "lighter"
+  toString Copy = "copy"
+  toString Xor = "xor"
+  toString Multiply = "multiply"
+  toString Screen = "screen"
+  toString Overlay = "overlay"
+  toString Darken = "darken"
+  toString Lighten = "lighten"
+  toString ColorDodge = "color-dodge"
+  toString ColorBurn = "color-burn"
+  toString HardLight = "hard-light"
+  toString SoftLight = "soft-light"
+  toString Difference = "difference"
+  toString Exclusion = "exclusion"
+  toString Hue = "hue"
+  toString Saturation = "saturation"
+  toString Color = "color"
+  toString Luminosity = "luminosity"
 
 foreign import setGlobalAlphaImpl :: EffectFn2 Context2D Number Unit
 
@@ -489,7 +504,7 @@ type Arc =
   , y :: Number
   , radius :: Number
   , start :: Number
-  , end   :: Number
+  , end :: Number
   , useCounterClockwise :: Boolean
   }
 
@@ -584,7 +599,6 @@ foreign import transformImpl :: EffectFn2 Context2D Transform Unit
 transform :: Context2D -> Transform -> Effect Unit
 transform ctx tr = runEffectFn2 transformImpl ctx tr
 
-
 foreign import setTransformImpl :: EffectFn2 Context2D Transform Unit
 
 -- | Set the transformation matrix
@@ -593,7 +607,11 @@ setTransform ctx tr = runEffectFn2 setTransformImpl ctx tr
 
 -- | Enumerates types of text alignment.
 data TextAlign
-  = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
+  = AlignLeft
+  | AlignRight
+  | AlignCenter
+  | AlignStart
+  | AlignEnd
 
 derive instance eqTextAlign :: Eq TextAlign
 
@@ -617,7 +635,8 @@ textAlign ctx = unsafeParseTextAlign <$> runEffectFn1 textAlignImpl ctx
   unsafeParseTextAlign "start" = AlignStart
   unsafeParseTextAlign "end" = AlignEnd
   unsafeParseTextAlign align = unsafeThrow $ "invalid TextAlign: " <> align
-  -- ^ dummy to silence compiler warnings
+
+-- ^ dummy to silence compiler warnings
 
 foreign import setTextAlignImpl :: EffectFn2 Context2D String Unit
 
@@ -626,11 +645,11 @@ setTextAlign :: Context2D -> TextAlign -> Effect Unit
 setTextAlign ctx textalign =
   runEffectFn2 setTextAlignImpl ctx (toString textalign)
   where
-    toString AlignLeft = "left"
-    toString AlignRight = "right"
-    toString AlignCenter = "center"
-    toString AlignStart = "start"
-    toString AlignEnd = "end"
+  toString AlignLeft = "left"
+  toString AlignRight = "right"
+  toString AlignCenter = "center"
+  toString AlignStart = "start"
+  toString AlignEnd = "end"
 
 -- | Enumerates types of text baseline.
 data TextBaseline
@@ -663,7 +682,8 @@ textBaseline ctx = unsafeParseTextBaseline <$> runEffectFn1 textBaselineImpl ctx
   unsafeParseTextBaseline "ideographic" = BaselineIdeographic
   unsafeParseTextBaseline "bottom" = BaselineBottom
   unsafeParseTextBaseline align = unsafeThrow $ "invalid TextBaseline: " <> align
-  -- ^ dummy to silence compiler warnings
+
+-- ^ dummy to silence compiler warnings
 
 foreign import setTextBaselineImpl :: EffectFn2 Context2D String Unit
 
@@ -672,12 +692,12 @@ setTextBaseline :: Context2D -> TextBaseline -> Effect Unit
 setTextBaseline ctx textbaseline =
   runEffectFn2 setTextBaselineImpl ctx (toString textbaseline)
   where
-    toString BaselineTop = "top"
-    toString BaselineHanging = "hanging"
-    toString BaselineMiddle = "middle"
-    toString BaselineAlphabetic = "alphabetic"
-    toString BaselineIdeographic = "ideographic"
-    toString BaselineBottom = "bottom"
+  toString BaselineTop = "top"
+  toString BaselineHanging = "hanging"
+  toString BaselineMiddle = "middle"
+  toString BaselineAlphabetic = "alphabetic"
+  toString BaselineIdeographic = "ideographic"
+  toString BaselineBottom = "bottom"
 
 -- | Text metrics:
 -- |
@@ -695,7 +715,6 @@ foreign import setFontImpl :: EffectFn2 Context2D String Unit
 -- | Set the current font.
 setFont :: Context2D -> String -> Effect Unit
 setFont ctx f = runEffectFn2 setFontImpl ctx f
-
 
 foreign import fillTextImpl :: EffectFn4 Context2D String Number Number Unit
 
@@ -821,10 +840,10 @@ foreign import createPatternImpl :: EffectFn3 Context2D CanvasImageSource String
 createPattern :: Context2D -> CanvasImageSource -> PatternRepeat -> Effect CanvasPattern
 createPattern context img repeat = runEffectFn3 createPatternImpl context img (toString repeat)
   where
-    toString Repeat = "repeat"
-    toString RepeatX = "repeat-x"
-    toString RepeatY = "repeat-y"
-    toString NoRepeat = "no-repeat"
+  toString Repeat = "repeat"
+  toString RepeatX = "repeat-x"
+  toString RepeatY = "repeat-y"
+  toString NoRepeat = "no-repeat"
 
 foreign import setPatternFillStyleImpl :: EffectFn2 Context2D CanvasPattern Unit
 
@@ -837,11 +856,11 @@ setPatternFillStyle ctx pattern = runEffectFn2 setPatternFillStyleImpl ctx patte
 -- |  -  Ending point coordinates: (`x1`, `y1`)
 
 type LinearGradient =
-    { x0 :: Number
-    , y0 :: Number
-    , x1 :: Number
-    , y1 :: Number
-    }
+  { x0 :: Number
+  , y0 :: Number
+  , x1 :: Number
+  , y1 :: Number
+  }
 
 foreign import createLinearGradientImpl :: EffectFn2 Context2D LinearGradient CanvasGradient
 
@@ -856,13 +875,13 @@ createLinearGradient ctx grad = runEffectFn2 createLinearGradientImpl ctx grad
 -- |  -  Ending circle radius: `r1`
 
 type RadialGradient =
-    { x0 :: Number
-    , y0 :: Number
-    , r0 :: Number
-    , x1 :: Number
-    , y1 :: Number
-    , r1 :: Number
-    }
+  { x0 :: Number
+  , y0 :: Number
+  , r0 :: Number
+  , x1 :: Number
+  , y1 :: Number
+  , r1 :: Number
+  }
 
 foreign import createRadialGradientImpl :: EffectFn2 Context2D RadialGradient CanvasGradient
 
@@ -887,11 +906,11 @@ setGradientFillStyle ctx gradient = runEffectFn2 setGradientFillStyleImpl ctx gr
 -- |  - Ending point coordinates: (`x`, `y`)
 
 type QuadraticCurve =
-    { cpx :: Number
-    , cpy :: Number
-    , x   :: Number
-    , y   :: Number
-    }
+  { cpx :: Number
+  , cpy :: Number
+  , x :: Number
+  , y :: Number
+  }
 
 foreign import quadraticCurveToImpl :: EffectFn2 Context2D QuadraticCurve Unit
 
@@ -905,13 +924,13 @@ quadraticCurveTo ctx curve = runEffectFn2 quadraticCurveToImpl ctx curve
 -- |  - Ending point: (`x`, `y`)
 
 type BezierCurve =
-    { cp1x :: Number
-    , cp1y :: Number
-    , cp2x :: Number
-    , cp2y :: Number
-    , x    :: Number
-    , y    :: Number
-    }
+  { cp1x :: Number
+  , cp1y :: Number
+  , cp2x :: Number
+  , cp2y :: Number
+  , x :: Number
+  , y :: Number
+  }
 
 foreign import bezierCurveToImpl :: EffectFn2 Context2D BezierCurve Unit
 
