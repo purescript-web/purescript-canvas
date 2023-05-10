@@ -119,9 +119,10 @@ module Graphics.Canvas
 import Prelude
 
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1, EffectFn2, EffectFn3, EffectFn4, EffectFn5, EffectFn6, EffectFn8, EffectFn10
+                        , runEffectFn1, runEffectFn2, runEffectFn3, runEffectFn4, runEffectFn5, runEffectFn6, runEffectFn8, runEffectFn10)
 import Effect.Exception.Unsafe (unsafeThrow)
 import Data.ArrayBuffer.Types (Uint8ClampedArray)
-import Data.Function.Uncurried (Fn3, runFn3)
 import Data.Maybe (Maybe(..))
 
 -- | A canvas HTML element.
@@ -158,30 +159,42 @@ tryLoadImage
 tryLoadImage path k = tryLoadImageImpl path (k Nothing) (k <<< Just)
 
 foreign import getCanvasElementByIdImpl
-  :: forall r
-   . Fn3 String
-         (CanvasElement -> r)
-         r
-         (Effect r)
+  :: forall r. EffectFn3 String (CanvasElement -> r) r r
 
 -- | Get a canvas element by ID, or `Nothing` if the element does not exist.
 getCanvasElementById :: String -> Effect (Maybe CanvasElement)
-getCanvasElementById elId = runFn3 getCanvasElementByIdImpl elId Just Nothing
+getCanvasElementById elId = runEffectFn3 getCanvasElementByIdImpl elId Just Nothing
+
+
+foreign import getContext2DImpl :: EffectFn1 CanvasElement Context2D
 
 -- | Get the 2D graphics context for a canvas element.
-foreign import getContext2D :: CanvasElement -> Effect Context2D
+getContext2D :: CanvasElement -> Effect Context2D
+getContext2D el = runEffectFn1 getContext2DImpl el
+
+foreign import getCanvasWidthImpl :: EffectFn1 CanvasElement Number
 
 -- | Get the canvas width in pixels.
-foreign import getCanvasWidth :: CanvasElement -> Effect Number
+getCanvasWidth :: CanvasElement -> Effect Number
+getCanvasWidth el = runEffectFn1 getCanvasWidthImpl el
+
+foreign import getCanvasHeightImpl :: EffectFn1 CanvasElement Number
 
 -- | Get the canvas height in pixels.
-foreign import getCanvasHeight :: CanvasElement -> Effect Number
+getCanvasHeight :: CanvasElement -> Effect Number
+getCanvasHeight el = runEffectFn1 getCanvasHeightImpl el
+
+foreign import setCanvasWidthImpl :: EffectFn2 CanvasElement Number Unit
 
 -- | Set the canvas width in pixels.
-foreign import setCanvasWidth :: CanvasElement -> Number -> Effect Unit
+setCanvasWidth :: CanvasElement -> Number -> Effect Unit
+setCanvasWidth el w = runEffectFn2 setCanvasWidthImpl el w
+
+foreign import setCanvasHeightImpl :: EffectFn2 CanvasElement Number Unit
 
 -- | Set the canvas height in pixels.
-foreign import setCanvasHeight :: CanvasElement -> Number -> Effect Unit
+setCanvasHeight :: CanvasElement -> Number -> Effect Unit
+setCanvasHeight el w = runEffectFn2 setCanvasHeightImpl el w
 
 -- | Canvas dimensions (width and height) in pixels.
 type Dimensions = { width :: Number, height :: Number }
@@ -197,35 +210,65 @@ getCanvasDimensions ce = do
 setCanvasDimensions :: CanvasElement -> Dimensions -> Effect Unit
 setCanvasDimensions ce d = setCanvasHeight ce d.height *> setCanvasWidth ce d.width
 
+foreign import canvasToDataURLImpl :: EffectFn1 CanvasElement String
+
 -- | Create a data URL for the current canvas contents
-foreign import canvasToDataURL :: CanvasElement -> Effect String
+canvasToDataURL :: CanvasElement -> Effect String
+canvasToDataURL el = runEffectFn1 canvasToDataURLImpl el
+
+foreign import setLineWidthImpl :: EffectFn2 Context2D Number Unit
 
 -- | Set the current line width.
-foreign import setLineWidth :: Context2D -> Number -> Effect Unit
+setLineWidth :: Context2D -> Number -> Effect Unit
+setLineWidth ctx w = runEffectFn2 setLineWidthImpl ctx w
+
+foreign import setLineDashImpl :: EffectFn2 Context2D (Array Number) Unit
 
 -- | Set the current line dash pattern.
-foreign import setLineDash :: Context2D -> Array Number -> Effect Unit
+setLineDash :: Context2D -> Array Number -> Effect Unit
+setLineDash ctx arr = runEffectFn2 setLineDashImpl ctx arr
+
+foreign import setFillStyleImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current fill style/color.
-foreign import setFillStyle :: Context2D -> String -> Effect Unit
+setFillStyle :: Context2D -> String -> Effect Unit
+setFillStyle ctx style = runEffectFn2 setFillStyleImpl ctx style
+
+foreign import setStrokeStyleImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current stroke style/color.
-foreign import setStrokeStyle :: Context2D -> String -> Effect Unit
+setStrokeStyle :: Context2D -> String -> Effect Unit
+setStrokeStyle ctx style = runEffectFn2 setStrokeStyleImpl ctx style
+
+foreign import setShadowColorImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current shadow color.
-foreign import setShadowColor :: Context2D -> String -> Effect Unit
+setShadowColor :: Context2D -> String -> Effect Unit
+setShadowColor ctx color = runEffectFn2 setShadowColorImpl ctx color 
+
+foreign import setShadowBlurImpl :: EffectFn2 Context2D Number Unit
 
 -- | Set the current shadow blur radius.
-foreign import setShadowBlur :: Context2D -> Number -> Effect Unit
+setShadowBlur :: Context2D -> Number -> Effect Unit
+setShadowBlur ctx radius = runEffectFn2 setShadowBlurImpl ctx radius 
+
+foreign import setShadowOffsetXImpl :: EffectFn2 Context2D Number Unit
 
 -- | Set the current shadow x-offset.
-foreign import setShadowOffsetX :: Context2D -> Number -> Effect Unit
+setShadowOffsetX :: Context2D -> Number -> Effect Unit
+setShadowOffsetX ctx x = runEffectFn2 setShadowOffsetXImpl ctx x
 
--- | Set the current shadow y-offset.
-foreign import setShadowOffsetY :: Context2D -> Number -> Effect Unit
+foreign import setShadowOffsetYImpl :: EffectFn2 Context2D Number Unit
+
+-- | Set the current shadow x-offset.
+setShadowOffsetY :: Context2D -> Number -> Effect Unit
+setShadowOffsetY ctx y = runEffectFn2 setShadowOffsetYImpl ctx y
+
+foreign import setMiterLimitImpl :: EffectFn2 Context2D Number Unit
 
 -- | Set the current miter limit.
-foreign import setMiterLimit :: Context2D -> Number -> Effect Unit
+setMiterLimit :: Context2D -> Number -> Effect Unit
+setMiterLimit ctx limit = runEffectFn2 setMiterLimitImpl ctx limit
 
 -- | Enumerates the different types of line cap.
 data LineCap = Round | Square | Butt
@@ -317,11 +360,11 @@ instance showComposite :: Show Composite where
   show Color           = "Color"
   show Luminosity      = "Luminosity"
 
-foreign import setGlobalCompositeOperationImpl :: Context2D -> String -> Effect Unit
+foreign import setGlobalCompositeOperationImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current composite operation.
 setGlobalCompositeOperation :: Context2D -> Composite -> Effect Unit
-setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx (toString composite)
+setGlobalCompositeOperation ctx composite = runEffectFn2 setGlobalCompositeOperationImpl ctx (toString composite)
   where
     toString SourceOver      = "source-over"
     toString SourceIn        = "source-in"
@@ -350,29 +393,53 @@ setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx 
     toString Color           = "color"
     toString Luminosity      = "luminosity"
 
+foreign import setGlobalAlphaImpl :: EffectFn2 Context2D Number Unit
+
 -- | Set the current global alpha level.
-foreign import setGlobalAlpha :: Context2D -> Number -> Effect Unit
+setGlobalAlpha :: Context2D -> Number -> Effect Unit
+setGlobalAlpha ctx level = runEffectFn2 setGlobalAlphaImpl ctx level
+
+foreign import beginPathImpl :: EffectFn1 Context2D Unit
 
 -- | Begin a path object.
-foreign import beginPath :: Context2D -> Effect Unit
+beginPath :: Context2D -> Effect Unit
+beginPath ctx = runEffectFn1 beginPathImpl ctx
+
+foreign import strokeImpl :: EffectFn1 Context2D Unit
 
 -- | Stroke the current object.
-foreign import stroke :: Context2D -> Effect Unit
+stroke :: Context2D -> Effect Unit
+stroke ctx = runEffectFn1 strokeImpl ctx
+
+foreign import fillImpl :: EffectFn1 Context2D Unit
 
 -- | Fill the current object.
-foreign import fill :: Context2D -> Effect Unit
+fill :: Context2D -> Effect Unit
+fill ctx = runEffectFn1 fillImpl ctx
+
+foreign import clipImpl :: EffectFn1 Context2D Unit
 
 -- | Clip to the current object.
-foreign import clip :: Context2D -> Effect Unit
+clip :: Context2D -> Effect Unit
+clip ctx = runEffectFn1 clipImpl ctx
+
+foreign import lineToImpl :: EffectFn3 Context2D Number Number Unit
 
 -- | Move the path to the specified coordinates, drawing a line segment.
-foreign import lineTo  :: Context2D -> Number -> Number -> Effect Unit
+lineTo :: Context2D -> Number -> Number -> Effect Unit
+lineTo ctx x y = runEffectFn3 lineToImpl ctx x y
+
+foreign import moveToImpl :: EffectFn3 Context2D Number Number Unit
 
 -- | Move the path to the specified coordinates, without drawing a line segment.
-foreign import moveTo  :: Context2D -> Number -> Number -> Effect Unit
+moveTo :: Context2D -> Number -> Number -> Effect Unit
+moveTo ctx x y = runEffectFn3 moveToImpl ctx x y
+
+foreign import closePathImpl :: EffectFn1 Context2D Unit
 
 -- | Close the current path.
-foreign import closePath  :: Context2D -> Effect Unit
+closePath :: Context2D -> Effect Unit
+closePath ctx = runEffectFn1 closePathImpl ctx
 
 -- | A convenience function for drawing a stroked path.
 -- |
@@ -426,8 +493,11 @@ type Arc =
   , useCounterClockwise :: Boolean
   }
 
+foreign import arcImpl :: EffectFn2 Context2D Arc Unit
+
 -- | Render an arc object.
-foreign import arc :: Context2D -> Arc -> Effect Unit
+arc :: Context2D -> Arc -> Effect Unit
+arc ctx a = runEffectFn2 arcImpl ctx a
 
 -- | A type representing a rectangle object:
 -- |
@@ -440,17 +510,29 @@ type Rectangle =
   , height :: Number
   }
 
+foreign import rectImpl :: EffectFn2 Context2D Rectangle Unit
+
 -- | Render a rectangle.
-foreign import rect :: Context2D -> Rectangle -> Effect Unit
+rect :: Context2D -> Rectangle -> Effect Unit
+rect ctx r = runEffectFn2 rectImpl ctx r
+
+foreign import fillRectImpl :: EffectFn2 Context2D Rectangle Unit
 
 -- | Fill a rectangle.
-foreign import fillRect :: Context2D -> Rectangle -> Effect Unit
+fillRect :: Context2D -> Rectangle -> Effect Unit
+fillRect ctx r = runEffectFn2 fillRectImpl ctx r
+
+foreign import strokeRectImpl :: EffectFn2 Context2D Rectangle Unit
 
 -- | Stroke a rectangle.
-foreign import strokeRect :: Context2D -> Rectangle -> Effect Unit
+strokeRect :: Context2D -> Rectangle -> Effect Unit
+strokeRect ctx r = runEffectFn2 strokeRectImpl ctx r
+
+foreign import clearRectImpl :: EffectFn2 Context2D Rectangle Unit
 
 -- | Clear a rectangle.
-foreign import clearRect :: Context2D -> Rectangle -> Effect Unit
+clearRect :: Context2D -> Rectangle -> Effect Unit
+clearRect ctx r = runEffectFn2 clearRectImpl ctx r
 
 -- | An object representing a scaling transform:
 -- |
@@ -460,11 +542,17 @@ type ScaleTransform =
   , scaleY :: Number
   }
 
+foreign import scaleImpl :: EffectFn2 Context2D ScaleTransform Unit
+
 -- | Apply a scaling transform.
-foreign import scale  :: Context2D -> ScaleTransform -> Effect Unit
+scale :: Context2D -> ScaleTransform -> Effect Unit
+scale ctx tr = runEffectFn2 scaleImpl ctx tr
+
+foreign import rotateImpl :: EffectFn2 Context2D Number Unit
 
 -- | Apply a rotation.
-foreign import rotate :: Context2D -> Number -> Effect Unit
+rotate :: Context2D -> Number -> Effect Unit
+rotate ctx angle = runEffectFn2 rotateImpl ctx angle
 
 -- | An object representing a translation:
 -- |
@@ -474,8 +562,11 @@ type TranslateTransform =
   , translateY :: Number
   }
 
+foreign import translateImpl :: EffectFn2 Context2D TranslateTransform Unit
+
 -- | Apply a translation
-foreign import translate :: Context2D -> TranslateTransform -> Effect Unit
+translate :: Context2D -> TranslateTransform -> Effect Unit
+translate ctx tr = runEffectFn2 translateImpl ctx tr
 
 -- | An object representing a general transformation as a homogeneous matrix.
 type Transform =
@@ -487,11 +578,18 @@ type Transform =
   , f :: Number
   }
 
+foreign import transformImpl :: EffectFn2 Context2D Transform Unit
+
 -- | Apply a general transformation to the current transformation matrix
-foreign import transform :: Context2D -> Transform -> Effect Unit
+transform :: Context2D -> Transform -> Effect Unit
+transform ctx tr = runEffectFn2 transformImpl ctx tr
+
+
+foreign import setTransformImpl :: EffectFn2 Context2D Transform Unit
 
 -- | Set the transformation matrix
-foreign import setTransform :: Context2D -> Transform -> Effect Unit
+setTransform :: Context2D -> Transform -> Effect Unit
+setTransform ctx tr = runEffectFn2 setTransformImpl ctx tr
 
 -- | Enumerates types of text alignment.
 data TextAlign
@@ -506,11 +604,11 @@ instance showTextAlign :: Show TextAlign where
   show AlignStart = "AlignStart"
   show AlignEnd = "AlignEnd"
 
-foreign import textAlignImpl :: Context2D -> Effect String
+foreign import textAlignImpl :: EffectFn1 Context2D String
 
 -- | Get the current text alignment.
 textAlign :: Context2D -> Effect TextAlign
-textAlign ctx = unsafeParseTextAlign <$> textAlignImpl ctx
+textAlign ctx = unsafeParseTextAlign <$> runEffectFn1 textAlignImpl ctx
   where
   unsafeParseTextAlign :: String -> TextAlign
   unsafeParseTextAlign "left" = AlignLeft
@@ -521,12 +619,12 @@ textAlign ctx = unsafeParseTextAlign <$> textAlignImpl ctx
   unsafeParseTextAlign align = unsafeThrow $ "invalid TextAlign: " <> align
   -- ^ dummy to silence compiler warnings
 
-foreign import setTextAlignImpl :: Context2D -> String -> Effect Unit
+foreign import setTextAlignImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current text alignment.
 setTextAlign :: Context2D -> TextAlign -> Effect Unit
 setTextAlign ctx textalign =
-  setTextAlignImpl ctx (toString textalign)
+  runEffectFn2 setTextAlignImpl ctx (toString textalign)
   where
     toString AlignLeft = "left"
     toString AlignRight = "right"
@@ -551,11 +649,11 @@ instance showTextBaseline :: Show TextBaseline where
   show BaselineIdeographic = "BaselineIdeographic"
   show BaselineBottom = "BaselineBottom"
 
-foreign import textBaselineImpl :: Context2D -> Effect String
+foreign import textBaselineImpl :: EffectFn1 Context2D String
 
 -- | Get the current text baseline.
 textBaseline :: Context2D -> Effect TextBaseline
-textBaseline ctx = unsafeParseTextBaseline <$> textBaselineImpl ctx
+textBaseline ctx = unsafeParseTextBaseline <$> runEffectFn1 textBaselineImpl ctx
   where
   unsafeParseTextBaseline :: String -> TextBaseline
   unsafeParseTextBaseline "top" = BaselineTop
@@ -586,26 +684,48 @@ setTextBaseline ctx textbaseline =
 -- | - The text width in pixels.
 type TextMetrics = { width :: Number }
 
+foreign import fontImpl :: EffectFn1 Context2D String
+
 -- | Get the current font.
-foreign import font :: Context2D -> Effect String
+font :: Context2D -> Effect String
+font ctx = runEffectFn1 fontImpl ctx
+
+foreign import setFontImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current font.
-foreign import setFont :: Context2D -> String -> Effect Unit
+setFont :: Context2D -> String -> Effect Unit
+setFont ctx f = runEffectFn2 setFontImpl ctx f
+
+
+foreign import fillTextImpl :: EffectFn4 Context2D String Number Number Unit
 
 -- | Fill some text.
-foreign import fillText :: Context2D -> String -> Number -> Number -> Effect Unit
+fillText :: Context2D -> String -> Number -> Number -> Effect Unit
+fillText ctx text x y = runEffectFn4 fillTextImpl ctx text x y
+
+foreign import strokeTextImpl :: EffectFn4 Context2D String Number Number Unit
 
 -- | Stroke some text.
-foreign import strokeText :: Context2D -> String -> Number -> Number -> Effect Unit
+strokeText :: Context2D -> String -> Number -> Number -> Effect Unit
+strokeText ctx text x y = runEffectFn4 strokeTextImpl ctx text x y
+
+foreign import measureTextImpl :: EffectFn2 Context2D String TextMetrics
 
 -- | Measure some text.
-foreign import measureText :: Context2D -> String -> Effect TextMetrics
+measureText :: Context2D -> String -> Effect TextMetrics
+measureText ctx text = runEffectFn2 measureTextImpl ctx text
+
+foreign import saveImpl :: EffectFn1 Context2D Unit
 
 -- | Save the current context.
-foreign import save  :: Context2D -> Effect Unit
+save :: Context2D -> Effect Unit
+save ctx = runEffectFn1 saveImpl ctx
+
+foreign import restoreImpl :: EffectFn1 Context2D Unit
 
 -- | Restore the previous context.
-foreign import restore  :: Context2D -> Effect Unit
+restore :: Context2D -> Effect Unit
+restore ctx = runEffectFn1 restoreImpl ctx
 
 -- | A convenience function: run the action, preserving the existing context.
 -- |
@@ -623,24 +743,42 @@ withContext ctx action = do
   _ <- restore ctx
   pure a
 
+foreign import getImageDataImpl :: EffectFn5 Context2D Number Number Number Number ImageData
+
 -- | Get image data for a portion of the canvas.
-foreign import getImageData :: Context2D -> Number -> Number -> Number -> Number -> Effect ImageData
+getImageData :: Context2D -> Number -> Number -> Number -> Number -> Effect ImageData
+getImageData ctx x y w h = runEffectFn5 getImageDataImpl ctx x y w h
+
+foreign import putImageDataFullImpl :: EffectFn8 Context2D ImageData Number Number Number Number Number Number Unit
 
 -- | Set image data for a portion of the canvas.
-foreign import putImageDataFull :: Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Effect Unit
+putImageDataFull :: Context2D -> ImageData -> Number -> Number -> Number -> Number -> Number -> Number -> Effect Unit
+putImageDataFull ctx data_ x y dx dy dw dh = runEffectFn8 putImageDataFullImpl ctx data_ x y dx dy dw dh
+
+foreign import putImageDataImpl :: EffectFn4 Context2D ImageData Number Number Unit
 
 -- | Set image data for a portion of the canvas.
-foreign import putImageData :: Context2D -> ImageData -> Number -> Number -> Effect Unit
+putImageData :: Context2D -> ImageData -> Number -> Number -> Effect Unit
+putImageData ctx data_ x y = runEffectFn4 putImageDataImpl ctx data_ x y
+
+foreign import createImageDataImpl :: EffectFn3 Context2D Number Number ImageData
 
 -- | Create an image data object.
-foreign import createImageData :: Context2D -> Number -> Number -> Effect ImageData
+createImageData :: Context2D -> Number -> Number -> Effect ImageData
+createImageData ctx sw sh = runEffectFn3 createImageDataImpl ctx sw sh
+
+foreign import createImageDataCopyImpl :: EffectFn2 Context2D ImageData ImageData
 
 -- | Create a copy of an image data object.
-foreign import createImageDataCopy :: Context2D -> ImageData -> Effect ImageData
+createImageDataCopy :: Context2D -> ImageData -> Effect ImageData
+createImageDataCopy ctx img = runEffectFn2 createImageDataCopyImpl ctx img
+
+foreign import createImageDataWithImpl :: EffectFn2 Uint8ClampedArray Int ImageData
 
 -- | Create an image data object given a `Uint8ClampedArray` containing the underlying pixel representation of the image.
 -- | The height is inferred from the array's size and the given width.
-foreign import createImageDataWith :: Uint8ClampedArray -> Int -> Effect ImageData
+createImageDataWith :: Uint8ClampedArray -> Int -> Effect ImageData
+createImageDataWith arr sw = runEffectFn2 createImageDataWithImpl arr sw
 
 -- | Get the width of an `ImageData` object.
 foreign import imageDataWidth :: ImageData -> Int
@@ -651,11 +789,20 @@ foreign import imageDataHeight :: ImageData -> Int
 -- | Get the underlying buffer from an `ImageData` object.
 foreign import imageDataBuffer :: ImageData -> Uint8ClampedArray
 
-foreign import drawImage :: Context2D -> CanvasImageSource -> Number -> Number -> Effect Unit
+foreign import drawImageImpl :: EffectFn4 Context2D CanvasImageSource Number Number Unit
 
-foreign import drawImageScale :: Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Effect Unit
+drawImage :: Context2D -> CanvasImageSource -> Number -> Number -> Effect Unit
+drawImage ctx source dx dy = runEffectFn4 drawImageImpl ctx source dx dy
 
-foreign import drawImageFull :: Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Effect Unit
+foreign import drawImageScaleImpl :: EffectFn6 Context2D CanvasImageSource Number Number Number Number Unit
+
+drawImageScale :: Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Effect Unit
+drawImageScale ctx source dx dy dw dh = runEffectFn6 drawImageScaleImpl ctx source dx dy dw dh
+
+foreign import drawImageFullImpl :: EffectFn10 Context2D CanvasImageSource Number Number Number Number Number Number Number Number Unit
+
+drawImageFull :: Context2D -> CanvasImageSource -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Number -> Effect Unit
+drawImageFull ctx source sx sy sw sh dx dy dw dh = runEffectFn10 drawImageFullImpl ctx source sx sy sw sh dx dy dw dh
 
 -- | Enumerates the different types of pattern repetitions.
 data PatternRepeat = Repeat | RepeatX | RepeatY | NoRepeat
@@ -668,19 +815,22 @@ instance showPatternRepeat :: Show PatternRepeat where
   show RepeatY = "RepeatY"
   show NoRepeat = "NoRepeat"
 
-foreign import createPatternImpl :: Context2D -> CanvasImageSource -> String ->  Effect CanvasPattern
+foreign import createPatternImpl :: EffectFn3 Context2D CanvasImageSource String CanvasPattern
 
 -- | Create a new canvas pattern (repeatable image).
 createPattern :: Context2D -> CanvasImageSource -> PatternRepeat -> Effect CanvasPattern
-createPattern context img repeat = createPatternImpl context img (toString repeat)
+createPattern context img repeat = runEffectFn3 createPatternImpl context img (toString repeat)
   where
     toString Repeat = "repeat"
     toString RepeatX = "repeat-x"
     toString RepeatY = "repeat-y"
     toString NoRepeat = "no-repeat"
 
+foreign import setPatternFillStyleImpl :: EffectFn2 Context2D CanvasPattern Unit
+
 -- | Set the Context2D fillstyle to the CanvasPattern.
-foreign import setPatternFillStyle :: Context2D -> CanvasPattern -> Effect Unit
+setPatternFillStyle :: Context2D -> CanvasPattern -> Effect Unit
+setPatternFillStyle ctx pattern = runEffectFn2 setPatternFillStyleImpl ctx pattern
 
 -- | A type representing a linear gradient.
 -- |  -  Starting point coordinates: (`x0`, `y0`)
@@ -693,8 +843,11 @@ type LinearGradient =
     , y1 :: Number
     }
 
+foreign import createLinearGradientImpl :: EffectFn2 Context2D LinearGradient CanvasGradient
+
 -- | Create a linear CanvasGradient.
-foreign import createLinearGradient :: Context2D -> LinearGradient -> Effect CanvasGradient
+createLinearGradient :: Context2D -> LinearGradient -> Effect CanvasGradient
+createLinearGradient ctx grad = runEffectFn2 createLinearGradientImpl ctx grad
 
 -- | A type representing a radial gradient.
 -- |  -  Starting circle center coordinates: (`x0`, `y0`)
@@ -711,14 +864,23 @@ type RadialGradient =
     , r1 :: Number
     }
 
+foreign import createRadialGradientImpl :: EffectFn2 Context2D RadialGradient CanvasGradient
+
 -- | Create a radial CanvasGradient.
-foreign import createRadialGradient :: Context2D -> RadialGradient -> Effect CanvasGradient
+createRadialGradient :: Context2D -> RadialGradient -> Effect CanvasGradient
+createRadialGradient ctx grad = runEffectFn2 createRadialGradientImpl ctx grad
+
+foreign import addColorStopImpl :: EffectFn3 CanvasGradient Number String Unit
 
 -- | Add a single color stop to a CanvasGradient.
-foreign import addColorStop :: CanvasGradient -> Number -> String -> Effect Unit
+addColorStop :: CanvasGradient -> Number -> String -> Effect Unit
+addColorStop grad stop color = runEffectFn3 addColorStopImpl grad stop color
+
+foreign import setGradientFillStyleImpl :: EffectFn2 Context2D CanvasGradient Unit
 
 -- | Set the Context2D fillstyle to the CanvasGradient.
-foreign import setGradientFillStyle :: Context2D -> CanvasGradient -> Effect Unit
+setGradientFillStyle :: Context2D -> CanvasGradient -> Effect Unit
+setGradientFillStyle ctx gradient = runEffectFn2 setGradientFillStyleImpl ctx gradient
 
 -- | A type representing a quadratic Bézier curve.
 -- |  - Bézier control point: (`cpx`, `cpy`)
@@ -731,8 +893,11 @@ type QuadraticCurve =
     , y   :: Number
     }
 
+foreign import quadraticCurveToImpl :: EffectFn2 Context2D QuadraticCurve Unit
+
 -- | Draw a quadratic Bézier curve.
-foreign import quadraticCurveTo :: Context2D -> QuadraticCurve -> Effect Unit
+quadraticCurveTo :: Context2D -> QuadraticCurve -> Effect Unit
+quadraticCurveTo ctx curve = runEffectFn2 quadraticCurveToImpl ctx curve
 
 -- | A type representing a cubic Bézier curve.
 -- |  - First Bézier control point: (`cp1x`, `cp1y`)
@@ -748,5 +913,8 @@ type BezierCurve =
     , y    :: Number
     }
 
+foreign import bezierCurveToImpl :: EffectFn2 Context2D BezierCurve Unit
+
 -- | Draw a cubic Bézier curve.
-foreign import bezierCurveTo :: Context2D -> BezierCurve -> Effect Unit
+bezierCurveTo :: Context2D -> BezierCurve -> Effect Unit
+bezierCurveTo ctx curve = runEffectFn2 bezierCurveToImpl ctx curve
