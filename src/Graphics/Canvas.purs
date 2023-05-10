@@ -275,13 +275,13 @@ data LineCap = Round | Square | Butt
 
 derive instance eqLineCap :: Eq LineCap
 
-foreign import setLineCapImpl :: Context2D -> String -> Effect Unit
+foreign import setLineCapImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current line cap type.
 setLineCap :: Context2D -> LineCap -> Effect Unit
-setLineCap context Round  = setLineCapImpl context "round"
-setLineCap context Square = setLineCapImpl context "square"
-setLineCap context Butt   = setLineCapImpl context "butt"
+setLineCap context Round  = runEffectFn2 setLineCapImpl context "round"
+setLineCap context Square = runEffectFn2 setLineCapImpl context "square"
+setLineCap context Butt   = runEffectFn2 setLineCapImpl context "butt"
 
 -- Note that we can't re-use `Round` from LineCap, so I've added `Join` to all of these
 
@@ -290,13 +290,13 @@ data LineJoin = BevelJoin | RoundJoin | MiterJoin
 
 derive instance eqLineJoin :: Eq LineJoin
 
-foreign import setLineJoinImpl :: Context2D -> String -> Effect Unit
+foreign import setLineJoinImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current line join type.
 setLineJoin :: Context2D -> LineJoin -> Effect Unit
-setLineJoin context BevelJoin = setLineJoinImpl context "bevel"
-setLineJoin context RoundJoin = setLineJoinImpl context "round"
-setLineJoin context MiterJoin = setLineJoinImpl context "miter"
+setLineJoin context BevelJoin = runEffectFn2 setLineJoinImpl context "bevel"
+setLineJoin context RoundJoin = runEffectFn2 setLineJoinImpl context "round"
+setLineJoin context MiterJoin = runEffectFn2 setLineJoinImpl context "miter"
 
 -- | Enumerates the different types of composite operations and blend modes.
 data Composite
@@ -665,12 +665,12 @@ textBaseline ctx = unsafeParseTextBaseline <$> runEffectFn1 textBaselineImpl ctx
   unsafeParseTextBaseline align = unsafeThrow $ "invalid TextBaseline: " <> align
   -- ^ dummy to silence compiler warnings
 
-foreign import setTextBaselineImpl :: Context2D -> String -> Effect Unit
+foreign import setTextBaselineImpl :: EffectFn2 Context2D String Unit
 
 -- | Set the current text baseline.
 setTextBaseline :: Context2D -> TextBaseline -> Effect Unit
 setTextBaseline ctx textbaseline =
-  setTextBaselineImpl ctx (toString textbaseline)
+  runEffectFn2 setTextBaselineImpl ctx (toString textbaseline)
   where
     toString BaselineTop = "top"
     toString BaselineHanging = "hanging"
