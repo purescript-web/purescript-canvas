@@ -260,7 +260,7 @@ setShadowOffsetX ctx x = runEffectFn2 setShadowOffsetXImpl ctx x
 
 foreign import setShadowOffsetYImpl :: EffectFn2 Context2D Number Unit
 
--- | Set the current shadow x-offset.
+-- | Set the current shadow y-offset.
 setShadowOffsetY :: Context2D -> Number -> Effect Unit
 setShadowOffsetY ctx y = runEffectFn2 setShadowOffsetYImpl ctx y
 
