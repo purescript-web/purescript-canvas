@@ -15,21 +15,21 @@ jobs:
       - uses: purescript-contrib/setup-purescript@main
         with:
           purescript: "unstable"
+          purs-tidy: "latest"
 
-      - uses: actions/setup-node@v2
+      - name: Cache PureScript dependencies
+        uses: actions/cache@v2
         with:
-          node-version: "14"
+          key: ${{ runner.os }}-spago-${{ hashFiles('**/*.dhall') }}
+          path: |
+            .spago
+            output
 
       - name: Install dependencies
-        run: |
-          npm install -g bower
-          npm install
-          bower install --production
+        run: spago install
 
       - name: Build source
-        run: npm run-script build
+        run: spago build --no-install --purs-args '--censor-lib --strict'
 
-      - name: Run tests
-        run: |
-          bower install
-          npm run-script test --if-present
+      - name: Check formatting
+        run: purs-tidy check src
