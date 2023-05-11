@@ -11,6 +11,7 @@ New features:
 Bugfixes:
 
 Other improvements:
+- Update FFI to EffectFnX types (#90 by @gbagan)
 
 ## [v6.0.0](https://github.com/purescript-web/purescript-canvas/releases/tag/v6.0.0) - 2022-04-27
 
