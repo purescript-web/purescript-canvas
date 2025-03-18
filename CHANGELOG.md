@@ -8,6 +8,8 @@ Breaking changes:
 
 New features:
 - Added `imageSmoothingEnabled` to toggle the image smoothing of a `Context2D`.
+- Added `OffscreenCanvas` and its interface.
+- Added `toBlob`, `toBlob'`, and a helper `BlobFormat` type for the arguments to `toBlob'`.
 
 Bugfixes:
 

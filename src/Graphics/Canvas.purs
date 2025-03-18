@@ -25,6 +25,7 @@ module Graphics.Canvas
   , RadialGradient
   , QuadraticCurve
   , BezierCurve
+  , BlobFormat(..)
 
   , getCanvasElementById
   , getContext2D
@@ -99,6 +100,11 @@ module Graphics.Canvas
   , imageDataHeight
   , imageDataBuffer
 
+  , toBlob
+  , toBlob'
+  , blobPNG
+  , blobJPEG
+
   , canvasElementToImageSource
   , drawImage
   , drawImageScale
@@ -121,8 +127,13 @@ import Prelude
 import Effect (Effect)
 import Effect.Exception.Unsafe (unsafeThrow)
 import Data.ArrayBuffer.Types (Uint8ClampedArray)
-import Data.Function.Uncurried (Fn3, runFn3)
+import Data.Either (Either(Right))
+import Data.Function.Uncurried (Fn2, Fn3, runFn2, runFn3)
 import Data.Maybe (Maybe(..))
+import Data.MediaType (MediaType(..))
+import Data.MediaType.Common (imagePNG, imageJPEG)
+import Web.File.Blob (Blob)
+import Effect.Aff (Aff, makeAff)
 
 -- | A canvas HTML element.
 foreign import data CanvasElement :: Type
@@ -650,6 +661,37 @@ foreign import imageDataHeight :: ImageData -> Int
 
 -- | Get the underlying buffer from an `ImageData` object.
 foreign import imageDataBuffer :: ImageData -> Uint8ClampedArray
+
+-- | Format arguments for `toBlob'`.
+-- | Quality for lossy compression is given as a `Number` between `0.0` and `1.0`.
+data BlobFormat = Lossless MediaType | Lossy MediaType Number
+
+-- Testing in my Firefox, these are the only two types supported,
+-- with no support for `image/gif` or `image/svg+xml`... but is that standard?
+
+blobPNG :: BlobFormat
+blobPNG = Lossless imagePNG
+
+blobJPEG :: Number -> BlobFormat
+blobJPEG = Lossy imageJPEG
+
+-- Thanks to mikesol for letting me know about makeAff!
+blobCBToAff :: forall a. ((a -> Effect Unit) -> Effect Unit) -> Aff a
+blobCBToAff b = makeAff \cb -> b (cb <<< Right) $> mempty
+
+foreign import toBlobDefault :: CanvasElement -> (Blob -> Effect Unit) -> Effect Unit
+
+-- | Create a `Blob` of the image data on the canvas, as a PNG file.
+toBlob :: CanvasElement -> Aff Blob
+toBlob = blobCBToAff <<< toBlobDefault
+
+foreign import toBlobFormat :: Fn2 String CanvasElement ((Blob -> Effect Unit) -> Effect Unit)
+foreign import toBlobFormatQuality :: Fn3 String Number CanvasElement ((Blob -> Effect Unit) -> Effect Unit)
+
+-- | Create a `Blob` of the image data on the canvas, in the specified format.
+toBlob' :: BlobFormat -> CanvasElement -> Aff Blob
+toBlob' (Lossless (MediaType format)) = blobCBToAff <<< runFn2 toBlobFormat format
+toBlob' (Lossy (MediaType format) quality) = blobCBToAff <<< runFn3 toBlobFormatQuality format quality
 
 foreign import drawImage :: Context2D -> CanvasImageSource -> Number -> Number -> Effect Unit
 

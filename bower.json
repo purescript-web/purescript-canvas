@@ -20,10 +20,15 @@
     "url": "https://github.com/purescript-web/purescript-canvas.git"
   },
   "dependencies": {
+    "purescript-aff": "^7.0.0",
+    "purescript-aff-promise": "^4.0.0",
     "purescript-arraybuffer-types": "^3.0.2",
     "purescript-effect": "^4.0.0",
+    "purescript-either": "^6.1.0",
     "purescript-exceptions": "^6.0.0",
     "purescript-functions": "^6.0.0",
-    "purescript-maybe": "^6.0.0"
+    "purescript-maybe": "^6.0.0",
+    "purescript-media-types": "^6.0.0",
+    "purescript-web-file": "^4.0.0"
   }
 }

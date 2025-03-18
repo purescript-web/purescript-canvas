@@ -474,6 +474,30 @@ export function createImageDataWith(arr) {
   };
 }
 
+export function toBlobDefault(canvas) {
+  return function(cb) {
+    return function() {
+      return canvas.toBlob(cb);
+    };
+  };
+}
+
+export function toBlobFormat(canvas, format) {
+  return function(cb) {
+    return function() {
+      return canvas.toBlob(cb, {type: format});
+    };
+  };
+}
+
+export function toBlobFormatQuality(canvas, format, quality) {
+  return function(cb) {
+    return function() {
+      return canvas.toBlob(cb, {type: format, quality: quality});
+    };
+  };
+}
+
 export function drawImage(ctx) {
   return function(image_source) {
     return function(dx) {

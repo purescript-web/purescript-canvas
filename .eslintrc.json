@@ -20,6 +20,10 @@
     "no-param-reassign": 2,
     "no-return-assign": 2,
     "no-unused-expressions": 2,
+    "no-unused-vars": [
+      "error", 
+      { "argsIgnorePattern": "^_" } 
+    ],
     "no-use-before-define": 2,
     "radix": [2, "always"],
     "indent": [2, 2],
