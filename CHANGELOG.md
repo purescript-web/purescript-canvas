@@ -5,6 +5,7 @@ Notable changes to this project are documented in this file. The format is based
 ## [Unreleased]
 
 Breaking changes:
+- Changed types of width and height from Number to Int. The API guarantees that these values are integers as is, and even silently rounds non-integers if given.
 
 New features:
 - Added `imageSmoothingEnabled` to toggle the image smoothing of a `Context2D`.

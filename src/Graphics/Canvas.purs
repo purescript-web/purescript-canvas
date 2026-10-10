@@ -172,19 +172,19 @@ getCanvasElementById elId = runFn3 getCanvasElementByIdImpl elId Just Nothing
 foreign import getContext2D :: CanvasElement -> Effect Context2D
 
 -- | Get the canvas width in pixels.
-foreign import getCanvasWidth :: CanvasElement -> Effect Number
+foreign import getCanvasWidth :: CanvasElement -> Effect Int
 
 -- | Get the canvas height in pixels.
-foreign import getCanvasHeight :: CanvasElement -> Effect Number
+foreign import getCanvasHeight :: CanvasElement -> Effect Int
 
 -- | Set the canvas width in pixels.
-foreign import setCanvasWidth :: CanvasElement -> Number -> Effect Unit
+foreign import setCanvasWidth :: CanvasElement -> Int -> Effect Unit
 
 -- | Set the canvas height in pixels.
-foreign import setCanvasHeight :: CanvasElement -> Number -> Effect Unit
+foreign import setCanvasHeight :: CanvasElement -> Int -> Effect Unit
 
 -- | Canvas dimensions (width and height) in pixels.
-type Dimensions = { width :: Number, height :: Number }
+type Dimensions = { width :: Int, height :: Int }
 
 -- | Get the canvas dimensions in pixels.
 getCanvasDimensions :: CanvasElement -> Effect Dimensions
