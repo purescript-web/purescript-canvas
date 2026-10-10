@@ -160,9 +160,9 @@ tryLoadImage path k = tryLoadImageImpl path (k Nothing) (k <<< Just)
 foreign import getCanvasElementByIdImpl
   :: forall r
    . Fn3 String
-         (CanvasElement -> r)
-         r
-         (Effect r)
+       (CanvasElement -> r)
+       r
+       (Effect r)
 
 -- | Get a canvas element by ID, or `Nothing` if the element does not exist.
 getCanvasElementById :: String -> Effect (Maybe CanvasElement)
@@ -189,9 +189,9 @@ type Dimensions = { width :: Number, height :: Number }
 -- | Get the canvas dimensions in pixels.
 getCanvasDimensions :: CanvasElement -> Effect Dimensions
 getCanvasDimensions ce = do
-  w <- getCanvasWidth  ce
+  w <- getCanvasWidth ce
   h <- getCanvasHeight ce
-  pure {width : w, height : h}
+  pure { width: w, height: h }
 
 -- | Set the canvas dimensions in pixels.
 setCanvasDimensions :: CanvasElement -> Dimensions -> Effect Unit
@@ -236,9 +236,9 @@ foreign import setLineCapImpl :: Context2D -> String -> Effect Unit
 
 -- | Set the current line cap type.
 setLineCap :: Context2D -> LineCap -> Effect Unit
-setLineCap context Round  = setLineCapImpl context "round"
+setLineCap context Round = setLineCapImpl context "round"
 setLineCap context Square = setLineCapImpl context "square"
-setLineCap context Butt   = setLineCapImpl context "butt"
+setLineCap context Butt = setLineCapImpl context "butt"
 
 -- Note that we can't re-use `Round` from LineCap, so I've added `Join` to all of these
 
@@ -258,64 +258,64 @@ setLineJoin context MiterJoin = setLineJoinImpl context "miter"
 -- | Enumerates the different types of composite operations and blend modes.
 data Composite
   -- Composite Operations
-   = SourceOver
-   | SourceIn
-   | SourceOut
-   | SourceAtop
-   | DestinationOver
-   | DestinationIn
-   | DestinationOut
-   | DestinationAtop
-   | Lighter
-   | Copy
-   | Xor
+  = SourceOver
+  | SourceIn
+  | SourceOut
+  | SourceAtop
+  | DestinationOver
+  | DestinationIn
+  | DestinationOut
+  | DestinationAtop
+  | Lighter
+  | Copy
+  | Xor
 
-   -- Blend Modes
-   | Multiply
-   | Screen
-   | Overlay
-   | Darken
-   | Lighten
-   | ColorDodge
-   | ColorBurn
-   | HardLight
-   | SoftLight
-   | Difference
-   | Exclusion
-   | Hue
-   | Saturation
-   | Color
-   | Luminosity
+  -- Blend Modes
+  | Multiply
+  | Screen
+  | Overlay
+  | Darken
+  | Lighten
+  | ColorDodge
+  | ColorBurn
+  | HardLight
+  | SoftLight
+  | Difference
+  | Exclusion
+  | Hue
+  | Saturation
+  | Color
+  | Luminosity
 
 derive instance eqComposite :: Eq Composite
 
 instance showComposite :: Show Composite where
-  show SourceOver      = "SourceOver"
-  show SourceIn        = "SourceIn"
-  show SourceOut       = "SourceOut"
-  show SourceAtop      = "SourceAtop"
+  show SourceOver = "SourceOver"
+  show SourceIn = "SourceIn"
+  show SourceOut = "SourceOut"
+  show SourceAtop = "SourceAtop"
   show DestinationOver = "DestinationOver"
-  show DestinationIn   = "DestinationIn"
-  show DestinationOut  = "DestinationOut"
+  show DestinationIn = "DestinationIn"
+  show DestinationOut = "DestinationOut"
   show DestinationAtop = "DestinationAtop"
-  show Lighter         = "Lighter"
-  show Copy            = "Copy"
-  show Xor             = "Xor"
-  show Multiply        = "Multiply"
-  show Screen          = "Screen"
-  show Overlay         = "Overlay"
-  show Darken          = "Darken"
-  show Lighten         = "Lighten"
-  show ColorDodge      = "ColorDodge"
-  show ColorBurn       = "ColorBurn"
-  show HardLight       = "HardLight"
-  show SoftLight       = "SoftLight"
-  show Difference      = "Difference"
-  show Exclusion       = "Exclusion"
-  show Hue             = "Hue"
-  show Saturation      = "Saturation"
-  show Color           = "Color"
-  show Luminosity      = "Luminosity"
+  show Lighter = "Lighter"
+  show Copy = "Copy"
+  show Xor = "Xor"
+  show Multiply = "Multiply"
+  show Screen = "Screen"
+  show Overlay = "Overlay"
+  show Darken = "Darken"
+  show Lighten = "Lighten"
+  show ColorDodge = "ColorDodge"
+  show ColorBurn = "ColorBurn"
+  show HardLight = "HardLight"
+  show SoftLight = "SoftLight"
+  show Difference = "Difference"
+  show Exclusion = "Exclusion"
+  show Hue = "Hue"
+  show Saturation = "Saturation"
+  show Color = "Color"
+  show Luminosity = "Luminosity"
 
 foreign import setGlobalCompositeOperationImpl :: Context2D -> String -> Effect Unit
 
@@ -323,32 +323,32 @@ foreign import setGlobalCompositeOperationImpl :: Context2D -> String -> Effect 
 setGlobalCompositeOperation :: Context2D -> Composite -> Effect Unit
 setGlobalCompositeOperation ctx composite = setGlobalCompositeOperationImpl ctx (toString composite)
   where
-    toString SourceOver      = "source-over"
-    toString SourceIn        = "source-in"
-    toString SourceOut       = "source-out"
-    toString SourceAtop      = "source-atop"
-    toString DestinationOver = "destination-over"
-    toString DestinationIn   = "destination-in"
-    toString DestinationOut  = "destination-out"
-    toString DestinationAtop = "destination-atop"
-    toString Lighter         = "lighter"
-    toString Copy            = "copy"
-    toString Xor             = "xor"
-    toString Multiply        = "multiply"
-    toString Screen          = "screen"
-    toString Overlay         = "overlay"
-    toString Darken          = "darken"
-    toString Lighten         = "lighten"
-    toString ColorDodge      = "color-dodge"
-    toString ColorBurn       = "color-burn"
-    toString HardLight       = "hard-light"
-    toString SoftLight       = "soft-light"
-    toString Difference      = "difference"
-    toString Exclusion       = "exclusion"
-    toString Hue             = "hue"
-    toString Saturation      = "saturation"
-    toString Color           = "color"
-    toString Luminosity      = "luminosity"
+  toString SourceOver = "source-over"
+  toString SourceIn = "source-in"
+  toString SourceOut = "source-out"
+  toString SourceAtop = "source-atop"
+  toString DestinationOver = "destination-over"
+  toString DestinationIn = "destination-in"
+  toString DestinationOut = "destination-out"
+  toString DestinationAtop = "destination-atop"
+  toString Lighter = "lighter"
+  toString Copy = "copy"
+  toString Xor = "xor"
+  toString Multiply = "multiply"
+  toString Screen = "screen"
+  toString Overlay = "overlay"
+  toString Darken = "darken"
+  toString Lighten = "lighten"
+  toString ColorDodge = "color-dodge"
+  toString ColorBurn = "color-burn"
+  toString HardLight = "hard-light"
+  toString SoftLight = "soft-light"
+  toString Difference = "difference"
+  toString Exclusion = "exclusion"
+  toString Hue = "hue"
+  toString Saturation = "saturation"
+  toString Color = "color"
+  toString Luminosity = "luminosity"
 
 -- | Set the current global alpha level.
 foreign import setGlobalAlpha :: Context2D -> Number -> Effect Unit
@@ -366,13 +366,13 @@ foreign import fill :: Context2D -> Effect Unit
 foreign import clip :: Context2D -> Effect Unit
 
 -- | Move the path to the specified coordinates, drawing a line segment.
-foreign import lineTo  :: Context2D -> Number -> Number -> Effect Unit
+foreign import lineTo :: Context2D -> Number -> Number -> Effect Unit
 
 -- | Move the path to the specified coordinates, without drawing a line segment.
-foreign import moveTo  :: Context2D -> Number -> Number -> Effect Unit
+foreign import moveTo :: Context2D -> Number -> Number -> Effect Unit
 
 -- | Close the current path.
-foreign import closePath  :: Context2D -> Effect Unit
+foreign import closePath :: Context2D -> Effect Unit
 
 -- | A convenience function for drawing a stroked path.
 -- |
@@ -422,7 +422,7 @@ type Arc =
   , y :: Number
   , radius :: Number
   , start :: Number
-  , end   :: Number
+  , end :: Number
   , useCounterClockwise :: Boolean
   }
 
@@ -461,7 +461,7 @@ type ScaleTransform =
   }
 
 -- | Apply a scaling transform.
-foreign import scale  :: Context2D -> ScaleTransform -> Effect Unit
+foreign import scale :: Context2D -> ScaleTransform -> Effect Unit
 
 -- | Apply a rotation.
 foreign import rotate :: Context2D -> Number -> Effect Unit
@@ -495,7 +495,11 @@ foreign import setTransform :: Context2D -> Transform -> Effect Unit
 
 -- | Enumerates types of text alignment.
 data TextAlign
-  = AlignLeft | AlignRight | AlignCenter | AlignStart | AlignEnd
+  = AlignLeft
+  | AlignRight
+  | AlignCenter
+  | AlignStart
+  | AlignEnd
 
 derive instance eqTextAlign :: Eq TextAlign
 
@@ -519,7 +523,8 @@ textAlign ctx = unsafeParseTextAlign <$> textAlignImpl ctx
   unsafeParseTextAlign "start" = AlignStart
   unsafeParseTextAlign "end" = AlignEnd
   unsafeParseTextAlign align = unsafeThrow $ "invalid TextAlign: " <> align
-  -- ^ dummy to silence compiler warnings
+
+-- ^ dummy to silence compiler warnings
 
 foreign import setTextAlignImpl :: Context2D -> String -> Effect Unit
 
@@ -528,11 +533,11 @@ setTextAlign :: Context2D -> TextAlign -> Effect Unit
 setTextAlign ctx textalign =
   setTextAlignImpl ctx (toString textalign)
   where
-    toString AlignLeft = "left"
-    toString AlignRight = "right"
-    toString AlignCenter = "center"
-    toString AlignStart = "start"
-    toString AlignEnd = "end"
+  toString AlignLeft = "left"
+  toString AlignRight = "right"
+  toString AlignCenter = "center"
+  toString AlignStart = "start"
+  toString AlignEnd = "end"
 
 -- | Enumerates types of text baseline.
 data TextBaseline
@@ -565,7 +570,8 @@ textBaseline ctx = unsafeParseTextBaseline <$> textBaselineImpl ctx
   unsafeParseTextBaseline "ideographic" = BaselineIdeographic
   unsafeParseTextBaseline "bottom" = BaselineBottom
   unsafeParseTextBaseline align = unsafeThrow $ "invalid TextBaseline: " <> align
-  -- ^ dummy to silence compiler warnings
+
+-- ^ dummy to silence compiler warnings
 
 foreign import setTextBaselineImpl :: Context2D -> String -> Effect Unit
 
@@ -574,12 +580,12 @@ setTextBaseline :: Context2D -> TextBaseline -> Effect Unit
 setTextBaseline ctx textbaseline =
   setTextBaselineImpl ctx (toString textbaseline)
   where
-    toString BaselineTop = "top"
-    toString BaselineHanging = "hanging"
-    toString BaselineMiddle = "middle"
-    toString BaselineAlphabetic = "alphabetic"
-    toString BaselineIdeographic = "ideographic"
-    toString BaselineBottom = "bottom"
+  toString BaselineTop = "top"
+  toString BaselineHanging = "hanging"
+  toString BaselineMiddle = "middle"
+  toString BaselineAlphabetic = "alphabetic"
+  toString BaselineIdeographic = "ideographic"
+  toString BaselineBottom = "bottom"
 
 -- | Text metrics:
 -- |
@@ -602,10 +608,10 @@ foreign import strokeText :: Context2D -> String -> Number -> Number -> Effect U
 foreign import measureText :: Context2D -> String -> Effect TextMetrics
 
 -- | Save the current context.
-foreign import save  :: Context2D -> Effect Unit
+foreign import save :: Context2D -> Effect Unit
 
 -- | Restore the previous context.
-foreign import restore  :: Context2D -> Effect Unit
+foreign import restore :: Context2D -> Effect Unit
 
 -- | A convenience function: run the action, preserving the existing context.
 -- |
@@ -668,16 +674,16 @@ instance showPatternRepeat :: Show PatternRepeat where
   show RepeatY = "RepeatY"
   show NoRepeat = "NoRepeat"
 
-foreign import createPatternImpl :: Context2D -> CanvasImageSource -> String ->  Effect CanvasPattern
+foreign import createPatternImpl :: Context2D -> CanvasImageSource -> String -> Effect CanvasPattern
 
 -- | Create a new canvas pattern (repeatable image).
 createPattern :: Context2D -> CanvasImageSource -> PatternRepeat -> Effect CanvasPattern
 createPattern context img repeat = createPatternImpl context img (toString repeat)
   where
-    toString Repeat = "repeat"
-    toString RepeatX = "repeat-x"
-    toString RepeatY = "repeat-y"
-    toString NoRepeat = "no-repeat"
+  toString Repeat = "repeat"
+  toString RepeatX = "repeat-x"
+  toString RepeatY = "repeat-y"
+  toString NoRepeat = "no-repeat"
 
 -- | Set the Context2D fillstyle to the CanvasPattern.
 foreign import setPatternFillStyle :: Context2D -> CanvasPattern -> Effect Unit
@@ -687,11 +693,11 @@ foreign import setPatternFillStyle :: Context2D -> CanvasPattern -> Effect Unit
 -- |  -  Ending point coordinates: (`x1`, `y1`)
 
 type LinearGradient =
-    { x0 :: Number
-    , y0 :: Number
-    , x1 :: Number
-    , y1 :: Number
-    }
+  { x0 :: Number
+  , y0 :: Number
+  , x1 :: Number
+  , y1 :: Number
+  }
 
 -- | Create a linear CanvasGradient.
 foreign import createLinearGradient :: Context2D -> LinearGradient -> Effect CanvasGradient
@@ -703,13 +709,13 @@ foreign import createLinearGradient :: Context2D -> LinearGradient -> Effect Can
 -- |  -  Ending circle radius: `r1`
 
 type RadialGradient =
-    { x0 :: Number
-    , y0 :: Number
-    , r0 :: Number
-    , x1 :: Number
-    , y1 :: Number
-    , r1 :: Number
-    }
+  { x0 :: Number
+  , y0 :: Number
+  , r0 :: Number
+  , x1 :: Number
+  , y1 :: Number
+  , r1 :: Number
+  }
 
 -- | Create a radial CanvasGradient.
 foreign import createRadialGradient :: Context2D -> RadialGradient -> Effect CanvasGradient
@@ -725,11 +731,11 @@ foreign import setGradientFillStyle :: Context2D -> CanvasGradient -> Effect Uni
 -- |  - Ending point coordinates: (`x`, `y`)
 
 type QuadraticCurve =
-    { cpx :: Number
-    , cpy :: Number
-    , x   :: Number
-    , y   :: Number
-    }
+  { cpx :: Number
+  , cpy :: Number
+  , x :: Number
+  , y :: Number
+  }
 
 -- | Draw a quadratic Bézier curve.
 foreign import quadraticCurveTo :: Context2D -> QuadraticCurve -> Effect Unit
@@ -740,13 +746,13 @@ foreign import quadraticCurveTo :: Context2D -> QuadraticCurve -> Effect Unit
 -- |  - Ending point: (`x`, `y`)
 
 type BezierCurve =
-    { cp1x :: Number
-    , cp1y :: Number
-    , cp2x :: Number
-    , cp2y :: Number
-    , x    :: Number
-    , y    :: Number
-    }
+  { cp1x :: Number
+  , cp1y :: Number
+  , cp2x :: Number
+  , cp2y :: Number
+  , x :: Number
+  , y :: Number
+  }
 
 -- | Draw a cubic Bézier curve.
 foreign import bezierCurveTo :: Context2D -> BezierCurve -> Effect Unit
