@@ -7,11 +7,24 @@ Notable changes to this project are documented in this file. The format is based
 Breaking changes:
 
 New features:
-- Added `imageSmoothingEnabled` to toggle the image smoothing of a `Context2D`.
 
 Bugfixes:
 
 Other improvements:
+
+## [v6.0.1](https://github.com/purescript-web/purescript-canvas/releases/tag/v6.0.1) - 2026-10-10
+
+Breaking changes:
+- None.
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+- Added an internal `imageSmoothingEnabled` binding; it is not exported by `Graphics.Canvas` (#92 by @srijan-paul).
+- Migrated from Bower/Pulp to registry-backed Spago, preserving published dependency bounds (#95).
+- Modernized CI and replaced ESLint with Oxlint, Oxfmt, and purs-tidy (#95).
 
 ## [v6.0.0](https://github.com/purescript-web/purescript-canvas/releases/tag/v6.0.0) - 2022-04-27
 
@@ -155,4 +168,3 @@ Other improvements:
 ## [v0.1.0](https://github.com/purescript-web/purescript-canvas/releases/tag/v0.1.0) - 2014-08-13
 
 - Initial release
-
