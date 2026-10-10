@@ -1,11 +1,16 @@
 {
   "private": true,
   "scripts": {
-    "build": "eslint src && spago build --pedantic-packages --strict"
+    "build": "spago build --pedantic-packages --strict",
+    "lint": "oxlint --deny-warnings src",
+    "format": "purs-tidy format-in-place src && oxfmt --write 'src/**/*.js'",
+    "format:check": "purs-tidy check src && oxfmt --check 'src/**/*.js'"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
+    "oxfmt": "0.72.0",
+    "oxlint": "1.87.0",
     "purescript": "0.15.16",
+    "purs-tidy": "0.11.1",
     "spago": "1.0.4"
   }
 }

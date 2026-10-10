@@ -10,14 +10,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v6
         with:
           node-version: "24"
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Check formatting and lint
+        run: |
+          npm run format:check
+          npm run lint
 
       - name: Build source
         run: npm run-script build

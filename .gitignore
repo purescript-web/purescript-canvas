@@ -2,7 +2,7 @@ output/
 node_modules/
 
 /.*
-!/.eslintrc.json
+!/.oxfmtrc.json
 !/.github
 !/.gitignore
 
